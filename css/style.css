@@ -1,0 +1,21 @@
+nav.main-nav ul li.btn-nav1{
+	list-style-type: none;
+	display: inline-block;
+}
+
+nav.main-nav ul li.btn-nav1 a{
+	color: white;
+	background-color: #4C33FF;
+	text-decoration: none;
+	padding: 10px;
+	font-size: 30px;
+}
+
+nav.main-nav ul li.btn-nav1:hover a{
+	background-color: #301D74;
+	transition: 0.5s all;
+}
+
+body{
+	background-color: #101010;
+}
