@@ -107,11 +107,11 @@ header {
         <a href="#">Accueil</a>
         <a href="#">Infos</a>
 		<a href="https://artists.magroove.com/en/lt/whykioh/" target="_blank">Link Tree</a>
-		<a href="#">Outils</a>
-		<a href="#">Ruty</a>
-		<a href="#">LoLivator</a>
-		<a href="#">SNT</a>
-		<a href="#">Archives</a>
+		<a href="tools/index.html">Outils</a>
+		<a href="ruty/index.php">Ruty</a>
+		<a href="lolivator/index.php">LoLivator</a>
+		<a href="snt/index.html">SNT</a>
+		<a href="archives/index.php">Archives</a>
       </div>
       <p><br></p>
       <hr>
