@@ -115,9 +115,10 @@ header {
       </div>
       <p><br></p>
       <hr>
-      <div class="video-container">
+      <h1>Dernières nouvelles</h1>
+      <!--<div class="video-container">
         <iframe width="560" height="315" src="jk," frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
+      </div>-->
     </div>
 	<div class="footer">
         Copyright | Whykorp® 2021-2024
