@@ -14,7 +14,7 @@
   <h1 class="title">WhyKorp</h1>
 </header>
 <style>
-  header {
+  html {
     opacity: 0;
     transition: opacity 1s;
   }
