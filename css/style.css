@@ -20,10 +20,21 @@ body {
   background-color: #333;
 }
 
-.flash_info {
+img.flash_info {
+  display: flex;
+  transition: 0.4s;
+};
+
+img.flash_info:hover {
+  transition: 0.4s;
+  width: 800px
+};
+
+p.flash_info {
   display: flex;
 };
 
 div.flash_info {
   justify-content:left;
+  display: flex;
 };
