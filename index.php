@@ -2,7 +2,7 @@
 <html>
   <head>
 	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
-  <link href="style.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
 	<title>WhyKorp</title>
   </head>
   <body>
