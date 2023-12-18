@@ -14,7 +14,7 @@
   <h1 class="title">WhyKorp</h1>
 </header>
 <style>
-  html {
+  div.container {
     opacity: 0;
     transition: opacity 1s;
   }
@@ -25,7 +25,7 @@
 
 <script>
   window.addEventListener("load", function() {
-    document.querySelector("html").classList.add("show");
+    document.querySelector("div").classList.add("show");
   });
 </script>
       <div class="nav">
