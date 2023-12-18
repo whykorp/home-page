@@ -115,10 +115,12 @@ header {
       </div>
       <p><br></p>
       <hr>
-      <h1>Dernières nouvelles</h1>
-      <!--<div class="video-container">
-        <iframe width="560" height="315" src="jk," frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>-->
+      <h1>Bienvenue sur le site officiel de la WhyKorp</h1>
+      <hr>
+      <h1>Voici la dernière vidéo de <a href="https://www.youtube.com/@whykioh">Whykioh</a></h1>
+      <div class="video-container">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/cqFXFAbXXOo?si=V2fgt9eyroo8sK6C" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
     </div>
 	<div class="footer">
         Copyright | Whykorp® 2021-2024
