@@ -23,3 +23,7 @@ body {
 .flash_info {
   display: flex;
 };
+
+div.flash_info {
+  justify-content:left;
+};

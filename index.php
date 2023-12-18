@@ -121,7 +121,7 @@ header {
       <h1>Flash Info !</h1>
       <div class="flash_info">
         <p class="flash_info">Noah a enfin terminé l'EP 4 Elements, <br>il sera disponible sur toutes les plateformes <br>le 25 Décembre 2023</p>
-        <img class="flash_info" width="128px" src="img/last_cover.png">
+        <img class="flash_info" width="128px" src="img/last cover.png">
       </div>
       <hr>
       <h1>Voici la dernière vidéo de <a href="https://www.youtube.com/@whykioh">Whykioh</a> :</h1>
