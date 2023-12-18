@@ -26,7 +26,7 @@
 
 <script>
   window.addEventListener("load", function() {
-    document.querySelector("div.container").classList.add("show");
+    document.querySelector("div class="container").classList.add("show");
   });
 </script>
       <div class="nav">
