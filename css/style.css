@@ -94,5 +94,8 @@ div.flash_info {
 };
 
 h1.maintenance {
-  align-self: center
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: -1;
 };
