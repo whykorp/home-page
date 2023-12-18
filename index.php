@@ -115,9 +115,16 @@ header {
       </div>
       <p><br></p>
       <hr>
-      <h1>Bienvenue sur le site officiel de la WhyKorp</h1>
+      <h1>Bienvenue sur le site officiel de la WhyKorp !</h1>
+      <p>Vous y trouverez tout sur Whykioh aka Noah, et la WhyKorp.<br>Attention ! Site en cours de développement !<br>Si un disfonctionnement est trouvé veuillez le signaler.</p>
       <hr>
-      <h1>Voici la dernière vidéo de <a href="https://www.youtube.com/@whykioh">Whykioh</a></h1>
+      <h1>Flash Info !</h1>
+      <div class="flash_info">
+        <p class="flash_info">Noah a enfin terminé l'EP 4 Elements, <br>il sera disponible sur toutes les plateformes <br>le 25 Décembre 2023</p>
+        <img class="flash_info" width="128px" src="img/last_cover.png">
+      </div>
+      <hr>
+      <h1>Voici la dernière vidéo de <a href="https://www.youtube.com/@whykioh">Whykioh</a> :</h1>
       <div class="video-container">
         <iframe width="560" height="315" src="https://www.youtube.com/embed/cqFXFAbXXOo?si=V2fgt9eyroo8sK6C" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </div>
