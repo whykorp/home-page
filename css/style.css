@@ -22,6 +22,7 @@ body {
 
 img.flash_info {
   display: flex;
+  width: 128px;
   transition: 0.4s;
 };
 
