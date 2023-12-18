@@ -8,30 +8,15 @@
   <body>
     <h1 class="maintenance">Site en Maintenance !</h1>
     <div class="container">
-<header>
-  <a href="https://www.youtube.com/@whykioh" target="_blank">
-    <img class="logo" src="img/logo.png" alt="Logo">
-  </a>
-  <h1 class="title">WhyKorp</h1>
-</header>
-<style>
-  div.container {
-    opacity: 0;
-    transition: opacity 1s;
-  }
-  .show {
-    opacity: 1;
-  }
-</style>
-
-<script>
-  window.addEventListener("load", function() {
-    document.querySelector("div class="container").classList.add("show");
-  });
-</script>
-      <div class="nav">
-        <a href="#">Accueil</a>
-        <a href="#">Infos</a>
+  <header>
+    <a href="https://www.youtube.com/@whykioh" target="_blank">
+      <img class="logo" src="img/logo.png" alt="Logo">
+    </a>
+    <h1 class="title">WhyKorp</h1>
+  </header>
+  <div class="nav">
+    <a href="#">Accueil</a>
+    <a href="#">Infos</a>
 		<a href="https://artists.magroove.com/en/lt/whykioh/" target="_blank">Link Tree</a>
 		<a href="tools/index.html">Outils</a>
 		<a href="ruty/index.php">Ruty</a>
