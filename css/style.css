@@ -92,3 +92,7 @@ div.flash_info {
   justify-content:left;
   display: flex;
 };
+
+h1.maintenance {
+  align-self: center
+};
