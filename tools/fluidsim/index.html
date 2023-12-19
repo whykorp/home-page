@@ -57,11 +57,14 @@
                 position: sticky;
                 bottom: 27px;
             }
+            a.back {
+                z-index: 5;
+            };
         </style>
     </head>
     <body>
         <canvas></canvas>
         <script src="./script.js"></script>
-		<a href="javascript:history.back()" img="img/back_arrow.png"></a>
+		<a class="back" href="javascript:history.back()"><img src="img/back_arrow.png"></a>
     </body>
 </html>
