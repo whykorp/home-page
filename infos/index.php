@@ -2,14 +2,15 @@
 <html>
 <head>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/webp" sizes="16x16" href="img/icon.webp">
   <link href="style.css" rel="stylesheet">
-  <title>WhyTools</title>
+  <title>Actualité</title>
 </head>
 <body>
 <div class="container">
   <header>
     <a href="javascript:history.back()" target="_blank">
-      <img class="logo" src="fluidsim/img/favicon.png" alt="Logo">
+      <img class="logo" src="img/icon.webp" alt="Logo">
     </a>
     <h1 class="title">WhyKorp</h1>
   </header>
@@ -17,7 +18,7 @@
   <a href="http://whykorp.ddns.net">Accueil</a>
   <a href="#">Infos</a>
   <a href="https://artists.magroove.com/en/lt/whykioh/" target="_blank">Link Tree</a>
-	<a href="#">Outils</a>
+	<a href="tools/index.php">Outils</a>
 	<a href="ruty/index.php">Ruty</a>
 	<a href="lolivator/index.php">LoLivator</a>
 	<a href="snt/index.html">SNT</a>
@@ -25,15 +26,9 @@
   </div>
   <p><br></p>
   <hr>
-  <h1>Bienvenue sur WhykTools</h1>
-  <p>Voici la page des outils référencés</p>
+  <h1>Bienvenue sur l'actualité</h1>
+  <p>Partie du site en développement revenez plus tard</p>
   <hr>
-  <a href="fluidsim">
-	<img  width="256px" src="fluidsim/preview.gif">
-  </a>
-  <a href="multipleWindow3dScene">
-	<img width="256px" src="multipleWindow3dScene/preview.png">
-  </a>
 </div>
 <div class="footer">
   Copyright | Whykorp® 2021-2024
