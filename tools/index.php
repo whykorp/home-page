@@ -9,7 +9,7 @@
 <div class="container">
   <header>
     <a href="javascript:history.back()" target="_blank">
-      <img class="logo" src="fluidsim/img/logo.png" alt="Logo">
+      <img class="logo" src="fluidsim/img/favicon.png" alt="Logo">
     </a>
     <h1 class="title">WhyKorp</h1>
   </header>
