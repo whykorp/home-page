@@ -14,14 +14,14 @@
     <h1 class="title">WhyKorp</h1>
   </header>
   <div class="nav">
-  <a href="http://whykorp.ddns.net">Accueil</a>
-  <a href="#">Infos</a>
+  <a href="../index.php">Accueil</a>
+  <a href="../infos/index.php">Infos</a>
   <a href="https://artists.magroove.com/en/lt/whykioh/" target="_blank">Link Tree</a>
 	<a href="#">Outils</a>
-	<a href="ruty/index.php">Ruty</a>
-	<a href="lolivator/index.php">LoLivator</a>
-	<a href="snt/index.html">SNT</a>
-	<a href="archives/index.php">Archives</a>
+	<a href="../ruty/index.php">Ruty</a>
+	<a href="../lolivator/index.php">LoLivator</a>
+	<a href="../snt/index.html">SNT</a>
+	<a href="../archives/index.php">Archives</a>
   </div>
   <p><br></p>
   <hr>
