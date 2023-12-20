@@ -15,7 +15,7 @@
   </header>
   <div class="nav">
     <a href="#">Accueil</a>
-    <a href="#">Infos</a>
+    <a href="infos/index.php">Infos</a>
 		<a href="https://artists.magroove.com/en/lt/whykioh/" target="_blank">Link Tree</a>
 		<a href="tools/index.html">Outils</a>
 		<a href="ruty/index.php">Ruty</a>
