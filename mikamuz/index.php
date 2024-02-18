@@ -5,6 +5,7 @@
   <link href="css/style.css" rel="stylesheet">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="img/logo.png"> 
   <title>Mik'A'Muz</title>
 </head>
 <body>

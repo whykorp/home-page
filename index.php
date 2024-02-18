@@ -3,6 +3,7 @@
 <head>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
   <link href="css/style.css" rel="stylesheet">
+  <link rel="icon" href="img/logo.png"> 
   <title>WhyKorp</title>
 </head>
 <body>
