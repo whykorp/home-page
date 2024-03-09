@@ -21,7 +21,6 @@
 		<a href="tools/index.html">Outils</a>
 		<a href="ruty/index.php">Ruty</a>
 		<a href="lolivator/index.php">LoLivator</a>
-		<a href="snt/index.html">SNT</a>
 		<a href="archives/index.php">Archives</a>
   </div>
   <p><br></p>
