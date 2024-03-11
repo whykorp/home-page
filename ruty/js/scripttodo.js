@@ -59,4 +59,17 @@ document.addEventListener("DOMContentLoaded", function() {
             newCategoryInput.value = "";
         }
     });
+
+    // Function to load existing todos from localStorage
+    function loadTodos() {
+        const savedTodos = JSON.parse(localStorage.getItem("todos")) || [];
+        savedTodos.forEach(todo => {
+            const todoItem = document.createElement("li");
+            todoItem.textContent = todo;
+            todoList.appendChild(todoItem);
+        });
+    }
+
+    // Call loadTodos on page load
+    loadTodos();
 });
