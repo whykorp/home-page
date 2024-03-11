@@ -166,3 +166,8 @@ li.nav2:hover {
     padding: 8px 12px;
     cursor: pointer;
 }
+
+.todo-list {
+    color: white;
+    font-size: 30px;
+};

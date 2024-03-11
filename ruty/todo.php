@@ -51,13 +51,13 @@
 
 <!-- Menu contextuel pour la tâche -->
 <div id="task-menu" class="task-menu">
+    <button id="close-menu">Fermer</button>
     <div id="task-name"></div>
     <div id="task-status"></div>
     <div id="task-description"></div>
     <div id="task-tags"></div>
     <button id="edit-task">Modifier</button>
     <button id="delete-task">Supprimer</button>
-    <button id="close-menu">Fermer</button>
 </div>
 
 <script>
