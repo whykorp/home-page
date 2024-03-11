@@ -30,6 +30,12 @@ document.addEventListener("DOMContentLoaded", function() {
     const addCategoryButton = document.getElementById("add-category");
     const categoryList = document.getElementById("category-list");
 
+    // Charger la liste depuis le stockage local
+    const storedTodos = JSON.parse(localStorage.getItem("todos")) || [];
+    storedTodos.forEach(todo => {
+        addTodoToList(todo);
+    });
+
     addTodoButton.addEventListener("click", function() {
         const todoText = newTodoInput.value.trim();
         if (todoText !== "") {
@@ -41,6 +47,8 @@ document.addEventListener("DOMContentLoaded", function() {
             todoItem.appendChild(todoCheckbox);
             todoItem.appendChild(todoSpan);
             todoList.appendChild(todoItem);
+            addTodoToList(todoText);
+            saveTodoList();
             newTodoInput.value = "";
         }
     });
@@ -73,8 +81,35 @@ document.addEventListener("DOMContentLoaded", function() {
             } else {
                 todoItem.classList.remove("completed");
             }
+            saveTodoList();
         }
     });
+
+    function addTodoToList(todoText) {
+        const todoItem = document.createElement("li");
+        const todoCheckbox = document.createElement("input");
+        todoCheckbox.type = "checkbox";
+        const todoSpan = document.createElement("span");
+        todoSpan.textContent = todoText;
+        todoItem.appendChild(todoCheckbox);
+        todoItem.appendChild(todoSpan);
+        todoList.appendChild(todoItem);
+        if (todoText.completed) {
+            todoItem.classList.add("completed");
+            todoCheckbox.checked = true;
+        }
+    }
+
+    function saveTodoList() {
+        const todos = [];
+        todoList.querySelectorAll("li").forEach(todoItem => {
+            todos.push({
+                text: todoItem.querySelector("span").textContent,
+                completed: todoItem.classList.contains("completed")
+            });
+        });
+        localStorage.setItem("todos", JSON.stringify(todos));
+    }
 
     // Function to load existing todos from localStorage
     function loadTodos() {
