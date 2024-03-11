@@ -18,6 +18,8 @@
                 $taskId = $row["id"];
                 $taskName = $row["task_name"];
                 $completed = $row["completed"] ? "checked" : "";
+
+                echo "<li><input type='checkbox' $completed onchange='updateTask($taskId, this.checked)'> $taskName</li>";
             }
         } else {
             echo "Aucune tâche trouvée.";
@@ -44,7 +46,7 @@
 
 <!-- Liste de tâches -->
 <h2>Tâches en cours</h2>
-<script>
+<!-- <script>
     for(i = 0; i < <?php echo $row ?>; i++){
         container.innerHTML(
             <div class="checkbox-wrapper">
@@ -62,7 +64,7 @@
             </div>
         );
     }
-</script>
+</script>-->
     <!-- Script pour mettre à jour l'état d'une tâche -->
     <script>
         function updateTask(taskId, completed) {
