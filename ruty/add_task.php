@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Préparer et exécuter la requête SQL pour ajouter la tâche
     $sql = "INSERT INTO tasks (task_name) VALUES ('$taskName')";
     if ($conn->query($sql) === TRUE) {
-        header("Location: http://www.example.com/another-page.php");
+        header("Location: http://whykorp.ddns.net/ruty/todo.php");
         exit();
     } else {
         echo "Erreur lors de l'ajout de la tâche : " . $conn->error;
