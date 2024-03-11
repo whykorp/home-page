@@ -6,7 +6,7 @@ if (isset($_GET["id"]) && isset($_GET["completed"])) {
     $completed = $_GET["completed"];
 
     // Connexion à la base de données
-    $conn = mysqli_connect("localhost", "votre_nom_utilisateur", "votre_mot_de_passe", "votre_base_de_données");
+    $conn = mysqli_connect("localhost", "user1", "admin123", "ruty");
 
     // Vérifier la connexion
     if ($conn->connect_error) {

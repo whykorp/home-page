@@ -5,7 +5,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $taskName = $_POST["task_name"];
 
     // Connexion à la base de données
-    $conn = mysqli_connect("localhost", "votre_nom_utilisateur", "votre_mot_de_passe", "votre_base_de_données");
+    $conn = mysqli_connect("localhost", "user1", "admin123", "ruty");
 
     // Vérifier la connexion
     if ($conn->connect_error) {

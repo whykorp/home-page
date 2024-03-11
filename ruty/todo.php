@@ -2,7 +2,7 @@
     <head>
     <?php
         // Connexion à la base de données
-        $conn = mysqli_connect("localhost", "root", "votre_mot_de_passe", "ruty");
+        $conn = mysqli_connect("localhost", "user1", "admin123", "ruty");
 
         // Vérifier la connexion
         if ($conn->connect_error) {
