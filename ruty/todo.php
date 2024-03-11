@@ -40,7 +40,7 @@
             $taskName = $row["task_name"];
             $completed = $row["completed"] ? "checked" : "";
 
-            echo "<li><input type='checkbox' $completed onchange='updateTask($taskId, this.checked)'> $taskName</li>";
+            echo "<li class='task' data-task-id='$taskId'><input type='checkbox' $completed> $taskName</li>";
         }
     } else {
         echo "Aucune tâche trouvée.";
