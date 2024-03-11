@@ -34,7 +34,12 @@ document.addEventListener("DOMContentLoaded", function() {
         const todoText = newTodoInput.value.trim();
         if (todoText !== "") {
             const todoItem = document.createElement("li");
-            todoItem.textContent = todoText;
+            const todoCheckbox = document.createElement("input");
+            todoCheckbox.type = "checkbox";
+            const todoSpan = document.createElement("span");
+            todoSpan.textContent = todoText;
+            todoItem.appendChild(todoCheckbox);
+            todoItem.appendChild(todoSpan);
             todoList.appendChild(todoItem);
             newTodoInput.value = "";
         }
@@ -57,6 +62,17 @@ document.addEventListener("DOMContentLoaded", function() {
             categoryItem.textContent = categoryText;
             categoryList.appendChild(categoryItem);
             newCategoryInput.value = "";
+        }
+    });
+
+    todoList.addEventListener("change", function(event) {
+        if (event.target.type === "checkbox") {
+            const todoItem = event.target.parentNode;
+            if (event.target.checked) {
+                todoItem.classList.add("completed");
+            } else {
+                todoItem.classList.remove("completed");
+            }
         }
     });
 
