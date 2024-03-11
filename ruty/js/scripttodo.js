@@ -15,3 +15,48 @@ menuTrigger.addEventListener("click", () => {
         overlay.style.display = "block";
     }
 });
+
+// Todo 
+document.addEventListener("DOMContentLoaded", function() {
+    const newTodoInput = document.getElementById("new-todo");
+    const addTodoButton = document.getElementById("add-todo");
+    const todoList = document.getElementById("todo-list");
+
+    const newTagInput = document.getElementById("new-tag");
+    const addTagButton = document.getElementById("add-tag");
+    const tagList = document.getElementById("tag-list");
+
+    const newCategoryInput = document.getElementById("new-category");
+    const addCategoryButton = document.getElementById("add-category");
+    const categoryList = document.getElementById("category-list");
+
+    addTodoButton.addEventListener("click", function() {
+        const todoText = newTodoInput.value.trim();
+        if (todoText !== "") {
+            const todoItem = document.createElement("li");
+            todoItem.textContent = todoText;
+            todoList.appendChild(todoItem);
+            newTodoInput.value = "";
+        }
+    });
+
+    addTagButton.addEventListener("click", function() {
+        const tagText = newTagInput.value.trim();
+        if (tagText !== "") {
+            const tagItem = document.createElement("li");
+            tagItem.textContent = tagText;
+            tagList.appendChild(tagItem);
+            newTagInput.value = "";
+        }
+    });
+
+    addCategoryButton.addEventListener("click", function() {
+        const categoryText = newCategoryInput.value.trim();
+        if (categoryText !== "") {
+            const categoryItem = document.createElement("li");
+            categoryItem.textContent = categoryText;
+            categoryList.appendChild(categoryItem);
+            newCategoryInput.value = "";
+        }
+    });
+});
