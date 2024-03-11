@@ -6,7 +6,12 @@
     </head>
     <body>
         <header>
-        <svg xmlns="http://www.w3.org/2000/svg" height="200px" width="200px" viewBox="0 0 200 200" class="pencil">
+            <img src="img/logo.png">
+            <h1 class="Welcome">Bienvenue sur Ruty [BETA]</h1>
+        </header>
+        <div class="login">
+            <h2 class="type1">Accéder à son compte Ruty</h2>
+            <svg xmlns="http://www.w3.org/2000/svg" height="200px" width="200px" viewBox="0 0 200 200" class="pencil">
 	<defs>
 		<clipPath id="pencil-eraser">
 			<rect height="30" width="30" ry="5" rx="5"></rect>
@@ -37,10 +42,6 @@
 		</g>
 	</g>
 </svg>
-            <h1 class="Welcome">Bienvenue sur Ruty [BETA]</h1>
-        </header>
-        <div class="login">
-            <h2 class="type1">Accéder à son compte Ruty</h2>
             <a class="login_button" href="home.php" >Se connecter</a>
         </div>
     </body>
