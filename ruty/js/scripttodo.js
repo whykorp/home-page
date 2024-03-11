@@ -39,14 +39,6 @@ document.addEventListener("DOMContentLoaded", function() {
     addTodoButton.addEventListener("click", function() {
         const todoText = newTodoInput.value.trim();
         if (todoText !== "") {
-            const todoItem = document.createElement("li");
-            const todoCheckbox = document.createElement("input");
-            todoCheckbox.type = "checkbox";
-            const todoSpan = document.createElement("span");
-            todoSpan.textContent = todoText;
-            todoItem.appendChild(todoCheckbox);
-            todoItem.appendChild(todoSpan);
-            todoList.appendChild(todoItem);
             addTodoToList(todoText);
             saveTodoList();
             newTodoInput.value = "";
