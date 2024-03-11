@@ -46,7 +46,7 @@
 <h2>Tâches en cours</h2>
 <script>
     for(i = 0; i < <?php echo $row ?>; i++){
-        document.writeln(
+        container.innerHTML(
             <div class="checkbox-wrapper">
                 <input id="terms-checkbox-37" name="checkbox" type="checkbox">
                 <label class="terms-label" for="terms-checkbox-37">
