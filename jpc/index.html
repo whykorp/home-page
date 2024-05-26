@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Animated Wallpaper</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: black;
+        }
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        .animated-image {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <img id="background-image" class="background-image" src="sketch_231005a/bg/jpc1.png" alt="Background Image">
+    <img id="animated-image" class="animated-image" src="sketch_231005a/jpc1.png" alt="Animated Image">
+
+    <script>
+        const images = [
+            'sketch_231005a/jpc1.png',
+            'sketch_231005a/jpc2.png',
+            'sketch_231005a/jpc3.png',
+            'sketch_231005a/jpc4.png',
+            'sketch_231005a/jpc5.png',
+            'sketch_231005a/jpc6.png',
+            'sketch_231005a/jpc7.png',
+            'sketch_231005a/jpc8.png',
+            'sketch_231005a/jpc9.png',
+            'sketch_231005a/jpc10.png',
+            'sketch_231005a/jpc11.png',
+            'sketch_231005a/jpc12.png',
+            'sketch_231005a/jpc13.png',
+            'sketch_231005a/jpc14.png',
+            'sketch_231005a/jpc15.png',
+            'sketch_231005a/jpc16.png',
+        ];
+        const imagesbg = [
+            'sketch_231005a/bg/jpc1.png',
+            'sketch_231005a/bg/jpc2.png',
+            'sketch_231005a/bg/jpc3.png',
+            'sketch_231005a/bg/jpc4.png',
+            'sketch_231005a/bg/jpc5.png',
+            'sketch_231005a/bg/jpc6.png',
+            'sketch_231005a/bg/jpc7.png',
+            'sketch_231005a/bg/jpc8.png',
+            'sketch_231005a/bg/jpc9.png',
+            'sketch_231005a/bg/jpc10.png',
+            'sketch_231005a/bg/jpc11.png',
+            'sketch_231005a/bg/jpc12.png',
+            'sketch_231005a/bg/jpc13.png',
+            'sketch_231005a/bg/jpc14.png',
+            'sketch_231005a/bg/jpc15.png',
+            'sketch_231005a/bg/jpc16.png',
+        ];
+        let imgIndex = 0;
+        let x = Math.random() * window.innerWidth;
+        let y = Math.random() * window.innerHeight;
+        let xSpeed = 2;
+        let ySpeed = 2;
+
+        const imgElement = document.getElementById('animated-image');
+        const bgElement = document.getElementById('background-image');
+        imgElement.src = images[imgIndex];
+        bgElement.src = imagesbg[imgIndex];
+
+        function updatePosition() {
+            x += xSpeed;
+            y += ySpeed;
+
+            if (x + imgElement.width >= window.innerWidth || x <= 0) {
+                xSpeed *= -1;
+                changeImage();
+            }
+            if (y + imgElement.height >= window.innerHeight || y <= 0) {
+                ySpeed *= -1;
+                changeImage();
+            }
+
+            imgElement.style.left = x + 'px';
+            imgElement.style.top = y + 'px';
+
+            requestAnimationFrame(updatePosition);
+        }
+
+        function changeImage() {
+            imgIndex = (imgIndex + 1) % images.length;
+            imgElement.src = images[imgIndex];
+            bgElement.src = imagesbg[imgIndex];
+        }
+
+        updatePosition();
+    </script>
+</body>
+</html>
