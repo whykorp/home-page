@@ -1,24 +1,28 @@
 <?php
-// Vérifier si le formulaire est soumis
+include 'todo_db.php';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Récupérer le nom de la tâche depuis le formulaire
-    $taskName = $_POST["task_name"];
+    $task_name = $_POST['task_name'];
+    $description = $_POST['description'];
+    $tags = $_POST['tags']; // Liste des tags
 
-    // Connexion à la base de données
-    $conn = mysqli_connect("localhost", "user1", "admin123", "ruty");
-
-    // Vérifier la connexion
-    if ($conn->connect_error) {
-        die("Erreur de connexion à la base de données : " . $conn->connect_error);
-    }
-
-    // Préparer et exécuter la requête SQL pour ajouter la tâche
-    $sql = "INSERT INTO tasks (task_name) VALUES ('$taskName')";
+    // Insérer la tâche
+    $sql = "INSERT INTO tasks (task_name, description) VALUES ('$task_name', '$description')";
     if ($conn->query($sql) === TRUE) {
-        header("Location: http://whykorp.ddns.net:8080/ruty/todo.php");
-        exit();
+        $task_id = $conn->insert_id;
+
+        // Insérer les tags associés
+        foreach ($tags as $tag_name) {
+            $tag_sql = "INSERT INTO tags (tag_name) VALUES ('$tag_name') ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id)";
+            $conn->query($tag_sql);
+            $tag_id = $conn->insert_id;
+            
+            // Lier la tâche et les tags
+            $conn->query("INSERT INTO task_tags (task_id, tag_id) VALUES ($task_id, $tag_id)");
+        }
+        echo "Tâche ajoutée avec succès.";
     } else {
-        echo "Erreur lors de l'ajout de la tâche : " . $conn->error;
+        echo "Erreur : " . $sql . "<br>" . $conn->error;
     }
 
     $conn->close();
