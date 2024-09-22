@@ -27,29 +27,70 @@
     </form>
 
     <h2>Liste des tâches</h2>
-    <ul>
-        <?php
-        include 'todo_db.php';
+<ul>
+    <?php
+    include 'db.php';
 
-        // Sélectionner les tâches
-        $sql = "SELECT tasks.id, tasks.task_name, tasks.description, GROUP_CONCAT(tags.tag_name) as tags
-                FROM tasks
-                LEFT JOIN task_tags ON tasks.id = task_tags.task_id
-                LEFT JOIN tags ON task_tags.tag_id = tags.id
-                GROUP BY tasks.id";
+    // Sélectionner les tâches
+    $sql = "SELECT tasks.id, tasks.task_name, tasks.description, tasks.completed, GROUP_CONCAT(tags.tag_name) as tags
+            FROM tasks
+            LEFT JOIN task_tags ON tasks.id = task_tags.task_id
+            LEFT JOIN tags ON task_tags.tag_id = tags.id
+            GROUP BY tasks.id";
 
-        $result = $conn->query($sql);
+    $result = $conn->query($sql);
 
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                echo "<li>" . $row["task_name"] . " - " . $row["description"] . " [Tags: " . $row["tags"] . "]</li>";
-            }
-        } else {
-            echo "Aucune tâche trouvée.";
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $taskId = $row["id"];
+            $taskName = $row["task_name"];
+            $description = $row["description"];
+            $tags = $row["tags"];
+            $completed = $row["completed"] ? "checked" : "";
+
+            echo "<li>";
+            echo "<input type='checkbox' class='task-checkbox' data-task-id='$taskId' $completed>";
+            echo " <span class='" . ($completed ? "completed" : "") . "'>$taskName - $description [Tags: $tags]</span>";
+            echo "</li>";
         }
+    } else {
+        echo "Aucune tâche trouvée.";
+    }
 
-        $conn->close();
-        ?>
-    </ul>
+    $conn->close();
+    ?>
+</ul>
+
+<script>
+    // Ajout d'un event listener pour gérer le changement d'état de la checkbox
+    document.querySelectorAll('.task-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const taskId = this.getAttribute('data-task-id');
+            const completed = this.checked ? 1 : 0;
+
+            // Envoyer une requête AJAX pour mettre à jour l'état de la tâche dans la base de données
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'update_task.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send(`task_id=${taskId}&completed=${completed}`);
+
+            // Mettre à jour l'affichage du texte (grisé si complété)
+            const taskText = this.nextElementSibling;
+            if (completed) {
+                taskText.classList.add('completed');
+            } else {
+                taskText.classList.remove('completed');
+            }
+        });
+    });
+</script>
+
+<style>
+    /* Style pour les tâches complétées */
+    .completed {
+        text-decoration: line-through;
+        color: gray;
+    }
+</style>
     </body>
 </html>
