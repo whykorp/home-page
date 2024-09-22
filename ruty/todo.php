@@ -59,18 +59,18 @@
 #task-edit-menu {
     position: fixed;
     top: 0;
-    right: -400px; /* Cacher initialement en dehors de la vue */
+    right: -400px; /* Caché initialement */
     width: 300px;
     height: 100%;
     background-color: #f4f4f4;
-    box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
     padding: 20px;
     transition: right 0.3s ease-in-out;
-    z-index: 20; /* Un z-index élevé pour être au-dessus des autres éléments */
+    z-index: 20; /* Pour le mettre au-dessus des autres éléments */
 }
 
 #task-edit-menu.open {
-    right: 0; /* Affiche le menu lorsqu'il est actif */
+    right: 0; /* Ouvre le menu lorsque la classe "open" est ajoutée */
 }
 
 #close-edit-menu {
@@ -187,40 +187,33 @@
         <input type="button" value="Modifier la tâche" onclick="updateTaskDetails()">
     </form>
     <script>
-    // Ouvrir le menu pour modifier une tâche
-    function openTaskMenu(taskId) {
-        // Récupérer les données de la tâche à partir de l'ID
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', `get_task.php?task_id=${taskId}`, true);
-        xhr.onload = function() {
-            if (this.status === 200) {
-                const task = JSON.parse(this.responseText);
-                
-                // Pré-remplir le formulaire avec les données de la tâche
-                document.getElementById('edit-task-id').value = task.id;
-                document.getElementById('edit-task-name').value = task.task_name;
-                document.getElementById('edit-description').value = task.description;
-                document.getElementById('edit-tags').value = task.tags;
+// Ouvrir le menu pour modifier une tâche
+function openTaskMenu(taskId) {
+    // Récupérer les données de la tâche à partir de l'ID
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `get_task.php?task_id=${taskId}`, true);
+    xhr.onload = function() {
+        if (this.status === 200) {
+            const task = JSON.parse(this.responseText);
 
-                // Ouvrir le menu latéral
-                document.getElementById('task-edit-menu').classList.add('open');
-            }
-        };
-        xhr.send();
-    }
+            // Pré-remplir le formulaire avec les données de la tâche
+            document.getElementById('edit-task-id').value = task.id;
+            document.getElementById('edit-task-name').value = task.task_name;
+            document.getElementById('edit-description').value = task.description;
+            document.getElementById('edit-tags').value = task.tags;
 
-    // Fermer le menu de modification
-    document.getElementById('close-edit-menu').addEventListener('click', function() {
-        document.getElementById('task-edit-menu').classList.remove('open');
-    });
-
-    // Optionnel : Fermer le menu si l'utilisateur clique en dehors (mais pas sur les éléments du formulaire)
-    window.addEventListener("click", function(event) {
-        const menu = document.getElementById('task-edit-menu');
-        if (event.target !== menu && !menu.contains(event.target)) {
-            menu.classList.remove('open');
+            // Ouvrir le menu latéral
+            document.getElementById('task-edit-menu').classList.add('open');
         }
-    });
+    };
+    xhr.send();
+}
+
+// Fermer le menu de modification
+document.getElementById('close-edit-menu').addEventListener('click', function() {
+    document.getElementById('task-edit-menu').classList.remove('open');
+});
+
 </script>
 
 
