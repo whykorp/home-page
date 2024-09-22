@@ -31,6 +31,7 @@
             background-color: #f4f4f4;
             box-shadow: -2px 0 5px rgba(0,0,0,0.5);
             padding: 20px;
+            z-index: 2;
             transition: right 0.3s ease-in-out;
         }
 
