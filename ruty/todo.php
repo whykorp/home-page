@@ -23,34 +23,35 @@
 
         /* Style pour le menu latéral d'ajout de tâche */
         #task-menu {
-            position: fixed;
-            top: 0;
-            right: -300px; /* Menu caché au départ */
-            width: 300px;
-            height: 100%;
-            background-color: #f4f4f4;
-            box-shadow: -2px 0 5px rgba(0,0,0,0.5);
-            padding: 20px;
-            z-index: 2;
-            transition: right 0.3s ease-in-out;
-        }
+    position: fixed;
+    top: 0;
+    right: -300px; /* Menu caché initialement */
+    width: 300px;
+    height: 100%;
+    background-color: #f4f4f4;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+    padding: 20px;
+    transition: right 0.3s ease-in-out;
+    z-index: 10; /* Un z-index plus élevé pour être au-dessus du menu en haut */
+}
 
-        #task-menu.open {
-            right: 0; /* Quand le menu est ouvert, il se déplace */
-        }
+#task-menu.open {
+    right: 0; /* Le menu est affiché lorsqu'il est ouvert */
+}
 
+/* Bouton de fermeture */
+#close-menu {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
         #task-menu h2 {
             margin-top: 0;
         }
 
-        /* Bouton de fermeture */
-        #close-menu {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 20px;
-            cursor: pointer;
-        }
+
 </style>
     </head>
     <body>
