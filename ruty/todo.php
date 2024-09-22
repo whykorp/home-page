@@ -25,7 +25,7 @@
         #task-menu {
     position: fixed;
     top: 0;
-    right: -300px; /* Menu caché initialement */
+    right: -400px; /* Menu caché initialement */
     width: 300px;
     height: 100%;
     background-color: #f4f4f4;
