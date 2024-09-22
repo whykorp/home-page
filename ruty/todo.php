@@ -51,6 +51,9 @@
             margin-top: 0;
         }
 
+.add_task_title {
+    color: black;
+};
 
 </style>
     </head>
@@ -68,7 +71,7 @@
 <!-- Menu latéral pour ajouter une tâche -->
 <div id="task-menu">
     <span id="close-menu">&times;</span>
-    <h2>Ajouter une tâche</h2>
+    <h2 class="add_task_title">Ajouter une tâche</h2>
     <form id="add-task-form" action="add_task.php" method="POST">
         <label for="task_name">Nom de la tâche :</label><br>
         <input type="text" id="task_name" name="task_name" required><br><br>
