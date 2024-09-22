@@ -59,17 +59,18 @@
 #task-edit-menu {
     position: fixed;
     top: 0;
-    right: -300px; /* Cacher initialement */
+    right: -400px; /* Cacher initialement en dehors de la vue */
     width: 300px;
     height: 100%;
     background-color: #f4f4f4;
     box-shadow: -2px 0 5px rgba(0,0,0,0.5);
     padding: 20px;
     transition: right 0.3s ease-in-out;
+    z-index: 20; /* Un z-index élevé pour être au-dessus des autres éléments */
 }
 
 #task-edit-menu.open {
-    right: 0; /* Ouvre le menu lorsqu'il est actif */
+    right: 0; /* Affiche le menu lorsqu'il est actif */
 }
 
 #close-edit-menu {
@@ -213,26 +214,15 @@
         document.getElementById('task-edit-menu').classList.remove('open');
     });
 
-    // Mettre à jour les détails de la tâche dans la base de données
-    function updateTaskDetails() {
-        const taskId = document.getElementById('edit-task-id').value;
-        const taskName = document.getElementById('edit-task-name').value;
-        const description = document.getElementById('edit-description').value;
-        const tags = document.getElementById('edit-tags').value;
-
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'update_task_details.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function() {
-            if (this.status === 200) {
-                alert('Tâche mise à jour avec succès.');
-                // Rafraîchir la page ou mettre à jour l'affichage des tâches ici
-                location.reload(); // Rafraîchir la page pour voir les changements
-            }
-        };
-        xhr.send(`task_id=${taskId}&task_name=${taskName}&description=${description}&tags=${tags}`);
-    }
+    // Optionnel : Fermer le menu si l'utilisateur clique en dehors (mais pas sur les éléments du formulaire)
+    window.addEventListener("click", function(event) {
+        const menu = document.getElementById('task-edit-menu');
+        if (event.target !== menu && !menu.contains(event.target)) {
+            menu.classList.remove('open');
+        }
+    });
 </script>
+
 
 </div>
 
