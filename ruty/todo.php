@@ -29,7 +29,7 @@
     <h2>Liste des tâches</h2>
 <ul>
     <?php
-    include 'db.php';
+    include 'todo_db.php';
 
     // Sélectionner les tâches
     $sql = "SELECT tasks.id, tasks.task_name, tasks.description, tasks.completed, GROUP_CONCAT(tags.tag_name) as tags
