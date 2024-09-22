@@ -12,8 +12,14 @@
         <?php include 'menunav.php'; ?>
         
 <!-- Ajouter une nouvelle tâche -->
-<h1>Ajouter une tâche</h1>
-    <form action="add_task.php" method="POST">
+   <!-- Bouton "+" pour ajouter une tâche -->
+   <div id="add-task-button">+</div>
+
+<!-- Menu latéral pour ajouter une tâche -->
+<div id="task-menu">
+    <span id="close-menu">&times;</span>
+    <h2>Ajouter une tâche</h2>
+    <form id="add-task-form" action="add_task.php" method="POST">
         <label for="task_name">Nom de la tâche :</label><br>
         <input type="text" id="task_name" name="task_name" required><br><br>
 
@@ -25,6 +31,31 @@
 
         <input type="submit" value="Ajouter la tâche">
     </form>
+</div>
+
+<script>
+    // Récupération des éléments
+    const addButton = document.getElementById("add-task-button");
+    const taskMenu = document.getElementById("task-menu");
+    const closeMenuButton = document.getElementById("close-menu");
+
+    // Afficher le menu lorsqu'on clique sur le bouton "+"
+    addButton.addEventListener("click", function() {
+        taskMenu.classList.add("open");
+    });
+
+    // Cacher le menu lorsqu'on clique sur le bouton de fermeture
+    closeMenuButton.addEventListener("click", function() {
+        taskMenu.classList.remove("open");
+    });
+
+    // Optionnel : Fermer le menu si l'utilisateur clique en dehors
+    window.addEventListener("click", function(event) {
+        if (event.target == taskMenu) {
+            taskMenu.classList.remove("open");
+        }
+    });
+</script>
 
     <h2>Liste des tâches</h2>
 <ul>
