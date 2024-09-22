@@ -98,8 +98,51 @@
 <div id="task-menu">
     <span id="close-menu">&times;</span>
     <h2 class="add_task_title">Ajouter une tâche</h2>
+    <form id="add-task-form" action="add_task.php" method="POST">
+        <label for="task_name">Nom de la tâche :</label><br>
+        <input type="text" id="task_name" name="task_name" required><br><br>
+
+        <label for="description">Description :</label><br>
+        <textarea id="description" name="description"></textarea><br><br>
+
+        <label for="tags">Tags (séparés par des virgules) :</label><br>
+        <input type="text" id="tags" name="tags[]" placeholder="ex : urgent, maison"><br><br>
+
+        <input type="submit" value="Ajouter la tâche">
+    </form>
+</div>
+
+<script>
+    // Récupération des éléments
+    const addButton = document.getElementById("add-task-button");
+    const taskMenu = document.getElementById("task-menu");
+    const closeMenuButton = document.getElementById("close-menu");
+
+    // Afficher le menu lorsqu'on clique sur le bouton "+"
+    addButton.addEventListener("click", function() {
+        taskMenu.classList.add("open");
+    });
+
+    // Cacher le menu lorsqu'on clique sur le bouton de fermeture
+    closeMenuButton.addEventListener("click", function() {
+        taskMenu.classList.remove("open");
+    });
+
+    // Optionnel : Fermer le menu si l'utilisateur clique en dehors
+    window.addEventListener("click", function(event) {
+        if (event.target == taskMenu) {
+            taskMenu.classList.remove("open");
+        }
+    });
+</script>
+
+    <h2>Liste des tâches</h2>
+<ul>
+<h2>Liste des tâches</h2>
+<ul>
     <?php
     include 'todo_db.php';
+
     // Sélectionner les tâches
     $sql = "SELECT tasks.id, tasks.task_name, tasks.completed FROM tasks";
 
@@ -123,6 +166,7 @@
 
     $conn->close();
     ?>
+</ul>
 <!-- Menu latéral pour modifier une tâche -->
 <div id="task-edit-menu">
     <span id="close-edit-menu">&times;</span>
@@ -189,66 +233,9 @@
         xhr.send(`task_id=${taskId}&task_name=${taskName}&description=${description}&tags=${tags}`);
     }
 </script>
+
 </div>
-</div>
 
-<script>
-    // Récupération des éléments
-    const addButton = document.getElementById("add-task-button");
-    const taskMenu = document.getElementById("task-menu");
-    const closeMenuButton = document.getElementById("close-menu");
-
-    // Afficher le menu lorsqu'on clique sur le bouton "+"
-    addButton.addEventListener("click", function() {
-        taskMenu.classList.add("open");
-    });
-
-    // Cacher le menu lorsqu'on clique sur le bouton de fermeture
-    closeMenuButton.addEventListener("click", function() {
-        taskMenu.classList.remove("open");
-    });
-
-    // Optionnel : Fermer le menu si l'utilisateur clique en dehors
-    window.addEventListener("click", function(event) {
-        if (event.target == taskMenu) {
-            taskMenu.classList.remove("open");
-        }
-    });
-</script>
-
-    <h2>Liste des tâches</h2>
-<ul>
-    <?php
-    include 'todo_db.php';
-
-    // Sélectionner les tâches
-    $sql = "SELECT tasks.id, tasks.task_name, tasks.description, tasks.completed, GROUP_CONCAT(tags.tag_name) as tags
-            FROM tasks
-            LEFT JOIN task_tags ON tasks.id = task_tags.task_id
-            LEFT JOIN tags ON task_tags.tag_id = tags.id
-            GROUP BY tasks.id";
-
-    $result = $conn->query($sql);
-
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $taskId = $row["id"];
-            $taskName = $row["task_name"];
-            $description = $row["description"];
-            $tags = $row["tags"];
-            $completed = $row["completed"] ? "checked" : "";
-
-            echo "<li>";
-            echo "<input type='checkbox' class='task-checkbox' data-task-id='$taskId' $completed>";
-            echo " <span class='" . ($completed ? "completed" : "") . "'>$taskName - $description [Tags: $tags]</span>";
-            echo "</li>";
-        }
-    } else {
-        echo "Aucune tâche trouvée.";
-    }
-
-    $conn->close();
-    ?>
 </ul>
 
 <script>
