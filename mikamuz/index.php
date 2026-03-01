@@ -18,10 +18,10 @@
 	<h4>DJ amateur depuis plus de 15 ans passionné de musique depuis petit, je me ferai un plaisir de vous aMUZer sur des MUZiques de tous styles.</h4>
   </header>
   <hr>
-  <h1>Liste de karaokés - 2024</h1>
+  <h1>Liste de karaokés - 2026</h1>
   <p>Vous pouvez télécharger la liste des karaokés entière. Ou effectuer une recherche dans la liste tout en bas.</p>
   <div class="nav">
-  <a href="Liste karaoké 2024.pdf" target="_BLANK">Liste Karaoké 2024</a>
+  <a href="Liste karaoké 2026.pdf" target="_BLANK">Liste Karaoké 2026</a>
   </div>
   <br>
   <hr>
@@ -30,7 +30,7 @@
   <ul id="results"></ul>
 </div>
 <div class="footer">
-  Copyright | Whykorp® 2021-2024
+  Copyright | Whykorp® 2021-2026
 </div>
 <script src="script.js"></script>
 </body>

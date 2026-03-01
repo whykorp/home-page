@@ -1,0 +1,145 @@
+/* config.css */
+:root {
+    --poker-green: #0e5d32;
+    --gold: #d4af37;
+    --wood: #3e2723;
+    --white: #ffffff;
+    --danger: #b71c1c;
+}
+
+body {
+    background-color: #121212;
+    background-image: radial-gradient(circle, #1a1a1a 0%, #000000 100%);
+    color: var(--white);
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    background-color: var(--poker-green);
+    padding: 30px 50px;
+    border-radius: 60px;
+    border: 12px solid var(--wood);
+    box-shadow: 0 0 50px rgba(0,0,0,0.9), inset 0 0 20px rgba(0,0,0,0.5);
+    width: 100%;
+    max-width: 500px;
+}
+
+h1 {
+    color: var(--gold);
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+label {
+    display: block;
+    color: var(--gold);
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+input[type="number"], 
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 2px solid var(--gold);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.9);
+    box-sizing: border-box; /* Pour que le padding ne dépasse pas */
+    font-size: 1rem;
+}
+
+/* Style spécifique pour la ligne joueur */
+.player-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.player-row input {
+    margin-bottom: 0; /* On annule la marge pour l'alignement */
+}
+
+/* Boutons */
+button, input[type="submit"] {
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s;
+    border: none;
+}
+
+button[type="button"] {
+    background-color: var(--wood);
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+button[type="button"]:hover {
+    background-color: #4e342e;
+}
+
+/* Bouton Poubelle */
+.player-row button {
+    background-color: var(--danger);
+    color: white;
+    border: none;
+    margin-bottom: 0;
+}
+
+/* Bouton Démarrer (le gros bouton doré) */
+input[type="submit"] {
+    width: 100%;
+    background: linear-gradient(135deg, #d4af37 0%, #f9e27d 50%, #d4af37 100%);
+    color: var(--wood);
+    padding: 15px;
+    font-size: 1.2rem;
+    border-radius: 30px;
+    margin-top: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+input[type="submit"]:hover {
+    transform: scale(1.02);
+    filter: brightness(1.1);
+}
+
+/* Bouton Debug discret en bas */
+.btn-debug {
+    background: transparent !important;
+    color: rgba(255,255,255,0.3) !important;
+    border: 1px dashed rgba(255,255,255,0.3) !important;
+    width: 100%;
+    margin-top: 30px;
+    font-size: 0.8rem;
+}
+
+.btn-back {
+    position: absolute;
+    top: 25px;      /* Ajuste selon tes goûts */
+    left: 35px;     /* Aligné avec le bord du cadre */
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9rem;
+    opacity: 0.7;
+    transition: opacity 0.3s, transform 0.2s;
+    width: 20px;
+}
+
+.btn-back:hover {
+    opacity: 1;
+    transform: translateX(-5px); /* Petit effet de glissement vers la gauche */
+}

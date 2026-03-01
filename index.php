@@ -4,7 +4,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
   <link href="css/style.css" rel="stylesheet">
   <link rel="icon" href="img/logo.png"> 
-  <title>WhyKorp</title>
+  <title>love</title>
 </head>
 <body>
 <div class="container">
@@ -37,11 +37,11 @@
   <hr>
   <h1>Voici la dernière vidéo de <a href="https://www.youtube.com/@whykioh">Whykioh</a> :</h1>
   <div class="video-container">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/cqFXFAbXXOo?si=V2fgt9eyroo8sK6C" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    <iframe width="557,55" height="315" src="https://www.youtube.com/embed/-ZPjXjvdZFc?si=ldsNogAHy636GnzU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
   </div>
 </div>
 <div class="footer">
-  Copyright | Whykorp® 2021-2024
+  Copyright | Whykorp® 2021-2024 | ajoute le nom du site après l'url et un /
 </div>
 </body>
 </html>
