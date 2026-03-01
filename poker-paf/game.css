@@ -304,3 +304,9 @@ button.btn-back {
     font-size: 0.9rem;
     transition: background 0.3s, color 0.3s;
 }
+
+.player-bet {
+    font-size: 0.9rem;
+    color: rgb(185, 185, 185);
+    margin-top: 5px;
+}

@@ -84,6 +84,7 @@ foreach ($players as $p) {
                         
                         <span class="player-name">J<?php echo ($index + 1); ?> : <?php echo htmlspecialchars($p['name']); ?></span>
                         <span class="player-money"><?php echo $p['money']; ?> 🪙</span>
+                        <span class="player-bet">Mise: <?php echo $p['current_bet'] ?? 0; ?> 🪙</span>
                     </div>
                 </div>
             <?php endforeach; ?>
