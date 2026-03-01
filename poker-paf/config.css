@@ -143,3 +143,8 @@ input[type="submit"]:hover {
     opacity: 1;
     transform: translateX(-5px); /* Petit effet de glissement vers la gauche */
 }
+
+label.info {
+    font-size: 0.8rem;
+    color: rgb(141, 141, 141);
+    margin-left: 10px;

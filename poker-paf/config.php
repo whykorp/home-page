@@ -24,6 +24,7 @@ require_once 'db.php';
             <input type="number" name="blind" value="20" required><br><br>
 
             <label>Joueurs :</label>
+            <label class="info">(Maximum 8 joueurs)</label><br>
             <div id="players_container">
                 <div class="player-row">
                     <input type="text" name="players[]" placeholder="Nom du joueur" required>
