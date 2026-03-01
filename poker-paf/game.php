@@ -122,6 +122,15 @@ foreach ($players as $p) {
     let current_blind = 0;
     let blinds = {}; // On stocke les mises en cours ici
     let money = {};  // On stocke le solde des joueurs ici
+    let players = []; // On stocke les infos des joueurs ici
+
+    // --- RECUPERATION DES DONNEES DE BASE AU CHARGEMENT ---
+    
+    // On ajoute les joueurs dans 
+    <?php foreach ($players as $p): ?>
+        getActualPlayerBlind(); // On récupère les blinds pour chaque joueur
+        getActualPlayerMoney(); // On récupère les soldes pour chaque joueur
+
 
     // --- LES FONCTIONS DE JEU (Logique visuelle) ---
 
@@ -255,6 +264,88 @@ foreach ($players as $p) {
             fetch('delete_game.php', { method: 'POST', body: formData })
             .then(() => window.location.href = 'index.php');
         }
+    }
+
+    function getActualPlayerMoney() {
+        let formData = new FormData();
+        formData.append('game_id', actualGameID);
+
+        fetch('get_player_money.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                players.push({
+                    id: data.player_id,
+                    money: data.money
+                });
+            } else {
+                alert("Erreur : " + data.message);
+            }
+        })
+        .catch(err => console.error("Erreur fetch:", err));
+    }
+
+    function getActualPlayerBlind() {
+        let formData = new FormData();
+        formData.append('game_id', actualGameID);
+
+        fetch('get_player_blind.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                players.push({
+                    id: data.player_id,
+                    blind: data.blind
+                });
+            } else {
+                alert("Erreur : " + data.message);
+            }
+        })
+        .catch(err => console.error("Erreur fetch:", err));
+    }
+
+    function getActualGameBlind() {
+        let formData = new FormData();
+        formData.append('game_id', actualGameID);
+
+        fetch('get_actual_game_blind.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                currentBlind = data.blind; // On met à jour l'affichage de la blind
+            } else {
+                alert("Erreur : " + data.message);
+            }
+        })
+        .catch(err => console.error("Erreur fetch:", err));
+    }
+
+    function getTotalGameBlind() {
+        let formData = new FormData();
+        formData.append('game_id', actualGameID);
+
+        fetch('get_total_blind.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                totalBlind = data.total_blind; // On met à jour l'affichage du pot total
+            } else {
+                alert("Erreur : " + data.message);
+            }
+        })
+        .catch(err => console.error("Erreur fetch:", err));
     }
 
 </script>
