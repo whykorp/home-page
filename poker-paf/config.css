@@ -7,6 +7,12 @@
     --danger: #b71c1c;
 }
 
+label.info {
+    font-size: 0.8rem;
+    color: rgb(141, 141, 141);
+    margin-left: 10px;
+}
+
 body {
     background-color: #121212;
     background-image: radial-gradient(circle, #1a1a1a 0%, #000000 100%);
@@ -144,7 +150,3 @@ input[type="submit"]:hover {
     transform: translateX(-5px); /* Petit effet de glissement vers la gauche */
 }
 
-label.info {
-    font-size: 0.8rem;
-    color: rgb(141, 141, 141);
-    margin-left: 10px;
