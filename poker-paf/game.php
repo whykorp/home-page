@@ -142,13 +142,21 @@ foreach ($players as $p) {
 
     function Suivre() {
         console.log("Action : Suivre");
-        // Appeler les codes PHP pour retirer l'argent du joueur
-        getActualGameBlind(); // On récupère la blind actuelle pour l'afficher dans le pot
-        let currentBlind = currentBlind; // On utilise la variable globale mise à jour par getActualGameBlind()
+
+        // 1. On vérifie si le joueur a assez d'argent AVANT de lancer le fetch
+        // Note : currentPlayerId et money doivent être à jour via UpdateLabels
+        if (money[currentPlayerId] < currentBlind) {
+            alert("Vous n'avez pas assez d'argent pour suivre. Mise requise : " + currentBlind);
+            return;
+        }
+
+        // 2. On prépare l'envoi
         let formData = new FormData();
         formData.append('game_id', actualGameID);
-        formData.append('amount', currentBlind); // On envoie la blind actuelle pour que le PHP puisse faire le lien
-        fetch('remove_money.php', {
+        formData.append('amount', currentBlind); // On utilise la variable globale directement
+
+        // 3. On utilise process_bet.php (le fichier "tout-en-un")
+        fetch('process_bet.php', {
             method: 'POST',
             body: formData
         })
@@ -156,21 +164,13 @@ foreach ($players as $p) {
         .then(data => {
             if (data.success) {
                 console.log("Mise suivie avec succès !");
-                UpdateLabels(); // Met à jour les étiquettes de monnaie
+                // 4. Une fois que l'argent est retiré en BDD, on change de joueur
+                changePlayer(); 
             } else {
-                alert("Erreur : " + data.message);
+                alert("Erreur serveur : " + data.message);
             }
         })
-
-        getCurrentPlayer(); // On récupère le joueur actuel pour vérifier son solde
-        getActualPlayerMoney(); // On récupère son argent pour vérifier s'il peut suivre
-        if (money[currentPlayerId] < current_blind) {
-            alert("Vous n'avez pas assez d'argent pour suivre, vous devez vous coucher ou faire tapis.");
-            return;
-        }
-
-        UpdateLabels(); // On met a jour les valeurs affichées
-        changePlayer(); // Enfin on change de joueur
+        .catch(err => console.error("Erreur fetch:", err));
     }
 
     function SeCoucher() {
