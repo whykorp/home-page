@@ -50,8 +50,8 @@ foreach ($players as $p) {
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Poker PAF - La Table</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Poker PAF - Table N°<?php echo $game_id; ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel='stylesheet' type='text/css' href='game.css'>
 </head>
 <body>
@@ -120,8 +120,6 @@ foreach ($players as $p) {
     // --- VARIABLES GLOBALES (Côté Navigateur) ---
     let actualGameID = new URLSearchParams(window.location.search).get('game_id');
     let current_blind = 0;
-    let blinds = {}; // On stocke les mises en cours ici
-    let money = {};  // On stocke le solde des joueurs ici
     let players = []; // On stocke les infos des joueurs ici
 
     // --- RECUPERATION DES DONNEES DE BASE AU CHARGEMENT ---
@@ -336,7 +334,6 @@ foreach ($players as $p) {
         }
     }
 
-    // Ta fonction deleteGame déjà existante (rappel)
     function deleteGame(idPartie) {
         if (confirm("Supprimer la partie ?")) {
             let formData = new FormData();

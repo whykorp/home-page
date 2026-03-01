@@ -310,3 +310,118 @@ button.btn-back {
     color: rgb(141, 141, 141);
     margin-top: 5px;
 }
+
+
+
+
+
+/* --- Mode Mobile (pour les petits écrans) --- */
+/* --- ADAPTATION MOBILE --- */
+@media (max-width: 900px) {
+    
+    /* 1. On permet au corps de défiler si besoin, mais on réduit les espaces */
+    body {
+        height: auto;
+        overflow-y: auto;
+    }
+
+    /* 2. Barre de stats plus compacte */
+    .stats-bar {
+        padding: 10px;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .stat-item {
+        font-size: 1rem;
+    }
+
+    /* 3. LA TABLE : On la réduit pour qu'elle tienne en largeur */
+    .table-container {
+        padding: 40px 10px; /* Moins d'espace autour */
+        min-height: 450px;
+    }
+
+    .poker-table {
+        width: 100%;       /* Elle prend toute la largeur dispo */
+        max-width: 350px;  /* Mais pas trop non plus */
+        height: 300px;
+        border-width: 8px;
+        border-radius: 100px; /* Plus arrondie pour le format portrait */
+    }
+
+    .total-pot {
+        font-size: 1.8rem;
+    }
+
+    /* 4. POSITION DES JOUEURS : On resserre tout */
+    .player-slot {
+        width: 100px; /* Joueurs plus petits sur mobile */
+    }
+
+    .player-name { font-size: 0.7rem; }
+    .player-money { font-size: 0.9rem; }
+    .player-bet { font-size: 0.7rem; }
+
+    /* Ajustement des positions pour que ça ne sorte pas de l'écran */
+    .slot-0 { top: -45px; }
+    .slot-1 { right: -20px; top: 10%; }
+    .slot-2 { right: -40px; }
+    .slot-3 { right: -20px; bottom: 10%; }
+    .slot-4 { bottom: -45px; }
+    .slot-5 { left: -20px; bottom: 10%; }
+    .slot-6 { left: -40px; }
+    .slot-7 { left: -20px; top: 10%; }
+
+    /* 5. PANNEAU D'ACTION : On empile les boutons */
+    .action-panel {
+        padding: 15px 10px;
+        position: sticky;
+        bottom: 0;
+        z-index: 100;
+    }
+
+    .action-buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* 2 colonnes de boutons */
+        gap: 10px;
+    }
+
+    .btn {
+        padding: 12px 5px;
+        min-width: 0;   /* On laisse la grille gérer la largeur */
+        font-size: 0.8rem;
+    }
+
+    /* Le groupe de relance prend toute la largeur sur une ligne de la grille */
+    .raise-group {
+        grid-column: span 2; 
+        margin: 0;
+        justify-content: center;
+    }
+
+    #raise-amount {
+        flex-grow: 1;
+    }
+
+    .btn-allin {
+        grid-column: span 2; /* Le tapis prend toute la largeur pour bien le voir */
+    }
+
+    /* 6. Guide de bienvenue */
+    .guide-overlay {
+        width: 90%;
+        box-sizing: border-box;
+    }
+}
+
+/* Optionnel : Pour les très petits écrans (iPhone SE, etc.) */
+@media (max-width: 380px) {
+    .poker-table {
+        height: 250px;
+    }
+    .player-slot {
+        width: 85px;
+    }
+}
