@@ -117,3 +117,66 @@ li {
     justify-content: space-between;
     align-items: center;
 }
+
+
+
+/* --- Mode Mobile --- */
+/* --- ADAPTATION MOBILE POUR L'ACCUEIL --- */
+@media (max-width: 600px) {
+    
+    body {
+        /* On permet le scroll si le contenu est plus haut que l'écran */
+        height: auto;
+        padding: 20px 0;
+    }
+
+    .welcome-container {
+        /* On réduit les bordures massives et le padding */
+        padding: 30px 20px;
+        border-width: 8px; /* Bordure en bois moins épaisse */
+        border-radius: 40px; /* Moins arrondi pour gagner de la place */
+        width: 85%;
+    }
+
+    h1 {
+        font-size: 1.6rem; /* Titre plus petit */
+        margin-bottom: 30px;
+    }
+
+    /* Le bouton principal doit être bien large pour le pouce */
+    .btn-start {
+        width: 100%;
+        box-sizing: border-box; /* Pour que le padding n'agrandisse pas la largeur */
+        padding: 18px 20px;
+        font-size: 1.1rem;
+    }
+
+    /* Section rejoindre */
+    input[type="text"] {
+        width: 100%; /* L'input prend toute la largeur */
+        box-sizing: border-box;
+        padding: 15px;
+        font-size: 1.1rem; /* Évite le zoom auto de l'iPhone sur les inputs */
+    }
+
+    button {
+        width: 100%; /* Les boutons de validation passent en pleine largeur */
+        padding: 15px;
+        margin-top: 10px;
+    }
+
+    /* Pour la liste des parties */
+    li {
+        flex-direction: column; /* On empile le nom et le bouton */
+        gap: 10px;
+        background: rgba(0,0,0,0.2);
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+    }
+
+    .btn-join-list {
+        width: 100%;
+        text-align: center;
+    }
+}
