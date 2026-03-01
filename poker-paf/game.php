@@ -136,12 +136,59 @@ foreach ($players as $p) {
 
     function Suivre() {
         console.log("Action : Suivre");
-        sendActionToServer('call');
+        // Appeler les codes PHP pour retirer l'argent du joueur
+        getCurrentGameBlind(); // On récupère la blind actuelle pour l'afficher dans le pot
+        let formData = new FormData();
+        formData.append('game_id', actualGameID);
+        formData.append('amount', current_blind); // On envoie la blind actuelle pour que le PHP puisse faire le lien
+        fetch('remove_money.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                console.log("Mise suivie avec succès !");
+                UpdateLabels(); // Met à jour les étiquettes de monnaie
+            } else {
+                alert("Erreur : " + data.message);
+            }
+        })
+
+        getCurrentPlayer(); // On récupère le joueur actuel pour vérifier son solde
+        getActualPlayerMoney(); // On récupère son argent pour vérifier s'il peut suivre
+        if (money[currentPlayerId] < current_blind) {
+            alert("Vous n'avez pas assez d'argent pour suivre, vous devez vous coucher ou faire tapis.");
+            return;
+        }
+
+        UpdateLabels(); // On met a jour les valeurs affichées
+        changePlayer(); // Enfin on change de joueur
     }
 
     function SeCoucher() {
         console.log("Action : Se coucher");
-        sendActionToServer('fold');
+        let formData = new FormData();
+        formData.append('game_id', actualGameID);
+        formData.append('action', 'fold'); // On envoie une action spécifique pour se coucher
+        fetch('change_player.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                console.log("Joueur couché avec succès !");
+                UpdateLabels(); // Met à jour les étiquettes de monnaie
+                changePlayer(); // On change de joueur après s'être couché
+            } else {
+                alert("Erreur : " + data.message);
+            }
+        })
+        .catch(err => console.error("Erreur fetch:", err));
+
+        UpdateLabels(); // On met a jour les valeurs affichées
+        changePlayer(); // Enfin on change de joueur
     }
 
     function Relancer() {
@@ -214,24 +261,55 @@ foreach ($players as $p) {
 
     function Tapis() {
         console.log("Action : TAPIS !");
-        sendActionToServer('allin');
+        let currentPlayerId = getCurrentPlayer(); // On récupère la blind actuelle du joueur pour l'afficher dans le pot
+        let formData = new FormData();
+        formData.append('game_id', actualGameID);
+        formData.append('current_player_id', currentPlayerId); // On envoie aussi l'ID du joueur actuel pour que le PHP puisse faire le lien
+        fetch('all_in.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                console.log("TAPIS effectué avec succès !");
+                UpdateLabels(); // Met à jour les étiquettes de monnaie
+            } else {
+                alert("Erreur : " + data.message);
+            }
+        })
+        UpdateLabels(); // On met a jour les valeurs affichées
+        changePlayer(); // Enfin on change de joueur
     }
 
     // Fonction pour mettre à jour les étiquettes de monnaie sur l'écran
     function UpdateLabels() {
-        for (const id in money) {
-            const label = document.getElementById(`label-${id}`);
-            if (label) {
-                label.innerText = (money[id] - (blinds[id] || 0)) + " 🪙";
+        // On récupère les nouvelles valeurs depuis le serveur
+        getActualPlayerMoney();
+        getActualPlayerBlind();
+        getActualGameBlind();
+        getTotalGameBlind();
+
+        // Ensuite, on met à jour les éléments du DOM avec les nouvelles valeurs
+        document.querySelectorAll('.player-slot').forEach(slot => {
+            const playerId = slot.getAttribute('data-id');
+            const playerInfo = players.find(p => p.id == playerId);
+            if (playerInfo) {
+                slot.querySelector('.player-money').textContent = playerInfo.money + " 🪙";
+                slot.querySelector('.player-bet').textContent = "Mise: " + playerInfo.blind + " 🪙";
             }
-        }
+        });
+
+        // Mettre à jour le pot et la mise actuelle
+        document.getElementById('main-pot').textContent = totalBlind + " 🪙";
+        document.getElementById('current-bet').textContent = currentBlind + " 🪙";
     }
 
     function changePlayer() {
         console.log("Demande de changement de joueur...");
-        
-        // On utilise la fonction générique qu'on a créée ensemble
-        // Si tu ne l'as pas, voici le code direct :
+        getActualPlayerMoney();
+        getCurrentPlayer();
+        let currentPlayerMoney = money[currentPlayerId] || 0;
         let formData = new FormData();
         formData.append('game_id', actualGameID);
         formData.append('action', 'next_player'); // On envoie une action spécifique
@@ -250,10 +328,12 @@ foreach ($players as $p) {
             }
         })
         .catch(err => console.error("Erreur fetch:", err));
+        if (currentPlayerMoney <= 0) {
+            alert("Ce joueur est tapis ou couché, joueur suivant"); // Si le joueur n'a plus d'argent, on l'empêche de changer de joueur
+            changePlayer(); // Appel récursif pour sauter au joueur suivant
+            return;
+        }
     }
-
-    // Au chargement, on bloque les actions tant que le guide n'est pas fini
-    window.onload = () => enableActions(false);
 
     // Ta fonction deleteGame déjà existante (rappel)
     function deleteGame(idPartie) {
@@ -264,6 +344,28 @@ foreach ($players as $p) {
             fetch('delete_game.php', { method: 'POST', body: formData })
             .then(() => window.location.href = 'index.php');
         }
+    }
+
+    function getCurrentPlayer() {
+        let formData = new FormData();
+        formData.append('game_id', actualGameID);
+
+        fetch('get_current_player.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                currentPlayerId = data.player_id; // On stocke l'ID du joueur actuel dans une variable globale
+                return data.player_id; // On retourne l'ID du joueur actuel
+            } else {
+                alert("Erreur : " + data.message);
+            } else {
+                alert("Erreur : " + data.message);
+            }
+        })
+        .catch(err => console.error("Erreur fetch:", err));
     }
 
     function getActualPlayerMoney() {
