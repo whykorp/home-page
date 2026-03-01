@@ -27,7 +27,7 @@ require_once 'db.php';
             <label class="info">(Maximum 8 joueurs)</label><br>
             <div id="players_container">
                 <div class="player-row">
-                    <input type="text" name="players[]" placeholder="Nom du joueur" required>
+                    <p>1</p><input type="text" name="players[]" placeholder="Nom du joueur" required>
                 </div>
             </div>
             
@@ -47,9 +47,11 @@ require_once 'db.php';
             // 2. On crée une nouvelle ligne
             const newRow = document.createElement('div');
             newRow.className = 'player-row';
+
             
             // 3. On met le HTML dedans (avec le bouton supprimer intégré)
             newRow.innerHTML = `
+                <p>${container.children.length + 1}:</p>
                 <input type="text" name="players[]" placeholder="Nom du joueur" required>
                 <button type="button" onclick="removePlayer(this)">🗑️</button>
             `;
