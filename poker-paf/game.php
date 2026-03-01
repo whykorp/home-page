@@ -178,7 +178,7 @@ foreach ($players as $p) {
         let formData = new FormData();
         formData.append('game_id', actualGameID);
         formData.append('action', 'fold'); // On envoie une action spécifique pour se coucher
-        fetch('change_player.php', {
+        fetch('fold_player.php', {
             method: 'POST',
             body: formData
         })
