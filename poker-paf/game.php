@@ -117,19 +117,26 @@ foreach ($players as $p) {
     </div>
 </div>
 <script>
-    // --- VARIABLES GLOBALES (Côté Navigateur) ---
+    // --- VARIABLES GLOBALES ---
     let actualGameID = new URLSearchParams(window.location.search).get('game_id');
-    let current_blind = 0;
-    let players = []; // On stocke les infos des joueurs ici
+    let currentBlind = 0;  // Corrigé (utilisé dans UpdateLabels)
+    let totalBlind = 0;    // Corrigé (utilisé dans UpdateLabels)
+    let currentPlayerId = null;
+    let money = {};        // Pour stocker les soldes
+    let players = [];      // Pour l'affichage
 
-    // --- RECUPERATION DES DONNEES DE BASE AU CHARGEMENT ---
-    
-    // On ajoute les joueurs dans 
-    <?php foreach ($players as $p): ?>
-        getActualPlayerBlind(); // On récupère les blinds pour chaque joueur
-        getActualPlayerMoney(); // On récupère les soldes pour chaque joueur
-    <?php endforeach; ?>
-
+    // --- INITIALISATION ---
+    // On charge les données une première fois
+    window.onload = () => {
+        UpdateLabels();
+        <?php foreach ($players as $p): ?>
+            players.push({
+                id: <?php echo $p['id']; ?>,
+                money: <?php echo $p['money']; ?>,
+                blind: <?php echo $p['current_bet'] ?? 0; ?>
+            });
+        <?php endforeach; ?>
+    };
 
     // --- LES FONCTIONS DE JEU (Logique visuelle) ---
 
@@ -357,8 +364,6 @@ foreach ($players as $p) {
             if (data.success) {
                 currentPlayerId = data.player_id; // On stocke l'ID du joueur actuel dans une variable globale
                 return data.player_id; // On retourne l'ID du joueur actuel
-            } else {
-                alert("Erreur : " + data.message);
             } else {
                 alert("Erreur : " + data.message);
             }
