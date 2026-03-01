@@ -130,6 +130,7 @@ foreach ($players as $p) {
     <?php foreach ($players as $p): ?>
         getActualPlayerBlind(); // On récupère les blinds pour chaque joueur
         getActualPlayerMoney(); // On récupère les soldes pour chaque joueur
+    <?php endforeach; ?>
 
 
     // --- LES FONCTIONS DE JEU (Logique visuelle) ---
