@@ -15,7 +15,7 @@ let blinds = {}; // Objet pour stocker les blinds de chaque joueur
 // ############################################################################################################################
 let current_blind = 0; // Initialisation de la blinde actuelle en variable globale, mis à jour automatiquement
 
-function hangePlayer() { // Uniquement pour les tests, à remplacer par une fonction qui change de joueur dans la Boucle de jeu
+function changePlayer() { // Uniquement pour les tests, à remplacer par une fonction qui change de joueur dans la Boucle de jeu
     // Récupération du joueur actuel depuis la base de données
     connection.connect(err => {
         if (err) {

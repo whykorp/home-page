@@ -59,7 +59,7 @@ foreach ($players as $p) {
     <div class="stats-bar">
         <div class="stat-item">POT TOTAL: <strong id="main-pot"><?php echo $game['pot'] ?? 0; ?></strong> 🪙</div>
         <div class="stat-item">MISE ACTUELLE: <strong id="current-bet"><?php echo $game['last_bet'] ?? 0; ?></strong></div>
-        <button onclick="closeTable()" class="btn-back">Fermer la table</button>
+        <button onclick="deleteGame(<?php echo $game_id; ?>)" class="btn-back">Fermer la table</button>
         <button onclick="changePlayer()" class="btn-back">Joueur suivant</button>
         <a href="index.php" class="btn-back">⬅ Quitter</a>
     </div>
