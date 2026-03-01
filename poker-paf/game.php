@@ -313,32 +313,35 @@ foreach ($players as $p) {
 
     function changePlayer() {
         console.log("Demande de changement de joueur...");
-        getActualPlayerMoney();
-        getCurrentPlayer();
-        let currentPlayerMoney = money[currentPlayerId] || 0;
+        
         let formData = new FormData();
         formData.append('game_id', actualGameID);
-        formData.append('action', 'next_player'); // On envoie une action spécifique
+        formData.append('action', 'next_player');
 
         fetch('change_player.php', {
             method: 'POST',
             body: formData
         })
-        .then(r => r.json())
+        .then(r => {
+            // On vérifie si la réponse est bien du JSON
+            if (!r.ok) throw new Error("Erreur réseau");
+            return r.json();
+        })
         .then(data => {
             if (data.success) {
                 console.log("Joueur changé avec succès !");
-                location.reload(); // On recharge pour voir le halo se déplacer
+                // On attend un tout petit peu avant de recharger pour laisser la BDD respirer
+                setTimeout(() => {
+                    location.reload();
+                }, 100);
             } else {
-                alert("Erreur : " + data.message);
+                alert("Erreur serveur : " + data.message);
             }
         })
-        .catch(err => console.error("Erreur fetch:", err));
-        if (currentPlayerMoney <= 0) {
-            alert("Ce joueur est tapis ou couché, joueur suivant"); // Si le joueur n'a plus d'argent, on l'empêche de changer de joueur
-            changePlayer(); // Appel récursif pour sauter au joueur suivant
-            return;
-        }
+        .catch(err => {
+            console.error("Erreur complète :", err);
+            alert("Erreur lors du changement de joueur. Vérifie la console (F12).");
+        });
     }
 
     function deleteGame(idPartie) {
