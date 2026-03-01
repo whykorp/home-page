@@ -138,6 +138,7 @@ foreach ($players as $p) {
         .then(data => {
             if (data.success) {
                 // Le serveur a validé, on rafraîchit la page pour voir le halo bouger
+                UpdateLabels(); // On met à jour les étiquettes de monnaie
                 location.reload(); 
             }
         });
