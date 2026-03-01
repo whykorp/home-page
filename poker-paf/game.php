@@ -438,7 +438,7 @@ foreach ($players as $p) {
         let formData = new FormData();
         formData.append('game_id', actualGameID);
 
-        fetch('get_total_blind.php', {
+        fetch('get_total_game_blind.php', {
             method: 'POST',
             body: formData
         })
