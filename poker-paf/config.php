@@ -51,7 +51,7 @@ require_once 'db.php';
             
             // 3. On met le HTML dedans (avec le bouton supprimer intégré)
             newRow.innerHTML = `
-                <p>${container.children.length + 1}:</p>
+                <p>${container.children.length + 1}</p>
                 <input type="text" name="players[]" placeholder="Nom du joueur" required>
                 <button type="button" onclick="removePlayer(this)">🗑️</button>
             `;
