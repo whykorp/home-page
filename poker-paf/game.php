@@ -123,27 +123,6 @@ foreach ($players as $p) {
     let blinds = {}; // On stocke les mises en cours ici
     let money = {};  // On stocke le solde des joueurs ici
 
-    // --- FONCTION POUR PARLER AU SERVEUR ---
-    function sendActionToServer(actionType, amount = 0) {
-        let formData = new FormData();
-        formData.append('game_id', actualGameID);
-        formData.append('action', actionType);
-        formData.append('amount', amount);
-
-        fetch('play_action.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(r => r.json())
-        .then(data => {
-            if (data.success) {
-                // Le serveur a validé, on rafraîchit la page pour voir le halo bouger
-                UpdateLabels(); // On met à jour les étiquettes de monnaie
-                location.reload(); 
-            }
-        });
-    }
-
     // --- LES FONCTIONS DE JEU (Logique visuelle) ---
 
     function Suivre() {
@@ -157,12 +136,71 @@ foreach ($players as $p) {
     }
 
     function Relancer() {
-        let val = document.getElementById('raise-amount').value;
-        if (val > 0) {
-            sendActionToServer('raise', val);
-        } else {
-            alert("Indique un montant !");
+        const amount = parseInt(document.getElementById('raise-amount').value);
+        if (isNaN(amount) || amount <= 0) {
+            alert("Veuillez entrer une mise valide.");
+            return;
         }
+        console.log("Action : Relancer à " + amount);
+        // Appeler les codes PHP pour retirer l'argent du joueur
+        let formData = new FormData();
+        formData.append('game_id', actualGameID);
+        formData.append('amount', amount);
+        fetch('remove_money.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                console.log("Mise ajoutée avec succès !");
+                UpdateLabels(); // Met à jour les étiquettes de monnaie
+            } else {
+                alert("Erreur : " + data.message);
+            }
+        })
+        // Ensuite, on peut aussi mettre à jour le pot et la mise actuelle
+        let formData1 = new FormData();
+        formData1.append('game_id', actualGameID);
+        formData1.append('amount', amount);
+        fetch('add_global_blind.php', {
+            method: 'POST',
+            body: formData1
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                console.log("Mise ajoutée avec succès !");
+                UpdateLabels(); // Met à jour les étiquettes de monnaie
+            } else {
+                alert("Erreur : " + data.message);
+            }
+        })
+        // Comme le joueur à relancé on change la mise pour les joueurs suivants
+        let formData2 = new FormData();
+        formData2.append('game_id', actualGameID);
+        formData1.append('amount', amount);
+        fetch('change_bet.php', {
+            method: 'POST',
+            body: formData2
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                console.log("Mise changée avec succès !");
+                UpdateLabels(); // Met à jour les étiquettes de monnaie
+            } else {
+                alert("Erreur : " + data.message);
+            }
+        })
+        .catch(err => console.error("Erreur fetch:", err));
+
+        // On met a jour les valeurs affichées
+        UpdateLabels();
+
+        // Enfin on change de joueur
+        changePlayer();
+        
     }
 
     function Tapis() {
@@ -189,7 +227,7 @@ foreach ($players as $p) {
         formData.append('game_id', actualGameID);
         formData.append('action', 'next_player'); // On envoie une action spécifique
 
-        fetch('play_action.php', {
+        fetch('change_player.php', {
             method: 'POST',
             body: formData
         })

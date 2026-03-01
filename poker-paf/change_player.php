@@ -24,6 +24,17 @@ try {
         $next_player = $stmt->fetch();
     }
 
+    // On cherche si le joueur est couché ou pas
+    $stmt = $db->prepare("SELECT is_folded FROM players WHERE id = ?");
+    $stmt->execute([$next_player['id']]);
+    $is_folded = $stmt->fetchColumn();
+    if ($is_folded == 1 || $is_folded === '1') {
+        // Si le joueur est couché, on appelle récursivement pour sauter au suivant
+        $_POST['game_id'] = $game_id; // On remet le game_id pour l'appel récursif
+        echo json_encode(['success' => true, 'message' => 'Joueur couché, passage au suivant.']);
+        exit;
+    }
+
     $next_id = $next_player['id'];
 
     // 3. Mise à jour de la BDD
