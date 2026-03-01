@@ -143,10 +143,10 @@ foreach ($players as $p) {
     function Suivre() {
         console.log("Action : Suivre");
         // Appeler les codes PHP pour retirer l'argent du joueur
-        getCurrentGameBlind(); // On récupère la blind actuelle pour l'afficher dans le pot
+        getActualGameBlind(); // On récupère la blind actuelle pour l'afficher dans le pot
         let formData = new FormData();
         formData.append('game_id', actualGameID);
-        formData.append('amount', current_blind); // On envoie la blind actuelle pour que le PHP puisse faire le lien
+        formData.append('amount', currentBlind); // On envoie la blind actuelle pour que le PHP puisse faire le lien
         fetch('remove_money.php', {
             method: 'POST',
             body: formData
@@ -203,66 +203,26 @@ foreach ($players as $p) {
             alert("Veuillez entrer une mise valide.");
             return;
         }
-        console.log("Action : Relancer à " + amount);
-        // Appeler les codes PHP pour retirer l'argent du joueur
+
         let formData = new FormData();
         formData.append('game_id', actualGameID);
         formData.append('amount', amount);
-        fetch('remove_money.php', {
+
+        // UN SEUL fetch qui fait tout
+        fetch('process_bet.php', {
             method: 'POST',
             body: formData
         })
         .then(r => r.json())
         .then(data => {
             if (data.success) {
-                console.log("Mise ajoutée avec succès !");
-                UpdateLabels(); // Met à jour les étiquettes de monnaie
+                console.log("Relance effectuée !");
+                changePlayer(); // On change de joueur une fois que c'est fini
             } else {
                 alert("Erreur : " + data.message);
             }
         })
-        // Ensuite, on peut aussi mettre à jour le pot et la mise actuelle
-        let formData1 = new FormData();
-        formData1.append('game_id', actualGameID);
-        formData1.append('amount', amount);
-        fetch('add_global_blind.php', {
-            method: 'POST',
-            body: formData1
-        })
-        .then(r => r.json())
-        .then(data => {
-            if (data.success) {
-                console.log("Mise ajoutée avec succès !");
-                UpdateLabels(); // Met à jour les étiquettes de monnaie
-            } else {
-                alert("Erreur : " + data.message);
-            }
-        })
-        // Comme le joueur à relancé on change la mise pour les joueurs suivants
-        let formData2 = new FormData();
-        formData2.append('game_id', actualGameID);
-        formData1.append('amount', amount);
-        fetch('change_bet.php', {
-            method: 'POST',
-            body: formData2
-        })
-        .then(r => r.json())
-        .then(data => {
-            if (data.success) {
-                console.log("Mise changée avec succès !");
-                UpdateLabels(); // Met à jour les étiquettes de monnaie
-            } else {
-                alert("Erreur : " + data.message);
-            }
-        })
-        .catch(err => console.error("Erreur fetch:", err));
-
-        // On met a jour les valeurs affichées
-        UpdateLabels();
-
-        // Enfin on change de joueur
-        changePlayer();
-        
+        .catch(err => console.error("Erreur:", err));
     }
 
     function Tapis() {
