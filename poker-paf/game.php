@@ -67,7 +67,7 @@ foreach ($players as $p) {
     <div class="table-container">
         <div class="poker-table">
             <div class="pot-area">
-                <div class="total-pot"><?php echo $game['pot'] ?? 0; ?> 🪙</div>
+                <div class="total-pot"><?php echo $game['pot'] ?? 0; ?></div>
                 <div class="current-bet-display">Mise: <?php echo $game['last_bet'] ?? 0; ?></div>
                 <button class="btn-next-round" onclick="startNewRound()">NOUVELLE MANCHE</button>
             </div>
@@ -144,6 +144,7 @@ foreach ($players as $p) {
         console.log("Action : Suivre");
         // Appeler les codes PHP pour retirer l'argent du joueur
         getActualGameBlind(); // On récupère la blind actuelle pour l'afficher dans le pot
+        let currentBlind = currentBlind; // On utilise la variable globale mise à jour par getActualGameBlind()
         let formData = new FormData();
         formData.append('game_id', actualGameID);
         formData.append('amount', currentBlind); // On envoie la blind actuelle pour que le PHP puisse faire le lien
