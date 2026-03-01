@@ -263,7 +263,7 @@ foreach ($players as $p) {
             const playerInfo = players.find(p => p.id == playerId);
             if (playerInfo) {
                 slot.querySelector('.player-money').textContent = playerInfo.money + " 🪙";
-                slot.querySelector('.player-bet').textContent = "Mise: " + playerInfo.blind + " 🪙";
+                slot.querySelector('.player-bet').textContent = "Mise: " + player.blind + " 🪙";
             }
         });
 
