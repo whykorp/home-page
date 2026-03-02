@@ -133,6 +133,7 @@ foreach ($players as $p) {
     let currentPlayerId = null;
     let money = {};        // Pour stocker les soldes
     let players = [];      // Pour l'affichage
+    let dealerFound = false;
 
     // --- INITIALISATION ---
     // On charge les données une première fois
@@ -148,7 +149,6 @@ foreach ($players as $p) {
         <?php endforeach; ?>
         
         // On regarde si le joueur est le dealer
-        let dealerFound = false;
         players.forEach(player => {
             if (dealerFound){
                 Relancer(<?php echo $game['starting_blind'] ?? 0; ?>/2); // Le joueur après le dealer commence avec une relance
