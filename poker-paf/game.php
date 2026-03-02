@@ -44,6 +44,15 @@ foreach ($players as $p) {
         break;
     }
 }
+
+// On cherche le dealer
+foreach ($players as $p) {
+    if (isset($p['is_dealer']) && $p['is_dealer']) {
+        $p['is_dealer'] = true; // On ajoute une clé pour l'affichage
+        break;
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
