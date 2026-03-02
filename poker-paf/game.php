@@ -468,7 +468,7 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
     }
 
     function GetCurrentBlind() {
-        players.foreach(player => {
+        players.forEach(player => {
             console.log(player)
         });
     }
