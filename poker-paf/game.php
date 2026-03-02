@@ -149,7 +149,16 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
     // --- INITIALISATION ---
     // On charge les données une première fois
     window.onload = () => {
-        GetCurrentBlind();
+        <?php foreach ($players as $p): ?>
+            players.push(
+                {
+                    id: <?php echo $p['id']; ?>,
+                    money: <?php echo $p['money']; ?>,
+                    blind: <?php echo $p['current_bet'] ?? 0; ?>,
+                    isDealer: <?php echo $p['is_dealer'] ? 'true' : 'false'; ?>
+                }
+            );
+        <?php endforeach; ?>
         UpdateLabels();
     };
 
