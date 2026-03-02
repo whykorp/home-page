@@ -470,7 +470,7 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
         let blinds = []; 
         <?php foreach ($players as $p): ?>
             blinds.push(
-                    blind: <?php echo $p['current_bet'] ?? 0; ?>
+                <?php echo $p['current_bet'] ?? 0; ?>
             );
         <?php endforeach; ?>
         current_blind = Math.max(...blinds);
