@@ -155,12 +155,12 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
     // On regarde si le joueur est le dealer
     players.forEach(player => {
         if (dealerFound){
-            Relancer(<?php echo $game['starting_blind'] ?? 0; ?>); // Le joueur après le dealer commence avec une relance
+           // Relancer(<?php echo $game['starting_blind'] ?? 0; ?>); // Le joueur après le dealer commence avec une relance
             return;
         }
         if (player.isDealer) {
             document.querySelector('.dealer-badge').style.display = 'block';
-            Relancer(<?php echo $game['starting_blind'] ?? 0; ?>*2); // Le dealer commence toujours avec une relance
+            //Relancer(<?php echo $game['starting_blind'] ?? 0; ?>*2); // Le dealer commence toujours avec une relance
             dealerFound = true;
         }
     });
