@@ -67,7 +67,7 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
 <body>
     <div class="game-container">
     <div class="stats-bar">
-        <div class="stat-item">POT TOTAL: <strong id="main-pot"><?php echo $game['pot'] ?? 0; ?></strong> 🪙</div>
+        <div class="stat-item">POT TOTAL: <strong id="main-pot"><?php echo $game['pot'] ?? 0; ?></strong></div>
         <div class="stat-item">MISE ACTUELLE: <strong id="current-bet"><?php echo $game['last_bet'] ?? 0; ?></strong></div>
         <button onclick="deleteGame()" class="btn-back">Fermer la table</button>
         <button onclick="changePlayer()" class="btn-back">Joueur suivant</button>
@@ -78,7 +78,7 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
         <div class="poker-table">
             <div class="pot-area">
                 <div class="total-pot"><?php echo $game['pot'] ?? 0; ?></div>
-                <div class="current-bet-display">Mise: <?php echo $game['last_bet'] ?? 0; ?></div>
+                <div id="Mise" class="current-bet-display">Mise: <?php echo $game['last_bet'] ?? 0; ?></div>
                 <button class="btn-next-round" onclick="startNewRound()">NOUVELLE MANCHE</button>
             </div>
 
@@ -305,6 +305,7 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
 
         document.getElementById('main-pot').textContent = totalBlind + " 🪙";
         document.getElementById('current-bet').textContent = current_blind + " 🪙";
+        document.getElementById('Mise').textContent = "Mise: " + current_blind;
     }
 
     function changePlayer() {
