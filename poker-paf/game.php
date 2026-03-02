@@ -468,9 +468,12 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
     }
 
     function GetCurrentBlind() {
+        let blinds = []; 
         players.forEach(player => {
-            console.log(player)
+            blinds.push(player.blind);
         });
+        current_blind = Math.max(...blinds);
+        console.log("Blind actuel recalculé :", current_blind);
     }
 
     GetCurrentBlind(); // Juste pour le debug, à supprimer après
