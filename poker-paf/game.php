@@ -182,7 +182,7 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
 
         let player = players.find(pl => pl.id == currentPlayerId);
 
-        if (not (player === undefined)) {
+        if (player !== undefined) {
             // 1. On vérifie si le joueur a assez d'argent AVANT de lancer le fetch
             // Note : currentPlayerId et money doivent être à jour via UpdateLabels
             let delta_blind = current_blind - player.blind;
