@@ -133,20 +133,22 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
     let totalBlind = 0;    // Corrigé (utilisé dans UpdateLabels)
     let currentPlayerId = null;
     let money = {};        // Pour stocker les soldes
-    let players = [];      // Pour l'affichage
+    let players = [];      // Pour stocker les infos des joueurs (id, money, blind, isDealer)
+    <?php foreach ($players as $p): ?>
+        players.push(
+            {
+                id: <?php echo $p['id']; ?>,
+                money: <?php echo $p['money']; ?>,
+                blind: <?php echo $p['current_bet'] ?? 0; ?>,
+                isDealer: <?php echo $p['is_dealer'] ? 'true' : 'false'; ?>
+            }
+        );
+    <?php endforeach; ?>      // Pour l'affichage
     let dealerFound = false;
 
     // --- INITIALISATION ---
     // On charge les données une première fois
     window.onload = () => {
-        <?php foreach ($players as $p): ?>
-            players.push({
-                id: <?php echo $p['id']; ?>,
-                money: <?php echo $p['money']; ?>,
-                blind: <?php echo $p['current_bet'] ?? 0; ?>,
-                isDealer: <?php echo (isset($p['is_dealer']) && $p['is_dealer']) ? 'true' : 'false'; ?>
-            });
-        <?php endforeach; ?>
         UpdateLabels();
     };
 
