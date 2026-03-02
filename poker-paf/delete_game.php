@@ -6,12 +6,11 @@ require_once 'db.php';
     $game_id = isset($_SESSION['game_id']) ? $_SESSION['game_id'] : null;
 
     if ($game_id) {
-        $stmt = $db->prepare("DELETE FROM games WHERE id = :id");
-        $stmt->execute([':id' => $game_id]);
+        $stmt = $db->prepare("DELETE FROM games WHERE id = ?");
+        $stmt->execute([$game_id]);
     } else {
-        // Mode "Nettoyage" : on supprime la toute dernière entrée
-        $stmt = $db->prepare("DELETE FROM games ORDER BY id DESC LIMIT 1");
-        $stmt->execute();
+        echo "Aucune partie à supprimer.";
+        exit;
     }
 
     echo "La partie a bien été supprimée de la table poker_paf.";
