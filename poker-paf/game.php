@@ -180,7 +180,7 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
     function Suivre() {
         console.log("Action : Suivre");
 
-        let player = players.find(pl => pl.id == data.player_id);
+        let player = players.find(pl => pl.id == currentPlayerId);
 
         if (not (player === undefined)) {
             // 1. On vérifie si le joueur a assez d'argent AVANT de lancer le fetch
