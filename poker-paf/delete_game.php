@@ -10,6 +10,10 @@ header('Content-Type: application/json');
     if ($game_id) {
         $stmt = $db->prepare("DELETE FROM games WHERE id = ?");
         $stmt->execute([$game_id]);
+        
+         // Supprimer les joueurs associés à la partie
+        $stmt = $db->prepare("DELETE FROM players WHERE game_id = ?");
+        $stmt->execute([$game_id]);
     } else {
         echo "Aucune partie à supprimer.";
         exit;
