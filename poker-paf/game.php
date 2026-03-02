@@ -226,10 +226,6 @@ foreach ($players as $p) {
         if (amount === undefined) {
             amount = parseInt(document.getElementById('raise-amount').value);
         }
-        if (isNaN(amount) || amount <= 0) {
-            alert("Veuillez entrer une mise valide.");
-            return;
-        }
 
         let formData = new FormData();
         formData.append('game_id', actualGameID);
