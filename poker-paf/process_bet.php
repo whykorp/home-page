@@ -26,6 +26,10 @@ try {
     $stmt = $db->prepare("UPDATE games SET last_bet = ? WHERE id = ?");
     $stmt->execute([$amount, $game_id]);
 
+    // 5. Mettre à jour la mise actuelle du joueur
+    $stmt = $db->prepare("UPDATE players SET current_bet = current_bet + ? WHERE id = ?");
+    $stmt->execute([$amount, $player_id]);
+
     $db->commit();
     echo json_encode(['success' => true]);
 
