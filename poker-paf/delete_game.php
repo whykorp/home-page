@@ -8,7 +8,7 @@ header('Content-Type: application/json');
     log("ID de la partie à supprimer : " . $game_id);
 
     if ($game_id) {
-        $stmt = $db->prepare("DELETE FROM games WHERE games.id = ?");
+        $stmt = $db->prepare("DELETE FROM games WHERE id = ?");
         $stmt->execute([$game_id]);
     } else {
         echo "Aucune partie à supprimer.";
