@@ -129,6 +129,7 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
 <script>
     // --- VARIABLES GLOBALES ---
     let actualGameID = new URLSearchParams(window.location.search).get('game_id');
+    let current_blind = 0;
     let currentBlind = 0;  // Corrigé (utilisé dans UpdateLabels)
     let totalBlind = 0;    // Corrigé (utilisé dans UpdateLabels)
     let currentPlayerId = null;
@@ -150,6 +151,7 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
     // On charge les données une première fois
     window.onload = () => {
         UpdateLabels();
+
     };
 
     // On regarde si le joueur est le dealer
@@ -464,6 +466,14 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
         })
         .catch(err => console.error("Erreur fetch:", err));
     }
+
+    function GetCurrentBlind() {
+        players.foreach(player => {
+            console.log(player)
+        });
+    }
+
+    GetCurrentBlind(); // Juste pour le debug, à supprimer après
 
 </script>
 </body>
