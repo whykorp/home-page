@@ -134,8 +134,23 @@ foreach ($players as $p) {
                 id: <?php echo $p['id']; ?>,
                 money: <?php echo $p['money']; ?>,
                 blind: <?php echo $p['current_bet'] ?? 0; ?>
+                isDealer: <?php echo (isset($p['is_dealer']) && $p['is_dealer']) ? 'true' : 'false'; ?>
             });
         <?php endforeach; ?>
+        
+        // On regarde si le joueur est le dealer
+        let dealerFound = false;
+        players.forEach(player => {
+            if (dealerFound){
+                Relancer(<?php echo $game['starting_blind'] ?? 0; ?>/2); // Le joueur après le dealer commence avec une relance
+                return;
+            }
+            if (player.isDealer) {
+                document.querySelector('.dealer-badge').style.display = 'block';
+                Relancer(<?php echo $game['starting_blind'] ?? 0; ?>); // Le dealer commence toujours avec une relance
+                dealerFound = true;
+            }
+        });
     };
 
     // --- LES FONCTIONS DE JEU (Logique visuelle) ---
@@ -198,8 +213,10 @@ foreach ($players as $p) {
         changePlayer(); // Enfin on change de joueur
     }
 
-    function Relancer() {
-        const amount = parseInt(document.getElementById('raise-amount').value);
+    function Relancer(amount) {
+        if (amount === undefined) {
+            amount = parseInt(document.getElementById('raise-amount').value);
+        }
         if (isNaN(amount) || amount <= 0) {
             alert("Veuillez entrer une mise valide.");
             return;
