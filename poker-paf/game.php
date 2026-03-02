@@ -276,23 +276,21 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
 
     // Fonction pour mettre à jour les étiquettes de monnaie sur l'écran
     function UpdateLabels() {
-        // On récupère les nouvelles valeurs depuis le serveur
         getActualPlayerMoney();
         getActualPlayerBlind();
         getActualGameBlind();
         getTotalGameBlind();
 
-        // Ensuite, on met à jour les éléments du DOM avec les nouvelles valeurs
         document.querySelectorAll('.player-slot').forEach(slot => {
             const playerId = slot.getAttribute('data-id');
             const playerInfo = players.find(p => p.id == playerId);
             if (playerInfo) {
                 slot.querySelector('.player-money').textContent = playerInfo.money + " 🪙";
-                slot.querySelector('.player-bet').textContent = "Mise: " + player.blind + " 🪙";
+                // CORRECTION ICI : playerInfo au lieu de player
+                slot.querySelector('.player-bet').textContent = "Mise: " + playerInfo.blind + " 🪙";
             }
         });
 
-        // Mettre à jour le pot et la mise actuelle
         document.getElementById('main-pot').textContent = totalBlind + " 🪙";
         document.getElementById('current-bet').textContent = currentBlind + " 🪙";
     }
@@ -381,22 +379,30 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
         let formData = new FormData();
         formData.append('game_id', actualGameID);
 
-        fetch('get_player_money.php', {
-            method: 'POST',
-            body: formData
-        })
+        fetch('get_player_money.php', { method: 'POST', body: formData })
         .then(r => r.json())
         .then(data => {
             if (data.success) {
-                players.push({
-                    id: data.player_id,
-                    money: data.money
-                });
-            } else {
-                alert("Erreur : " + data.message);
+                // On cherche le joueur dans le tableau et on met à jour son argent
+                let p = players.find(pl => pl.id == data.player_id);
+                if(p) p.money = data.money;
             }
-        })
-        .catch(err => console.error("Erreur fetch:", err));
+        });
+    }
+
+    function getActualPlayerBlind() {
+        let formData = new FormData();
+        formData.append('game_id', actualGameID);
+
+        fetch('get_player_blind.php', { method: 'POST', body: formData })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                // On cherche le joueur et on met à jour sa mise
+                let p = players.find(pl => pl.id == data.player_id);
+                if(p) p.blind = data.blind;
+            }
+        });
     }
 
     function getActualPlayerBlind() {
