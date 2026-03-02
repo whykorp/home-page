@@ -301,6 +301,8 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
             }
         });
 
+        console.log("Blind actuel :", current_blind);
+
         document.getElementById('main-pot').textContent = totalBlind + " 🪙";
         document.getElementById('current-bet').textContent = current_blind + " 🪙";
     }
