@@ -45,13 +45,14 @@ foreach ($players as $p) {
     }
 }
 
-// On cherche le dealer
-foreach ($players as $p) {
-    if (isset($p['is_dealer']) && $p['is_dealer']) {
-        $p['is_dealer'] = true; // On ajoute une clé pour l'affichage
-        break;
-    }
-}
+// Déterminer le premier joueur
+$firstPlayer = $players[0];
+
+// Mettre à jour la BDD pour que first_player ait is_Dealer = 1
+$update = $db->prepare("UPDATE players SET is_dealer = 1 WHERE id = ?");
+$update->execute([$firstPlayer['id']]);
+
+$players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale pour l'affichage
 
 ?>
 <!DOCTYPE html>
@@ -118,7 +119,7 @@ foreach ($players as $p) {
             <button class="btn btn-fold" onclick="SeCoucher()">Se coucher</button>
             <button class="btn btn-call" onclick="Suivre()">Suivre</button>
             <div class="raise-group">
-                <input type="number" id="raise-amount" placeholder="Mise" min="0">
+                <input type="number" id="raise-amount" placeholder="Mise" min="<?php echo $game['last_bet'] ?? 0; ?>">
                 <button class="btn-validate" onclick="Relancer()">OK</button>
             </div>
             <button class="btn btn-allin" onclick="Tapis()">TAPIS</button>
@@ -152,12 +153,12 @@ foreach ($players as $p) {
     // On regarde si le joueur est le dealer
     players.forEach(player => {
         if (dealerFound){
-            Relancer(<?php echo $game['starting_blind'] ?? 0; ?>/2); // Le joueur après le dealer commence avec une relance
+            Relancer(<?php echo $game['starting_blind'] ?? 0; ?>); // Le joueur après le dealer commence avec une relance
             return;
         }
         if (player.isDealer) {
             document.querySelector('.dealer-badge').style.display = 'block';
-            Relancer(<?php echo $game['starting_blind'] ?? 0; ?>); // Le dealer commence toujours avec une relance
+            Relancer(<?php echo $game['starting_blind'] ?? 0; ?>*2); // Le dealer commence toujours avec une relance
             dealerFound = true;
         }
     });
