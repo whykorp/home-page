@@ -6,7 +6,7 @@ require_once 'db.php';
     $game_id = isset($_SESSION['game_id']) ? $_SESSION['game_id'] : null;
 
     if ($game_id) {
-        $stmt = $db->prepare("DELETE FROM games WHERE id = ?");
+        $stmt = $db->prepare(" DELETE FROM games WHERE `games`.`id` = ?");
         $stmt->execute([$game_id]);
     } else {
         echo "Aucune partie à supprimer.";
