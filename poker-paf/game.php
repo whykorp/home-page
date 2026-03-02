@@ -308,11 +308,27 @@ foreach ($players as $p) {
     function deleteGame() {
         if (confirm("Supprimer la partie ?")) {
             let formData = new FormData();
+            // On s'assure que actualGameID est bien défini
             formData.append('game_id', actualGameID);
-            console.log("Suppression de la partie ID:", actualGameID);
 
-            fetch('delete_game.php', { method: 'POST', body: formData })
-            .then(() => window.location.href = 'index.php');
+            fetch('delete_game.php', { 
+                method: 'POST', 
+                body: formData 
+            })
+            .then(r => r.json()) // On parse la réponse JSON du PHP
+            .then(data => {
+                if (data.success) {
+                    console.log("Supprimé !");
+                    window.location.href = 'index.php';
+                } else {
+                    alert("Erreur lors de la suppression : " + data.message);
+                }
+            })
+            .catch(err => {
+                console.error("Erreur réseau :", err);
+                // Optionnel : rediriger quand même si tu veux forcer
+                // window.location.href = 'index.php';
+            });
         }
     }
 
