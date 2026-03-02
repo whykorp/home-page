@@ -309,6 +309,7 @@ foreach ($players as $p) {
         if (confirm("Supprimer la partie ?")) {
             let formData = new FormData();
             formData.append('game_id', idPartie);
+            console.log("Suppression de la partie ID:", idPartie);
 
             fetch('delete_game.php', { method: 'POST', body: formData })
             .then(() => window.location.href = 'index.php');
