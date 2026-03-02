@@ -130,7 +130,6 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
     // --- VARIABLES GLOBALES ---
     let actualGameID = new URLSearchParams(window.location.search).get('game_id');
     let current_blind = 0;
-    let currentBlind = 0;  // Corrigé (utilisé dans UpdateLabels)
     let totalBlind = 0;    // Corrigé (utilisé dans UpdateLabels)
     let currentPlayerId = null;
     let money = {};        // Pour stocker les soldes
@@ -150,8 +149,8 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
     // --- INITIALISATION ---
     // On charge les données une première fois
     window.onload = () => {
+        GetCurrentBlind();
         UpdateLabels();
-
     };
 
     // On regarde si le joueur est le dealer
@@ -174,15 +173,15 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
 
         // 1. On vérifie si le joueur a assez d'argent AVANT de lancer le fetch
         // Note : currentPlayerId et money doivent être à jour via UpdateLabels
-        if (money[currentPlayerId] < currentBlind) {
-            alert("Vous n'avez pas assez d'argent pour suivre. Mise requise : " + currentBlind);
+        if (money[currentPlayerId] < current_blind) {
+            alert("Vous n'avez pas assez d'argent pour suivre. Mise requise : " + current_blind);
             return;
         }
 
         // 2. On prépare l'envoi
         let formData = new FormData();
         formData.append('game_id', actualGameID);
-        formData.append('amount', currentBlind); // On utilise la variable globale directement
+        formData.append('amount', current_blind); // On utilise la variable globale directement
 
         // 3. On utilise process_bet.php (le fichier "tout-en-un")
         fetch('process_bet.php', {
@@ -280,7 +279,7 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
     function UpdateLabels() {
         getActualPlayerMoney();
         getActualPlayerBlind();
-        getActualGameBlind();
+        GetCurrentBlind();
         getTotalGameBlind();
 
         document.querySelectorAll('.player-slot').forEach(slot => {
@@ -294,7 +293,7 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
         });
 
         document.getElementById('main-pot').textContent = totalBlind + " 🪙";
-        document.getElementById('current-bet').textContent = currentBlind + " 🪙";
+        document.getElementById('current-bet').textContent = current_blind + " 🪙";
     }
 
     function changePlayer() {
@@ -440,7 +439,7 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
         .then(r => r.json())
         .then(data => {
             if (data.success) {
-                currentBlind = data.blind; // On met à jour l'affichage de la blind
+                current_blind = data.blind; // On met à jour l'affichage de la blind
             } else {
                 alert("Erreur : " + data.message);
             }
@@ -475,9 +474,6 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
         current_blind = Math.max(...blinds);
         console.log("Blind actuel recalculé :", current_blind);
     }
-
-    GetCurrentBlind(); // Juste pour le debug, à supprimer après
-
 </script>
 </body>
 </html>
