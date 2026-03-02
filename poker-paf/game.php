@@ -142,7 +142,7 @@ foreach ($players as $p) {
             players.push({
                 id: <?php echo $p['id']; ?>,
                 money: <?php echo $p['money']; ?>,
-                blind: <?php echo $p['current_bet'] ?? 0; ?>
+                blind: <?php echo $p['current_bet'] ?? 0; ?>,
                 isDealer: <?php echo (isset($p['is_dealer']) && $p['is_dealer']) ? 'true' : 'false'; ?>
             });
         <?php endforeach; ?>
