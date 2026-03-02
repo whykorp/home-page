@@ -180,34 +180,46 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
     function Suivre() {
         console.log("Action : Suivre");
 
-        // 1. On vérifie si le joueur a assez d'argent AVANT de lancer le fetch
-        // Note : currentPlayerId et money doivent être à jour via UpdateLabels
-        if (money[currentPlayerId] < current_blind) {
-            alert("Vous n'avez pas assez d'argent pour suivre. Mise requise : " + current_blind);
-            return;
-        }
+        let player = players.find(pl => pl.id == data.player_id);
 
-        // 2. On prépare l'envoi
-        let formData = new FormData();
-        formData.append('game_id', actualGameID);
-        formData.append('amount', current_blind); // On utilise la variable globale directement
-
-        // 3. On utilise process_bet.php (le fichier "tout-en-un")
-        fetch('process_bet.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(r => r.json())
-        .then(data => {
-            if (data.success) {
-                console.log("Mise suivie avec succès !");
-                // 4. Une fois que l'argent est retiré en BDD, on change de joueur
-                changePlayer(); 
-            } else {
-                alert("Erreur serveur : " + data.message);
+        if (not (player === undefined)) {
+            // 1. On vérifie si le joueur a assez d'argent AVANT de lancer le fetch
+            // Note : currentPlayerId et money doivent être à jour via UpdateLabels
+            let delta_blind = current_blind - player.blind;
+            
+            if (delta_blind <= 0) { // Permet de changer de joueur pour rester
+                alert("Vous avez déjà mis assez pour suivre !");
+                changePlayer();
+                return;
             }
-        })
-        .catch(err => console.error("Erreur fetch:", err));
+
+            if (player.money < delta_blind) { // Correction ici : on compare avec le delta, pas la blinde totale
+                alert("Vous n'avez pas assez d'argent pour suivre, tapis requis");
+                return;
+            }
+
+            // 2. On prépare l'envoi
+            let formData = new FormData();
+            formData.append('game_id', actualGameID);
+            formData.append('amount', delta_blind); // On utilise le delta entre la blinde déjà posée et la blinde actuelle
+
+            // 3. On utilise process_bet.php (le fichier "tout-en-un")
+            fetch('process_bet.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    console.log("Mise suivie avec succès !");
+                    // 4. Une fois que l'argent est retiré en BDD, on change de joueur
+                    changePlayer();
+                } else {
+                    alert("Erreur serveur : " + data.message);
+                }
+            })
+            .catch(err => console.error("Erreur fetch:", err));
+        }
     }
 
     function SeCoucher() {
@@ -231,13 +243,18 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
         })
         .catch(err => console.error("Erreur fetch:", err));
 
-        UpdateLabels(); // On met a jour les valeurs affichées
-        changePlayer(); // Enfin on change de joueur
+        // Je suis pas sûr que ce soit néccessaire, voir c'est le problème:   UpdateLabels(); // On met a jour les valeurs affichées
+        // du fait que ça fait trop de fois changer de joueur                 changePlayer(); // Enfin on change de joueur
     }
 
     function Relancer(amount) {
         if (amount === undefined) {
             amount = parseInt(document.getElementById('raise-amount').value);
+        }
+
+        if (money[currentPlayerId] >= amount) { // Sécurise au cas où je me tromperais en nottant
+            console.log("Vous n'avez pas suffisament d'argent")
+            return;
         }
 
         let formData = new FormData();
