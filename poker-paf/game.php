@@ -501,36 +501,41 @@ foreach ($players as $p) {
     function EndGame(winnerId, amountWon) {
         console.log("Fin de partie détectée !");
         
-        const container = document.querySelector('.table-container'); // On utilise la classe si l'ID pose souci
+        // On cherche par CLASSE car dans ton PHP c'est class="table-container"
+        const container = document.querySelector('.table-container'); 
         
         if (!container) {
-            console.error("Conteneur non trouvé !");
+            console.error("ERREUR : Le conteneur .table-container n'existe pas dans le HTML !");
             return;
         }
+
+        // On vérifie si le panel n'existe pas déjà pour éviter les doublons
+        if (document.querySelector('.win-panel')) return;
 
         const newRow = document.createElement('div');
         newRow.className = 'win-panel';
 
-        // On écrit le contenu en dur pour vérifier que ça s'affiche
+        // Construction du contenu
         newRow.innerHTML = `
-            <div style="color: white;">
-                <h2>🏆 FIN DE PARTIE 🏆</h2>
-                <p>Choisissez le vainqueur :</p>
-                <div id="winner-buttons-area"></div>
-            </div>
+            <h2>La partie est terminée ! Qui a gagné ?</h2>
+            <div id="winner-buttons-area"></div>
         `;
         
         container.appendChild(newRow);
-        
-        // On ajoute les boutons via JS plutôt que PHP pour être sûr
+
+        // Ajout des boutons pour chaque joueur
         const area = document.getElementById('winner-buttons-area');
         players.forEach(p => {
             const btn = document.createElement('button');
             btn.className = 'btn-win';
-            btn.innerText = p.name || "Joueur " + p.id;
+            btn.innerText = p.name || "Joueur";
             btn.onclick = () => declareWinner(p.id);
             area.appendChild(btn);
         });
+
+        // Optionnel : Petit effet de flou sur la table
+        const table = document.querySelector('.poker-table');
+        if (table) table.style.filter = 'blur(4px) brightness(0.7)';
     }
 
     function declareWinner(winnerId) {
