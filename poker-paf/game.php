@@ -498,7 +498,7 @@ foreach ($players as $p) {
     }
 
     // --- FONCTION EN CAS DE VICTOIRE ---
-    function EndGame(winnerId, amountWon) {
+    function EndGame() {
         // 1. On récupère le conteneur
         const container = document.getElementById('table-container');
             
