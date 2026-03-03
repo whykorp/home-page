@@ -441,7 +441,7 @@ button.btn-back {
     border-radius: 20px;
     padding: 30px;
     text-align: center;
-    z-index: 10000; /* Toujours au-dessus */
+    z-index: 10000000000; /* Toujours au-dessus */
     box-shadow: 0 0 50px rgba(0, 0, 0, 1);
     animation: scaleUp 0.3s ease-out;
 }
