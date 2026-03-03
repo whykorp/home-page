@@ -16,8 +16,10 @@ try {
     }
 
     // 2. Récupérer le pot total de la partie
-    require_once 'get_total_game_blind.php';
-    $total_pot = get_total_game_blind($game_id);
+    $stmt = $db->prepare("SELECT pot FROM games WHERE id = ?");
+    $stmt->execute([$game_id]);
+    $game = $stmt->fetch();
+    $pot = $game['pot'];
 
     // 3. Mettre à jour le solde du gagnant
     $stmt = $db->prepare("UPDATE players SET money = money + ? WHERE id = ?");
