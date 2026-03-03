@@ -131,7 +131,7 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
     let actualGameID = new URLSearchParams(window.location.search).get('game_id');
     let current_blind = 0;
     let totalBlind = 0;    // Corrigé (utilisé dans UpdateLabels)
-    let currentPlayerId = null;
+    let currentPlayerId = 0;
     let money = {};        // Pour stocker les soldes
     let players = [];      // Pour stocker les infos des joueurs (id, money, blind, isDealer)
     <?php foreach ($players as $p): ?>
@@ -149,17 +149,8 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
     // --- INITIALISATION ---
     // On charge les données une première fois
     window.onload = () => {
-        <?php foreach ($players as $p): ?>
-            players.push(
-                {
-                    id: <?php echo $p['id']; ?>,
-                    money: <?php echo $p['money']; ?>,
-                    blind: <?php echo $p['current_bet'] ?? 0; ?>,
-                    isDealer: <?php echo $p['is_dealer'] ? 'true' : 'false'; ?>
-                }
-            );
-        <?php endforeach; ?>
         UpdateLabels();
+        getCurrentPlayer();
     };
 
     // On regarde si le joueur est le dealer
@@ -179,10 +170,9 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
 
     function Suivre() {
         console.log("Action : Suivre");
-
         let player = players.find(pl => pl.id == currentPlayerId);
 
-        if (player !== undefined) {
+        if (!(player === undefined)) {
             // 1. On vérifie si le joueur a assez d'argent AVANT de lancer le fetch
             // Note : currentPlayerId et money doivent être à jour via UpdateLabels
             let delta_blind = current_blind - player.blind;
@@ -249,7 +239,7 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
 
     function Relancer(amount) {
         if (amount === undefined) {
-            amount = parseInt(document.getElementById('raise-amount').value);
+            amount = parseInt(document.getElementById('raise-amount').value) + current_blind - (players.find(pl => pl.id == currentPlayerId)?.blind || 0); // On ajoute la blinde actuelle pour que le joueur puisse entrer directement le montant total de sa relance
         }
 
         if (money[currentPlayerId] >= amount) { // Sécurise au cas où je me tromperais en nottant
@@ -259,7 +249,7 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
 
         let formData = new FormData();
         formData.append('game_id', actualGameID);
-        formData.append('amount', amount);
+        formData.append('amount', amount); // On envoie le montant total de la blinde à atteindre (ex: si la blinde est à 10 et que le joueur a déjà mis 4, il doit relancer à 6 pour atteindre les 10)
 
         // UN SEUL fetch qui fait tout
         fetch('process_bet.php', {
