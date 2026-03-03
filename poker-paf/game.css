@@ -429,92 +429,57 @@ button.btn-back {
 /* --- PANEL DE VICTOIRE --- */
 
 /* Conteneur principal en overlay */
+/* --- PANEL DE VICTOIRE --- */
 .win-panel {
-    position: absolute;
+    position: absolute; /* Se place par rapport au table-container */
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%); /* Centrage parfait */
+    
     width: 90%;
-    max-width: 500px;
-    background: rgba(18, 18, 18, 0.95); /* Fond sombre semi-transparent */
-    border: 5px solid #d4af37; /* Bordure dorée */
+    max-width: 450px;
+    background: rgba(20, 20, 20, 0.98); /* Fond très sombre */
+    border: 4px solid #d4af37; /* Bordure dorée */
     border-radius: 20px;
     padding: 30px;
     text-align: center;
-    z-index: 1000; /* Par-dessus tout */
-    box-shadow: 0 0 50px rgba(0, 0, 0, 0.8), 0 0 20px rgba(212, 175, 55, 0.4);
-    animation: fadeInScale 0.4s ease-out;
+    z-index: 2000; /* Assure d'être au-dessus de tout */
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.9), 0 0 20px rgba(212, 175, 55, 0.3);
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Titre du panel */
 .win-panel h2 {
     color: #d4af37;
-    font-size: 1.8rem;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
     text-transform: uppercase;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
-/* Boutons de sélection des joueurs (Qui a gagné ?) */
+/* Boutons de sélection du gagnant */
 .btn-win {
-    display: inline-block;
-    width: 80%;
-    margin: 8px 0;
+    display: block;
+    width: 100%;
+    margin: 10px 0;
     padding: 12px;
-    background: linear-gradient(135deg, #1a4a31 0%, #0e5d32 100%);
+    background: #1a4a31;
     color: white;
     border: 2px solid #d4af37;
-    border-radius: 10px;
+    border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: 0.3s;
 }
 
 .btn-win:hover {
-    transform: scale(1.05);
     background: #d4af37;
     color: #1a4a31;
+    transform: scale(1.02);
 }
 
-/* Bouton Rejouer / Retour Accueil */
-.btn-replay, .btn-back {
-    margin: 15px 5px;
-    padding: 12px 25px;
-    border-radius: 30px;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: transform 0.2s;
-}
-
-.btn-replay {
-    background: linear-gradient(135deg, #d4af37 0%, #f9e27d 100%);
-    color: #3e2723;
-    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-}
-
-.btn-back {
-    background: #3e2723;
-    color: #d4af37;
-    border: 1px solid #d4af37;
-}
-
-.btn-replay:hover, .btn-back:hover {
-    transform: translateY(-3px);
-    filter: brightness(1.2);
-}
-
-/* Petite animation d'entrée */
-@keyframes fadeInScale {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -60%) scale(0.8);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-    }
+/* Animation d'apparition */
+@keyframes popIn {
+    from { opacity: 0; transform: translate(-50%, -60%) scale(0.5); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
 
 /* --- ADAPTATION MOBILE --- */
