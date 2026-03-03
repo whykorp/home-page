@@ -70,6 +70,7 @@ foreach ($players as $p) {
         <div class="stat-item">MISE ACTUELLE: <strong id="current-bet"><?php echo $game['last_bet'] ?? 0; ?></strong></div>
         <button onclick="deleteGame()" class="btn-back">Fermer la table</button>
         <button onclick="changePlayer()" class="btn-back">Joueur suivant</button>
+        <button onclick="EndGame()" class="btn-back">Terminer la partie</button>
         <a href="index.php" class="btn-back">⬅ Quitter</a>
     </div>
 
@@ -78,7 +79,7 @@ foreach ($players as $p) {
             <div class="pot-area">
                 <div class="total-pot"><?php echo $game['pot'] ?? 0; ?></div>
                 <div id="Mise" class="current-bet-display">Mise: <?php echo $game['last_bet'] ?? 0; ?></div>
-                <button class="btn-next-round" onclick="startNewRound()">NOUVELLE MANCHE</button>
+                <button class="btn-next-round" onclick="StartNewGame()">NOUVELLE PARTIE</button>
             </div>
 
             <?php foreach ($players as $index => $p): ?>
