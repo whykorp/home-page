@@ -430,53 +430,55 @@ button.btn-back {
 
 /* Conteneur principal en overlay */
 .win-panel {
+    /* Positionnement fixe au milieu de l'écran ou du container */
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     
-    width: 350px; /* Largeur fixe pour le test */
-    min-height: 200px;
-    background-color: #1a1a1a !important; /* Force le fond noir */
-    border: 4px solid #d4af37;
+    /* Style du panneau */
+    width: 400px;
+    background-color: rgba(20, 20, 20, 0.95); /* Fond sombre opaque */
+    border: 3px solid #d4af37; /* Bordure dorée */
     border-radius: 15px;
-    padding: 20px;
+    padding: 25px;
     text-align: center;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
     
-    /* Priorité maximale */
-    z-index: 9999 !important; 
-    display: block !important;
-    box-shadow: 0 0 100px rgba(0,0,0,1);
+    /* S'assurer qu'il passe devant tout */
+    z-index: 9999; 
 }
-
 /* Titre du panel */
 .win-panel h2 {
-    color: #d4af37;
-    font-size: 1.8rem;
-    margin-bottom: 25px;
-    text-transform: uppercase;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    color: #ffffff;
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    font-family: Arial, sans-serif;
 }
 
-/* Boutons de sélection des joueurs (Qui a gagné ?) */
+/* Zone des boutons */
+#winner-buttons-area {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Style des boutons joueurs */
 .btn-win {
-    display: inline-block;
-    width: 80%;
-    margin: 8px 0;
-    padding: 12px;
-    background: linear-gradient(135deg, #1a4a31 0%, #0e5d32 100%);
+    background: #444;
     color: white;
-    border: 2px solid #d4af37;
-    border-radius: 10px;
-    font-weight: bold;
+    border: 1px solid #d4af37;
+    padding: 8px 15px;
+    border-radius: 5px;
     cursor: pointer;
+    font-size: 0.9rem;
     transition: all 0.2s;
 }
 
 .btn-win:hover {
-    transform: scale(1.05);
     background: #d4af37;
-    color: #1a4a31;
+    color: #000;
 }
 
 /* Bouton Rejouer / Retour Accueil */
