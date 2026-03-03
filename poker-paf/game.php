@@ -496,7 +496,7 @@ foreach ($players as $p) {
         console.log("Blind actuel recalculé :", current_blind);
     }
 
-    # --- FONCTION EN CAS DE VICTOIRE ---
+    // --- FONCTION EN CAS DE VICTOIRE ---
     function EndGame(winnerId, amountWon) {
         // 1. On récupère le conteneur
         const container = document.getElementById('table-container');
