@@ -35,6 +35,13 @@ try {
     $stmt = $db->prepare("UPDATE games SET last_bet = 0 WHERE id = ?");
     $stmt->execute([$game_id]);
 
+    // 7. Récupérer le nom du gagnant pour l'afficher
+    $stmt = $db->prepare("SELECT name FROM players WHERE id = ?");
+    $stmt->execute([$winner_id]);
+    $winner = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    echo json_encode(['success' => true, 'winner_name' => $winner['name'] ?? "Inconnu"]);
+
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
 }
