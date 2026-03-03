@@ -498,44 +498,40 @@ foreach ($players as $p) {
     }
 
     // --- FONCTION EN CAS DE VICTOIRE ---
-    function EndGame(winnerId, amountWon) {
-        console.log("Fin de partie détectée !");
+    function EndGame() {
+        // 1. On cible le container
+        const container = document.querySelector('.table-container');
         
-        // On cherche par CLASSE car dans ton PHP c'est class="table-container"
-        const container = document.querySelector('.table-container'); 
-        
-        if (!container) {
-            console.error("ERREUR : Le conteneur .table-container n'existe pas dans le HTML !");
-            return;
-        }
-
-        // On vérifie si le panel n'existe pas déjà pour éviter les doublons
+        // 2. On vérifie s'il n'y a pas déjà un panel
         if (document.querySelector('.win-panel')) return;
 
         const newRow = document.createElement('div');
         newRow.className = 'win-panel';
 
-        // Construction du contenu
         newRow.innerHTML = `
-            <h2>La partie est terminée ! Qui a gagné ?</h2>
+            <h2>La partie est terminée !<br>Qui a gagné ?</h2>
             <div id="winner-buttons-area"></div>
         `;
         
         container.appendChild(newRow);
 
-        // Ajout des boutons pour chaque joueur
+        // 3. On ajoute les boutons des joueurs depuis l'objet 'players' global
         const area = document.getElementById('winner-buttons-area');
+        
+        // On boucle sur tes joueurs pour créer les boutons
         players.forEach(p => {
             const btn = document.createElement('button');
             btn.className = 'btn-win';
-            btn.innerText = p.name || "Joueur";
+            // On récupère le nom depuis le DOM si players n'est pas à jour
+            const playerName = document.querySelector(`[data-id="${p.id}"] .player-name`)?.textContent || "Joueur";
+            btn.innerText = playerName.replace(/J\d+ : /, ''); // Nettoie le "J1 : "
+            
             btn.onclick = () => declareWinner(p.id);
             area.appendChild(btn);
         });
 
-        // Optionnel : Petit effet de flou sur la table
-        const table = document.querySelector('.poker-table');
-        if (table) table.style.filter = 'blur(4px) brightness(0.7)';
+        // 4. Effet de flou sur la table
+        document.querySelector('.poker-table').style.filter = 'blur(8px) brightness(0.5)';
     }
 
     function declareWinner(winnerId) {
