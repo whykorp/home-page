@@ -40,7 +40,7 @@ try {
     $stmt->execute([$winner_id]);
     $winner = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    echo json_encode(['success' => true, 'winner_name' => $winner['name'] ?? "Inconnu"]);
+    echo json_encode(['success' => true, 'winner_name' => $winner['name'] ?? "Inconnu", 'amount_won' => $total_pot]);
 
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
