@@ -499,39 +499,44 @@ foreach ($players as $p) {
 
     // --- FONCTION EN CAS DE VICTOIRE ---
     function EndGame() {
-        // 1. On cible le container
+        // 1. On cherche le container par sa classe
         const container = document.querySelector('.table-container');
         
-        // 2. On vérifie s'il n'y a pas déjà un panel
+        if (!container) {
+            console.error("Conteneur .table-container introuvable");
+            return;
+        }
+
+        // 2. On évite de créer le panel deux fois
         if (document.querySelector('.win-panel')) return;
 
-        const newRow = document.createElement('div');
-        newRow.className = 'win-panel';
-
-        newRow.innerHTML = `
-            <h2>La partie est terminée !<br>Qui a gagné ?</h2>
+        const winPanel = document.createElement('div');
+        winPanel.className = 'win-panel';
+        winPanel.innerHTML = `
+            <h2>🏆 La partie est terminée ! 🏆<br>Qui a gagné ?</h2>
             <div id="winner-buttons-area"></div>
         `;
         
-        container.appendChild(newRow);
+        container.appendChild(winPanel);
 
-        // 3. On ajoute les boutons des joueurs depuis l'objet 'players' global
+        // 3. Récupération dynamique des noms des joueurs présents à l'écran
         const area = document.getElementById('winner-buttons-area');
-        
-        // On boucle sur tes joueurs pour créer les boutons
-        players.forEach(p => {
+        const playerElements = document.querySelectorAll('.player-slot');
+
+        playerElements.forEach(slot => {
+            const id = slot.getAttribute('data-id');
+            const name = slot.querySelector('.player-name').textContent.split(': ')[1];
+            
             const btn = document.createElement('button');
             btn.className = 'btn-win';
-            // On récupère le nom depuis le DOM si players n'est pas à jour
-            const playerName = document.querySelector(`[data-id="${p.id}"] .player-name`)?.textContent || "Joueur";
-            btn.innerText = playerName.replace(/J\d+ : /, ''); // Nettoie le "J1 : "
-            
-            btn.onclick = () => declareWinner(p.id);
+            btn.innerText = name;
+            btn.onclick = () => declareWinner(id);
             area.appendChild(btn);
         });
 
-        // 4. Effet de flou sur la table
-        document.querySelector('.poker-table').style.filter = 'blur(8px) brightness(0.5)';
+        // 4. Effet visuel sur la table
+        const table = document.querySelector('.poker-table');
+        if (table) table.style.filter = 'blur(5px) brightness(0.5)';
     }
 
     function declareWinner(winnerId) {
@@ -546,7 +551,11 @@ foreach ($players as $p) {
         .then(r => r.json())
         .then(data => {
             if (data.success) {
-                confetti();
+                confetti({
+                    particleCount: 150,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
                 // Changer la div "win-panel" pour afficher le gagnant
                 const winPanel = document.querySelector('.win-panel');
                 if (winPanel) {
