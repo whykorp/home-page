@@ -495,6 +495,78 @@ $players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale po
         current_blind = Math.max(...blinds);
         console.log("Blind actuel recalculé :", current_blind);
     }
+
+    # --- FONCTION EN CAS DE VICTOIRE ---
+    function EndGame(winnerId, amountWon) {
+        // 1. On récupère le conteneur
+        const container = document.getElementById('table-container');
+            
+        // 2. On crée une nouvelle ligne
+        const newRow = document.createElement('div');
+        newRow.className = 'win-panel';
+
+        
+        // 3. On met le HTML dedans (avec le bouton supprimer intégré)
+        newRow.innerHTML = `
+            <h2>La partie est terminée ! Qui a gagné ?</h2>
+            <?php foreach ($players as $p): ?>
+                <button class="btn-win" onclick="declareWinner(<?php echo $p['id']; ?>)"><?php echo htmlspecialchars($p['name']); ?></button>
+            <?php endforeach; ?>
+        `;
+        
+        // 4. On l'ajoute au conteneur
+        container.appendChild(newRow);
+
+    }
+
+    function declareWinner(winnerId) {
+        let formData = new FormData();
+        formData.append('game_id', actualGameID);
+        formData.append('winner_id', winnerId);
+
+        fetch('declare_winner.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.winner_name + " gagne la partie et remporte " + data.amount_won + " 🪙 !");
+                // Changer la div "win-panel" pour afficher le gagnant
+                const winPanel = document.querySelector('.win-panel');
+                if (winPanel) {
+                    winPanel.innerHTML = `
+                        <h2>${data.winner_name} gagne la partie et remporte ${data.amount_won} 🪙 !</h2>
+                        <button class="btn-back" onclick="window.location.href='index.php'">Retour à l'accueil</button>
+                        <button class="btn-replay" onclick="StartNewGame()">Rejouer</button>
+                    `;
+                }
+            } else {
+                alert("Erreur : " + data.message);
+            }
+        })
+        .catch(err => console.error("Erreur fetch:", err));
+    }
+
+    function StartNewGame() {
+        let formData = new FormData();
+        formData.append('game_id', actualGameID);
+
+        fetch('start_new_game.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                alert("Nouvelle partie lancée !");
+                location.reload(); // On recharge la page pour afficher la nouvelle partie
+            } else {
+                alert("Erreur : " + data.message);
+            }
+        })
+        .catch(err => console.error("Erreur fetch:", err));
+    }
 </script>
 </body>
 </html>
