@@ -62,12 +62,17 @@ foreach ($players as $p) {
     <title>Poker PAF - Table N°<?php echo $game_id; ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel='stylesheet' type='text/css' href='game.css'>
+    <link rel='stylesheet' type='text/css' href='Game_Win.css'>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </head>
 <body>
     <div class="game-container">
     <div class="stats-bar">
-        <div class="stat-item">POT TOTAL: <strong id="main-pot"><?php echo $game['pot'] ?? 0; ?></strong></div>
+        <div class="money-group">
+            <input type="number" id="money-amount" placeholder="Montant">
+            <button class="btn-money" onclick="ModifierArgent()">OK</button>
+        </div>
+        
         <div class="stat-item">MISE ACTUELLE: <strong id="current-bet"><?php echo $game['last_bet'] ?? 0; ?></strong></div>
         <button onclick="deleteGame()" class="btn-back">Fermer la table</button>
         <button onclick="changePlayer()" class="btn-back">Joueur suivant</button>
@@ -139,7 +144,6 @@ foreach ($players as $p) {
         players.push(
             {
                 id: <?php echo $p['id']; ?>,
-                name: "<?php echo htmlspecialchars($p['name']); ?>",
                 money: <?php echo $p['money']; ?>,
                 blind: <?php echo $p['current_bet'] ?? 0; ?>,
                 isDealer: <?php echo $p['is_dealer'] ? 'true' : 'false'; ?>
@@ -186,8 +190,7 @@ foreach ($players as $p) {
             }
 
             if (player.money < delta_blind) { // Correction ici : on compare avec le delta, pas la blinde totale
-                alert("Vous n'avez pas assez d'argent pour suivre, tapis requis");
-                return;
+                delta_blind = player.money; // Si le joueur n'a pas assez, il suit avec tout ce qu'il lui reste (all-in)
             }
 
             // 2. On prépare l'envoi
@@ -312,7 +315,7 @@ foreach ($players as $p) {
 
         console.log("Blind actuel :", current_blind);
 
-        document.getElementById('main-pot').textContent = totalBlind + " 🪙";
+        //document.getElementById('main-pot').textContent = totalBlind + " 🪙";
         document.getElementById('current-bet').textContent = current_blind + " 🪙";
         document.getElementById('Mise').textContent = "Mise: " + current_blind;
     }
@@ -335,7 +338,7 @@ foreach ($players as $p) {
         })
         .then(data => {
             if (data.success) {
-                console.log("Joueur changé avec succès !");
+                console.log("Joueur changé avec succès !", data.next_player_id);
                 // On attend un tout petit peu avant de recharger pour laisser la BDD respirer
                 setTimeout(() => {
                     location.reload();
@@ -511,6 +514,8 @@ foreach ($players as $p) {
         // 2. On évite de créer le panel deux fois
         if (document.querySelector('.win-panel')) return;
 
+        const winOverlay = document.createElement('div');
+        winOverlay.className = 'win-overlay';
         const winPanel = document.createElement('div');
         winPanel.className = 'win-panel';
         winPanel.innerHTML = `
@@ -518,7 +523,8 @@ foreach ($players as $p) {
             <div id="winner-buttons-area"></div>
         `;
         
-        container.appendChild(winPanel);
+        winOverlay.appendChild(winPanel);
+        container.appendChild(winOverlay);
 
         // 3. Récupération dynamique des noms des joueurs présents à l'écran
         const area = document.getElementById('winner-buttons-area');
@@ -534,6 +540,10 @@ foreach ($players as $p) {
             btn.onclick = () => declareWinner(id);
             area.appendChild(btn);
         });
+
+        // On affiche l'overlay (qui contient le panel)
+        document.getElementById('end-game-screen').style.display = 'flex';
+        container.classList.add('blur-effect'); // On ajoute un effet de flou à la table pour mettre en avant le panel de victoire
     }
 
     function declareWinner(winnerId) {
@@ -588,6 +598,40 @@ foreach ($players as $p) {
         })
         .catch(err => console.error("Erreur fetch:", err));
     }
+
+
+    
+
+    function ModifierArgent() {
+        let amount = parseInt(document.getElementById('money-amount').value);
+        if (isNaN(amount)) {
+            alert("Veuillez entrer un montant valide.");
+            return;
+        }
+
+        let formData = new FormData();
+        formData.append('game_id', actualGameID);
+        formData.append('amount', amount);
+
+        fetch('modify_money.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                console.log("Argent modifié avec succès !");
+                setTimeout(() => {
+                    location.reload();
+                }, 100);
+            } else {
+                alert("Erreur : " + data.message);
+            }
+        })
+        .catch(err => console.error("Erreur fetch:", err));
+    }
+
+
 </script>
 </body>
 </html>

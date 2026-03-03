@@ -1,0 +1,173 @@
+/* Le panneau qui contient tout le message de fin */
+/* Le rideau qui floute l'arrière-plan */
+.win-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Fond noir semi-transparent */
+    backdrop-filter: blur(8px);    /* C'est ici qu'on met le flou ! */
+    z-index: 9998;                 /* Juste en dessous du panel */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* On ajuste le win-panel pour qu'il soit propre à l'intérieur */
+.win-panel {
+    position: relative; /* Plus besoin de fixed ici car l'overlay l'est déjà */
+    background: #1a1a1a;
+    padding: 40px;
+    border-radius: 20px;
+    border: 3px solid #ffd700;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 1);
+    z-index: 9999;
+    text-align: center;
+    min-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* Le titre dans le panel */
+.win-panel h2 {
+    color: #fff;
+    margin: 0;
+    font-family: 'Arial Black', sans-serif;
+    text-transform: uppercase;
+    line-height: 1.4;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+/* Zone qui contient les boutons des joueurs */
+#winner-buttons-area {
+    display: flex;
+    flex-wrap: wrap;      /* Si beaucoup de joueurs, ils vont à la ligne */
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+}
+
+/* Tes boutons .btn-win (on réutilise le style Or précédent) */
+.btn-win {
+    background: linear-gradient(to bottom, #ffd700, #b8860b);
+    border: 2px solid #8b4513;
+    color: #000;
+    padding: 15px 30px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: transform 0.2s;
+}
+
+.btn-win:hover {
+    transform: scale(1.1);
+}
+
+.btn-win:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #5d2e0a;
+}
+
+/* Base commune pour tous les boutons de l'interface */
+.btn-back, .btn-replay {
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+    border: 2px solid rgba(0,0,0,0.2);
+}
+
+/* Style spécifique : Retour (Style plus sobre / Alerte) */
+.btn-back {
+    background: linear-gradient(to bottom, #d9534f, #a94442); /* Rouge profond */
+    box-shadow: 0 4px 0 #7b2e2c;
+}
+
+.btn-back:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #7b2e2c;
+}
+
+/* Style spécifique : Rejouer (Style Action / Casino) */
+.btn-replay {
+    background: linear-gradient(to bottom, #5bc0de, #2aabd2); /* Bleu électrique */
+    box-shadow: 0 4px 0 #1b728c;
+}
+
+.btn-replay:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #1b728c;
+}
+
+/* Animation au clic pour les deux */
+.btn-back:active, .btn-replay:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.5);
+}
+
+.blur-effect {
+    filter: blur(5px);
+    pointer-events: none; /* Empêche de cliquer sur la table derrière */
+}
+
+
+
+
+/* Le conteneur avec la bordure dorée fine */
+.money-group {
+    display: inline-flex;
+    align-items: stretch; /* Force le bouton à prendre toute la hauteur */
+    background: #1e1e1e;   /* Fond très sombre pour faire ressortir l'or */
+    border: 1px solid #c5a059; /* Bordure Or mat (plus sobre que le jaune brillant) */
+    border-radius: 8px;
+    overflow: hidden;      /* Pour que le bouton épouse l'arrondi de la bordure */
+    height: 40px;          /* Hauteur fixe pour un look plus pro */
+}
+
+/* Le champ de saisie */
+#money-amount {
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 1rem;
+    padding: 0 15px;
+    width: 100px;          /* Ajustable selon tes besoins */
+    outline: none;
+}
+
+/* Le bouton OK qui occupe tout l'espace à droite */
+.btn-money {
+    background: linear-gradient(45deg, #d4af37, #f9e27d);   /* Fond Or mat */
+    border: none;
+    color: #1e1e1e;        /* Texte sombre pour le contraste */
+    cursor: pointer;
+    font-weight: 800;
+    padding: 0 20px;       /* Largeur du bouton */
+    text-transform: uppercase;
+    transition: background 0.2s ease;
+    display: flex;
+    align-items: center;   /* Centre le texte "OK" verticalement */
+}
+
+.btn-money:hover {
+    filter: brightness(1.2);   /* Or un peu plus clair au survol */
+}
+
+.btn-money:active {
+    filter: brightness(0.8);   /* Or plus sombre au clic */
+}
+
+/* Suppression des flèches de l'input */
+#money-amount::-webkit-inner-spin-button, 
+#money-amount::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
