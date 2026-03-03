@@ -534,10 +534,6 @@ foreach ($players as $p) {
             btn.onclick = () => declareWinner(id);
             area.appendChild(btn);
         });
-
-        // 4. Effet visuel sur la table
-        const table = document.querySelector('.poker-table');
-        if (table) table.style.filter = 'blur(5px) brightness(0.5)';
     }
 
     function declareWinner(winnerId) {
