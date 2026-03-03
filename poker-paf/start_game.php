@@ -25,6 +25,19 @@ foreach ($players as $player_name) {
     ]);
 }
 
+// Définir le premier joueur comme dealer
+$stmt = $db->prepare("SELECT id FROM players WHERE game_id = ? ORDER BY id ASC LIMIT 1");
+$stmt->execute([$game_id]);
+$first_player = $stmt->fetch();
+
+$first_player_id = $first_player['id'];
+
+$stmt = $db->prepare("UPDATE games SET current_player_id = ? WHERE id = ?");
+$stmt->execute([$first_player_id, $game_id]);
+
+$stmt = $db->prepare("UPDATE players SET is_dealer = 1 WHERE id = ?");
+$stmt->execute([$first_player_id]);
+
 // Redirection vers la page de jeu
 header("Location: game.php?game_id=$game_id");
 session_start();

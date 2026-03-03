@@ -45,14 +45,13 @@ foreach ($players as $p) {
     }
 }
 
-// Déterminer le premier joueur
-$firstPlayer = $players[0];
-
-// Mettre à jour la BDD pour que first_player ait is_Dealer = 1
-$update = $db->prepare("UPDATE players SET is_dealer = 1 WHERE id = ?");
-$update->execute([$firstPlayer['id']]);
-
-$players[0]['is_dealer'] = 1; // Mettre à jour aussi dans la variable locale pour l'affichage
+// Trouver qui est le dealer
+foreach ($players as $p) {
+    if ($p['is_dealer']) {
+        $dealerID = $p['id'];
+        break;
+    }
+}
 
 ?>
 <!DOCTYPE html>
