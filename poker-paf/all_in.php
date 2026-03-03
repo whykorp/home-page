@@ -12,14 +12,14 @@ try {
     $current_player_id = $game['current_player_id'];
 
     // 2. Récupérer l'argent du joueur actuel
-    $stmt = $db->prepare("SELECT money FROM players WHERE id = ?");
+    $stmt = $db->prepare("SELECT * FROM players WHERE id = ?");
     $stmt->execute([$current_player_id]);
     $player = $stmt->fetch();
     $money = $player['money'];
 
-    // 3. Mettre à jour la blind du joueur actuel avec tout son argent
+    // 3. Mettre à jour la blinde du joueur actuel avec tout son argent
     $stmt = $db->prepare("UPDATE players SET current_bet = ? WHERE id = ?");
-    $stmt->execute([$money, $current_player_id]);
+    $stmt->execute([$money + $player['current_bet'], $current_player_id]);
     
     // 4. Retirer tout l'argent du joueur actuel
     $stmt = $db->prepare("UPDATE players SET money = 0 WHERE id = ?");
