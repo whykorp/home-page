@@ -62,6 +62,7 @@ foreach ($players as $p) {
     <title>Poker PAF - Table N°<?php echo $game_id; ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel='stylesheet' type='text/css' href='game.css'>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </head>
 <body>
     <div class="game-container">
@@ -515,6 +516,7 @@ foreach ($players as $p) {
         `;
         
         // 4. On l'ajoute au conteneur
+        document.querySelector('.poker-table').style.filter = 'blur(5px) grayscale(50%)';
         container.appendChild(newRow);
 
     }
@@ -531,7 +533,7 @@ foreach ($players as $p) {
         .then(r => r.json())
         .then(data => {
             if (data.success) {
-                alert(data.winner_name + " gagne la partie et remporte " + data.amount_won + " 🪙 !");
+                confetti();
                 // Changer la div "win-panel" pour afficher le gagnant
                 const winPanel = document.querySelector('.win-panel');
                 if (winPanel) {
