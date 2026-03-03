@@ -498,27 +498,39 @@ foreach ($players as $p) {
     }
 
     // --- FONCTION EN CAS DE VICTOIRE ---
-    function EndGame() {
-        // 1. On récupère le conteneur
-        const container = document.getElementById('table-container');
-            
-        // 2. On crée une nouvelle ligne
+    function EndGame(winnerId, amountWon) {
+        console.log("Fin de partie détectée !");
+        
+        const container = document.querySelector('.table-container'); // On utilise la classe si l'ID pose souci
+        
+        if (!container) {
+            console.error("Conteneur non trouvé !");
+            return;
+        }
+
         const newRow = document.createElement('div');
         newRow.className = 'win-panel';
 
-        
-        // 3. On met le HTML dedans (avec le bouton supprimer intégré)
+        // On écrit le contenu en dur pour vérifier que ça s'affiche
         newRow.innerHTML = `
-            <h2>La partie est terminée ! Qui a gagné ?</h2>
-            <?php foreach ($players as $p): ?>
-                <button class="btn-win" onclick="declareWinner(<?php echo $p['id']; ?>)"><?php echo htmlspecialchars($p['name']); ?></button>
-            <?php endforeach; ?>
+            <div style="color: white;">
+                <h2>🏆 FIN DE PARTIE 🏆</h2>
+                <p>Choisissez le vainqueur :</p>
+                <div id="winner-buttons-area"></div>
+            </div>
         `;
         
-        // 4. On l'ajoute au conteneur
-        document.querySelector('.poker-table').style.filter = 'blur(5px) grayscale(50%)';
         container.appendChild(newRow);
-
+        
+        // On ajoute les boutons via JS plutôt que PHP pour être sûr
+        const area = document.getElementById('winner-buttons-area');
+        players.forEach(p => {
+            const btn = document.createElement('button');
+            btn.className = 'btn-win';
+            btn.innerText = p.name || "Joueur " + p.id;
+            btn.onclick = () => declareWinner(p.id);
+            area.appendChild(btn);
+        });
     }
 
     function declareWinner(winnerId) {
