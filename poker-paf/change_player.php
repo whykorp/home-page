@@ -14,12 +14,12 @@ try {
     $current_player_id = $game['current_player_id'];
 
     // 2. Logique de changement de joueur (Simplifiée)
-    $stmt = $db->prepare("SELECT id FROM players WHERE game_id = ? AND id > ? ORDER BY id ASC LIMIT 1");
+    $stmt = $db->prepare("SELECT id FROM players WHERE is_folded = 0 AND game_id = ? AND id > ? ORDER BY id ASC LIMIT 1");
     $stmt->execute([$game_id, $current_player_id]);
     $next_player = $stmt->fetch();
 
     if (!$next_player) { // Si on est au dernier, on revient au premier
-        $stmt = $db->prepare("SELECT id FROM players WHERE game_id = ? ORDER BY id ASC LIMIT 1");
+        $stmt = $db->prepare("SELECT id FROM players WHERE is_folded=0 AND game_id = ? ORDER BY id ASC LIMIT 1");
         $stmt->execute([$game_id]);
         $next_player = $stmt->fetch();
     }
