@@ -1,0 +1,167 @@
+[05-03-2026 - 06:45:46] [WARNING]: PyNaCl is not installed, voice will NOT be supported
+[05-03-2026 - 06:45:46] [DEBUG]: on_ready has successfully been registered as an event
+[05-03-2026 - 06:45:46] [DEBUG]: on_message has successfully been registered as an event
+[05-03-2026 - 06:45:46] [DEBUG]: Using proactor: IocpProactor
+[05-03-2026 - 06:45:46] [INFO]: logging in using static token
+[05-03-2026 - 06:45:47] [INFO]: Shard ID None has connected to Gateway (Session ID: 3fcbaff82be1089a65ee9e39167873f0).
+[05-03-2026 - 06:46:06] [DEBUG]: Re-initializing context...
+[05-03-2026 - 06:46:06] [DEBUG]: Parsed user URL: ParseResult(scheme='', netloc='localhost:8081', path='', params='', query='', fragment='')
+[05-03-2026 - 06:46:06] [DEBUG]: Detecting scheme for URL...
+[05-03-2026 - 06:46:06] [DEBUG]: Starting new HTTP connection (1): localhost:8081
+[05-03-2026 - 06:46:06] [DEBUG]: http://localhost:8081 "HEAD / HTTP/11" 200 0
+[05-03-2026 - 06:46:06] [DEBUG]: Using HTTP scheme
+[05-03-2026 - 06:46:06] [DEBUG]: Base URL: http://localhost:8081/
+[05-03-2026 - 06:46:06] [DEBUG]: Starting new HTTP connection (1): localhost:8081
+[05-03-2026 - 06:46:06] [DEBUG]: http://localhost:8081 "POST /api/v2/auth/login HTTP/11" 200 3
+[05-03-2026 - 06:46:06] [DEBUG]: Login successful
+[05-03-2026 - 06:46:06] [DEBUG]: http://localhost:8081 "GET /api/v2/app/version HTTP/11" 200 6
+[05-03-2026 - 06:46:06] [DEBUG]: http://localhost:8081 "GET /api/v2/app/webapiVersion HTTP/11" 200 6
+[05-03-2026 - 06:46:06] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/add HTTP/11" 200 6
+[05-03-2026 - 06:46:37] [DEBUG]: Resetting dropped connection: localhost
+[05-03-2026 - 06:46:37] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/info HTTP/11" 200 883
+[05-03-2026 - 06:46:37] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/properties HTTP/11" 200 852
+[05-03-2026 - 06:46:37] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/files HTTP/11" 200 2
+[05-03-2026 - 06:48:14] [WARNING]: PyNaCl is not installed, voice will NOT be supported
+[05-03-2026 - 06:48:14] [DEBUG]: on_ready has successfully been registered as an event
+[05-03-2026 - 06:48:14] [DEBUG]: on_message has successfully been registered as an event
+[05-03-2026 - 06:48:14] [DEBUG]: Using proactor: IocpProactor
+[05-03-2026 - 06:48:14] [INFO]: logging in using static token
+[05-03-2026 - 06:48:15] [INFO]: Shard ID None has connected to Gateway (Session ID: 14436ec2092d5493b710dec84eeb3758).
+[05-03-2026 - 06:48:22] [DEBUG]: Re-initializing context...
+[05-03-2026 - 06:48:22] [DEBUG]: Parsed user URL: ParseResult(scheme='', netloc='localhost:8081', path='', params='', query='', fragment='')
+[05-03-2026 - 06:48:22] [DEBUG]: Detecting scheme for URL...
+[05-03-2026 - 06:48:22] [DEBUG]: Starting new HTTP connection (1): localhost:8081
+[05-03-2026 - 06:48:22] [DEBUG]: http://localhost:8081 "HEAD / HTTP/11" 200 0
+[05-03-2026 - 06:48:22] [DEBUG]: Using HTTP scheme
+[05-03-2026 - 06:48:22] [DEBUG]: Base URL: http://localhost:8081/
+[05-03-2026 - 06:48:22] [DEBUG]: Starting new HTTP connection (1): localhost:8081
+[05-03-2026 - 06:48:22] [DEBUG]: http://localhost:8081 "POST /api/v2/auth/login HTTP/11" 200 3
+[05-03-2026 - 06:48:22] [DEBUG]: Login successful
+[05-03-2026 - 06:48:22] [DEBUG]: http://localhost:8081 "GET /api/v2/app/version HTTP/11" 200 6
+[05-03-2026 - 06:48:22] [DEBUG]: http://localhost:8081 "GET /api/v2/app/webapiVersion HTTP/11" 200 6
+[05-03-2026 - 06:48:22] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/add HTTP/11" 200 6
+[05-03-2026 - 06:48:52] [DEBUG]: Resetting dropped connection: localhost
+[05-03-2026 - 06:48:52] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/info HTTP/11" 200 884
+[05-03-2026 - 06:48:52] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/properties HTTP/11" 200 852
+[05-03-2026 - 06:48:52] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/files HTTP/11" 200 2
+[05-03-2026 - 06:49:12] [DEBUG]: Re-initializing context...
+[05-03-2026 - 06:49:12] [DEBUG]: Parsed user URL: ParseResult(scheme='', netloc='localhost:8081', path='', params='', query='', fragment='')
+[05-03-2026 - 06:49:12] [DEBUG]: Detecting scheme for URL...
+[05-03-2026 - 06:49:12] [DEBUG]: Starting new HTTP connection (1): localhost:8081
+[05-03-2026 - 06:49:12] [DEBUG]: http://localhost:8081 "HEAD / HTTP/11" 200 0
+[05-03-2026 - 06:49:12] [DEBUG]: Using HTTP scheme
+[05-03-2026 - 06:49:12] [DEBUG]: Base URL: http://localhost:8081/
+[05-03-2026 - 06:49:12] [DEBUG]: Starting new HTTP connection (1): localhost:8081
+[05-03-2026 - 06:49:12] [DEBUG]: http://localhost:8081 "POST /api/v2/auth/login HTTP/11" 200 3
+[05-03-2026 - 06:49:12] [DEBUG]: Login successful
+[05-03-2026 - 06:49:12] [DEBUG]: http://localhost:8081 "GET /api/v2/app/version HTTP/11" 200 6
+[05-03-2026 - 06:49:12] [DEBUG]: http://localhost:8081 "GET /api/v2/app/webapiVersion HTTP/11" 200 6
+[05-03-2026 - 06:49:12] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/add HTTP/11" 200 3
+[05-03-2026 - 06:49:42] [DEBUG]: Resetting dropped connection: localhost
+[05-03-2026 - 06:49:42] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/info HTTP/11" 200 884
+[05-03-2026 - 06:49:42] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/properties HTTP/11" 200 854
+[05-03-2026 - 06:49:42] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/files HTTP/11" 200 2
+[05-03-2026 - 07:01:15] [WARNING]: PyNaCl is not installed, voice will NOT be supported
+[05-03-2026 - 07:01:15] [DEBUG]: on_ready has successfully been registered as an event
+[05-03-2026 - 07:01:15] [DEBUG]: on_message has successfully been registered as an event
+[05-03-2026 - 07:01:15] [DEBUG]: Using proactor: IocpProactor
+[05-03-2026 - 07:01:15] [INFO]: logging in using static token
+[05-03-2026 - 07:01:16] [INFO]: Shard ID None has connected to Gateway (Session ID: 863bc7befbdd673b5f817795a609eab0).
+[05-03-2026 - 07:01:36] [DEBUG]: Re-initializing context...
+[05-03-2026 - 07:01:36] [DEBUG]: Parsed user URL: ParseResult(scheme='', netloc='localhost:8081', path='', params='', query='', fragment='')
+[05-03-2026 - 07:01:36] [DEBUG]: Detecting scheme for URL...
+[05-03-2026 - 07:01:36] [DEBUG]: Starting new HTTP connection (1): localhost:8081
+[05-03-2026 - 07:01:36] [DEBUG]: http://localhost:8081 "HEAD / HTTP/11" 200 0
+[05-03-2026 - 07:01:36] [DEBUG]: Using HTTP scheme
+[05-03-2026 - 07:01:36] [DEBUG]: Base URL: http://localhost:8081/
+[05-03-2026 - 07:01:36] [DEBUG]: Starting new HTTP connection (1): localhost:8081
+[05-03-2026 - 07:01:36] [DEBUG]: http://localhost:8081 "POST /api/v2/auth/login HTTP/11" 200 3
+[05-03-2026 - 07:01:36] [DEBUG]: Login successful
+[05-03-2026 - 07:01:36] [DEBUG]: http://localhost:8081 "GET /api/v2/app/version HTTP/11" 200 6
+[05-03-2026 - 07:01:36] [DEBUG]: http://localhost:8081 "GET /api/v2/app/webapiVersion HTTP/11" 200 6
+[05-03-2026 - 07:01:36] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/add HTTP/11" 200 3
+[05-03-2026 - 07:02:06] [DEBUG]: Resetting dropped connection: localhost
+[05-03-2026 - 07:02:06] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/info HTTP/11" 200 884
+[05-03-2026 - 07:02:06] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/properties HTTP/11" 200 850
+[05-03-2026 - 07:02:06] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/files HTTP/11" 200 2
+[05-03-2026 - 07:04:32] [WARNING]: PyNaCl is not installed, voice will NOT be supported
+[05-03-2026 - 07:04:32] [DEBUG]: on_ready has successfully been registered as an event
+[05-03-2026 - 07:04:32] [DEBUG]: on_message has successfully been registered as an event
+[05-03-2026 - 07:04:32] [DEBUG]: Using proactor: IocpProactor
+[05-03-2026 - 07:04:32] [INFO]: logging in using static token
+[05-03-2026 - 07:04:33] [INFO]: Shard ID None has connected to Gateway (Session ID: 288eb0eab730ce742b2f27870ed9c3fb).
+[05-03-2026 - 07:04:38] [DEBUG]: Re-initializing context...
+[05-03-2026 - 07:04:38] [DEBUG]: Parsed user URL: ParseResult(scheme='', netloc='localhost:8081', path='', params='', query='', fragment='')
+[05-03-2026 - 07:04:38] [DEBUG]: Detecting scheme for URL...
+[05-03-2026 - 07:04:38] [DEBUG]: Starting new HTTP connection (1): localhost:8081
+[05-03-2026 - 07:04:38] [DEBUG]: http://localhost:8081 "HEAD / HTTP/11" 200 0
+[05-03-2026 - 07:04:38] [DEBUG]: Using HTTP scheme
+[05-03-2026 - 07:04:38] [DEBUG]: Base URL: http://localhost:8081/
+[05-03-2026 - 07:04:38] [DEBUG]: Starting new HTTP connection (1): localhost:8081
+[05-03-2026 - 07:04:38] [DEBUG]: http://localhost:8081 "POST /api/v2/auth/login HTTP/11" 200 3
+[05-03-2026 - 07:04:38] [DEBUG]: Login successful
+[05-03-2026 - 07:04:38] [DEBUG]: http://localhost:8081 "GET /api/v2/app/version HTTP/11" 200 6
+[05-03-2026 - 07:04:38] [DEBUG]: http://localhost:8081 "GET /api/v2/app/webapiVersion HTTP/11" 200 6
+[05-03-2026 - 07:04:38] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/add HTTP/11" 200 3
+[05-03-2026 - 07:05:08] [DEBUG]: Resetting dropped connection: localhost
+[05-03-2026 - 07:05:08] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/info HTTP/11" 200 884
+[05-03-2026 - 07:05:08] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/properties HTTP/11" 200 851
+[05-03-2026 - 07:05:08] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/files HTTP/11" 200 2
+[05-03-2026 - 07:06:09] [WARNING]: PyNaCl is not installed, voice will NOT be supported
+[05-03-2026 - 07:06:09] [DEBUG]: on_ready has successfully been registered as an event
+[05-03-2026 - 07:06:09] [DEBUG]: on_message has successfully been registered as an event
+[05-03-2026 - 07:06:09] [DEBUG]: Using proactor: IocpProactor
+[05-03-2026 - 07:06:09] [INFO]: logging in using static token
+[05-03-2026 - 07:06:10] [INFO]: Shard ID None has connected to Gateway (Session ID: 348f55012127dd658ddab46f89d29019).
+[05-03-2026 - 07:06:12] [DEBUG]: Re-initializing context...
+[05-03-2026 - 07:06:12] [DEBUG]: Parsed user URL: ParseResult(scheme='', netloc='localhost:8081', path='', params='', query='', fragment='')
+[05-03-2026 - 07:06:12] [DEBUG]: Detecting scheme for URL...
+[05-03-2026 - 07:06:12] [DEBUG]: Starting new HTTP connection (1): localhost:8081
+[05-03-2026 - 07:06:12] [DEBUG]: http://localhost:8081 "HEAD / HTTP/11" 200 0
+[05-03-2026 - 07:06:12] [DEBUG]: Using HTTP scheme
+[05-03-2026 - 07:06:12] [DEBUG]: Base URL: http://localhost:8081/
+[05-03-2026 - 07:06:12] [DEBUG]: Starting new HTTP connection (1): localhost:8081
+[05-03-2026 - 07:06:12] [DEBUG]: http://localhost:8081 "POST /api/v2/auth/login HTTP/11" 200 3
+[05-03-2026 - 07:06:12] [DEBUG]: Login successful
+[05-03-2026 - 07:06:12] [DEBUG]: http://localhost:8081 "GET /api/v2/app/version HTTP/11" 200 6
+[05-03-2026 - 07:06:12] [DEBUG]: http://localhost:8081 "GET /api/v2/app/webapiVersion HTTP/11" 200 6
+[05-03-2026 - 07:06:12] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/add HTTP/11" 200 3
+[05-03-2026 - 07:06:42] [DEBUG]: Resetting dropped connection: localhost
+[05-03-2026 - 07:06:43] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/info HTTP/11" 200 885
+[05-03-2026 - 07:06:43] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/properties HTTP/11" 200 820
+[05-03-2026 - 07:06:43] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/files HTTP/11" 200 2
+[05-03-2026 - 08:20:45] [DEBUG]: Re-initializing context...
+[05-03-2026 - 08:20:45] [DEBUG]: Parsed user URL: ParseResult(scheme='', netloc='localhost:8081', path='', params='', query='', fragment='')
+[05-03-2026 - 08:20:45] [DEBUG]: Detecting scheme for URL...
+[05-03-2026 - 08:20:45] [DEBUG]: Starting new HTTP connection (1): localhost:8081
+[05-03-2026 - 08:20:45] [DEBUG]: http://localhost:8081 "HEAD / HTTP/11" 200 0
+[05-03-2026 - 08:20:45] [DEBUG]: Using HTTP scheme
+[05-03-2026 - 08:20:45] [DEBUG]: Base URL: http://localhost:8081/
+[05-03-2026 - 08:20:45] [DEBUG]: Starting new HTTP connection (1): localhost:8081
+[05-03-2026 - 08:20:45] [DEBUG]: http://localhost:8081 "POST /api/v2/auth/login HTTP/11" 200 3
+[05-03-2026 - 08:20:45] [DEBUG]: Login successful
+[05-03-2026 - 08:20:45] [DEBUG]: http://localhost:8081 "GET /api/v2/app/version HTTP/11" 200 6
+[05-03-2026 - 08:20:45] [DEBUG]: http://localhost:8081 "GET /api/v2/app/webapiVersion HTTP/11" 200 6
+[05-03-2026 - 08:20:45] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/add HTTP/11" 200 3
+[05-03-2026 - 08:21:15] [DEBUG]: Resetting dropped connection: localhost
+[05-03-2026 - 08:21:15] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/info HTTP/11" 200 884
+[05-03-2026 - 08:21:15] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/properties HTTP/11" 200 949
+[05-03-2026 - 08:21:15] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/files HTTP/11" 200 231
+[05-03-2026 - 08:23:34] [DEBUG]: Re-initializing context...
+[05-03-2026 - 08:23:34] [DEBUG]: Parsed user URL: ParseResult(scheme='', netloc='localhost:8081', path='', params='', query='', fragment='')
+[05-03-2026 - 08:23:34] [DEBUG]: Detecting scheme for URL...
+[05-03-2026 - 08:23:34] [DEBUG]: Starting new HTTP connection (1): localhost:8081
+[05-03-2026 - 08:23:34] [DEBUG]: http://localhost:8081 "HEAD / HTTP/11" 200 0
+[05-03-2026 - 08:23:34] [DEBUG]: Using HTTP scheme
+[05-03-2026 - 08:23:34] [DEBUG]: Base URL: http://localhost:8081/
+[05-03-2026 - 08:23:34] [DEBUG]: Starting new HTTP connection (1): localhost:8081
+[05-03-2026 - 08:23:34] [DEBUG]: http://localhost:8081 "POST /api/v2/auth/login HTTP/11" 200 3
+[05-03-2026 - 08:23:34] [DEBUG]: Login successful
+[05-03-2026 - 08:23:34] [DEBUG]: http://localhost:8081 "GET /api/v2/app/version HTTP/11" 200 6
+[05-03-2026 - 08:23:34] [DEBUG]: http://localhost:8081 "GET /api/v2/app/webapiVersion HTTP/11" 200 6
+[05-03-2026 - 08:23:34] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/add HTTP/11" 200 3
+[05-03-2026 - 08:24:04] [DEBUG]: Resetting dropped connection: localhost
+[05-03-2026 - 08:24:04] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/info HTTP/11" 200 887
+[05-03-2026 - 08:24:04] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/properties HTTP/11" 200 895
+[05-03-2026 - 08:24:04] [DEBUG]: http://localhost:8081 "POST /api/v2/torrents/files HTTP/11" 200 454
+[05-03-2026 - 08:49:03] [INFO]: Shard ID None has successfully RESUMED session 348f55012127dd658ddab46f89d29019.

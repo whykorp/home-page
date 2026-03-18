@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const resultsList = document.getElementById('results');
 
     // Charger le fichier CSV
-    fetch('Liste karaoké 2026.csv')
+    fetch('Liste karaoké 2026 v2.csv')
         .then(response => response.text())
         .then(data => {
             const lines = data.split('\n');

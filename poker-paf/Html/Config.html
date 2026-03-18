@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <title>Configuration Poker</title>
+        <style>
+            .player-row { margin-bottom: 10px; }
+        </style>
+        <link rel="stylesheet" href="../Css/Config.css">
+    </head>
+    <body>
+        <div class="container">
+            <button onclick="window.location.href='../index.html'" class="btn-back">⬅ Accueil</button>
+            <h1>Configuration de la partie</h1>
+            
+            <form id="create_game_form">
+                <label>Nom de partie :</label>
+                <input type="text" name="game_name" placeholder="Nom de partie" required><br><br>
+
+                <label>Somme de départ :</label>
+                <input type="number" name="start_money" value="1000" required><br><br>
+                
+                <label>Blind :</label>
+                <input type="number" name="blind" value="20" required><br><br>
+
+                <label>Joueurs :</label>
+                <label class="info">(Maximum 8 joueurs)</label><br>
+                <div id="players_container">
+                    <div class="player-row">
+                        <p>1</p><input type="text" name="players[]" placeholder="Nom du joueur" required>
+                    </div>
+                </div>
+                
+                <br>
+                <button type="button" onclick="addPlayer()">➕ Ajouter un joueur</button>
+                <br>
+                
+                <input type="submit" value="Démarrer la partie">
+            </form>
+        </div>
+    </body>
+    <script src="../Js/Config.js"></script>
+</html>

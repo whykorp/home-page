@@ -21,7 +21,7 @@
   <h1>Liste de karaokés - 2026</h1>
   <p>Vous pouvez télécharger la liste des karaokés entière. Ou effectuer une recherche dans la liste tout en bas.</p>
   <div class="nav">
-  <a href="Liste karaoké 2026.pdf" target="_BLANK">Liste Karaoké 2026</a>
+  <a href="Liste karaoké 2026 v2.pdf" target="_BLANK">Liste Karaoké 2026</a>
   </div>
   <br>
   <hr>

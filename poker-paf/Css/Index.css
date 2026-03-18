@@ -1,0 +1,262 @@
+/* index.css */
+:root {
+    --poker-green: #0e5d32;
+    --gold: #d4af37;
+    --wood: #3e2723;
+    --white: #ffffff;
+}
+
+body {
+    background-color: #121212;
+    background-image: radial-gradient(circle, #1a1a1a 0%, #000000 100%);
+    color: var(--white);
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.welcome-container {
+    background-color: var(--poker-green);
+    padding: 50px;
+    border-radius: 80px;
+    border: 15px solid var(--wood);
+    box-shadow: 0 0 60px rgba(0,0,0,0.9), inset 0 0 30px rgba(0,0,0,0.5);
+    text-align: center;
+    width: 90%;
+    max-width: 450px;
+}
+
+h1 {
+    color: var(--gold);
+    text-transform: uppercase;
+    font-size: 2.2rem;
+    margin-bottom: 40px;
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+}
+
+/* Style pour le lien "Démarrer une partie" */
+.btn-start {
+    display: inline-block;
+    background: linear-gradient(135deg, #d4af37 0%, #f9e27d 50%, #d4af37 100%);
+    color: var(--wood);
+    text-decoration: none;
+    padding: 15px 30px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    border-radius: 40px;
+    margin-bottom: 40px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+}
+
+.btn-start:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+}
+
+/* Section rejoindre */
+.join-section {
+    border-top: 1px solid rgba(255,255,255,0.2);
+    padding-top: 30px;
+}
+
+label {
+    display: block;
+    color: var(--gold);
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+input[type="text"] {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid var(--gold);
+    border-radius: 5px;
+    padding: 12px;
+    width: 60%;
+    font-size: 1rem;
+    margin-bottom: 15px;
+    outline: none;
+    text-align: center;
+}
+
+button {
+    background-color: var(--wood);
+    color: var(--gold);
+    border: 2px solid var(--gold);
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: #5d3a3a;
+}
+
+.btn-join-list{
+    background-color: transparent;
+    color: var(--gold);
+    padding-left: 12px;
+    border: 1px solid var(--gold);
+    padding: 8px 12px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.btn-join-list:hover {
+    background-color: var(--gold);
+    color: var(--wood);
+}
+
+li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
+/* --- Mode Mobile --- */
+/* --- ADAPTATION MOBILE POUR L'ACCUEIL --- */
+@media (max-width: 600px) {
+    
+    body {
+        /* On permet le scroll si le contenu est plus haut que l'écran */
+        height: auto;
+        padding: 20px 0;
+    }
+
+    .welcome-container {
+        /* On réduit les bordures massives et le padding */
+        padding: 30px 20px;
+        border-width: 8px; /* Bordure en bois moins épaisse */
+        border-radius: 40px; /* Moins arrondi pour gagner de la place */
+        width: 85%;
+    }
+
+    h1 {
+        font-size: 1.6rem; /* Titre plus petit */
+        margin-bottom: 30px;
+    }
+
+    /* Le bouton principal doit être bien large pour le pouce */
+    .btn-start {
+        width: 100%;
+        box-sizing: border-box; /* Pour que le padding n'agrandisse pas la largeur */
+        padding: 18px 20px;
+        font-size: 1.1rem;
+    }
+
+    /* Section rejoindre */
+    input[type="text"] {
+        width: 100%; /* L'input prend toute la largeur */
+        box-sizing: border-box;
+        padding: 15px;
+        font-size: 1.1rem; /* Évite le zoom auto de l'iPhone sur les inputs */
+    }
+
+    button {
+        width: 100%; /* Les boutons de validation passent en pleine largeur */
+        padding: 15px;
+        margin-top: 10px;
+    }
+
+    /* Pour la liste des parties */
+    li {
+        flex-direction: column; /* On empile le nom et le bouton */
+        gap: 10px;
+        background: rgba(0,0,0,0.2);
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+    }
+
+    .btn-join-list {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+
+
+
+/* Conteneur principal */
+.mon-accordeon {
+    max-width: 600px;
+    width: 100%;
+    margin: 20px auto;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #1a1a1a; /* Noir anthracite */
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    border: 1px solid #333;
+  }
+
+  .container-parent {
+    display: flex;
+    justify-content: space-between; /* Pousse les éléments aux extrémités */
+    align-items: center;           /* Aligne verticalement au centre (optionnel) */
+    width: 100%;                   /* S'assure que le container prend toute la largeur */
+}
+  
+  /* L'élément details */
+  details {
+    border-bottom: 1px solid #333;
+  }
+  
+  details:last-child {
+    border-bottom: none;
+  }
+  
+  /* Le titre (Summary) */
+  summary {
+    padding: 15px 20px;
+    background-color: #1a1a1a;
+    color: #d4af37; /* Doré sobre */
+    font-weight: bold;
+    cursor: pointer;
+    list-style: none; /* Cache la flèche par défaut sur certains navigateurs */
+    transition: background 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /* Style de survol */
+  summary:hover {
+    background-color: #252525;
+    color: #f0c644;
+  }
+  
+  /* Flèche personnalisée à droite */
+  summary::after {
+    content: '♣'; /* Trèfle discret */
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+  }
+  
+  /* Rotation du trèfle quand c'est ouvert */
+  details[open] summary::after {
+    transform: rotate(180deg);
+    color: #2e7d32; /* Vert poker au clic */
+  }
+  
+  /* Contenu de l'accordéon */
+  .contenu {
+    padding: 15px 20px;
+    background-color: #0d3b2e; /* Vert tapis de table sombre */
+    color: #e0e0e0;
+    line-height: 1.6;
+    border-top: 1px solid #1a1a1a;
+    font-size: 0.95rem;
+  }
+  
+  /* Petit effet de bordure gauche pour marquer l'ouverture */
+  details[open] {
+    border-left: 4px solid #2e7d32;
+  }
