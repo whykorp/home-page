@@ -1,0 +1,55 @@
+
+
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <title id="title_page"></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel='stylesheet' type='text/css' href='css/game.css' deffer>
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    </head>
+    <body>
+        <div class="game-container">
+            <div class="stats-bar">
+                <div class="money-group">
+                    <input type="number" id="money-amount" placeholder="Montant">
+                    <button class="btn-money" onclick="addMoney()">OK</button>
+                </div>
+                
+                <div class="stat-item">MISE ACTUELLE: <strong id="current-bet"></strong></div>
+                    <button onclick="deleteGame()" class="btn-spaction">Fermer la table</button>
+                    <button onclick="changePlayer()" class="btn-spaction">Joueur suivant</button>
+                    <button onclick="endGame()" class="btn-spaction">Terminer la partie</button>
+                    <a href="index.html" class="btn-back">⬅ Quitter</a>
+                </div>
+
+            <div class="table-container">
+                <div class="poker-table" id="table">
+                    <div class="pot-area">
+                        <div class="total-pot"></div>
+                        <div id="Mise" class="current-bet-display">Mise: </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-panel">
+                <p class="turn-info">Au tour de : <strong id="active-player-name"></strong></p>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-fold" onclick="playerFold()">Se coucher</button>
+                    <button class="btn btn-call" onclick="playerFollow()">Suivre</button>
+                    <div class="raise-group">
+                        <input type="number" id="raise-amount" placeholder="Mise" min="0">
+                        <button class="btn-validate" onclick="playerRaise()">OK</button>
+                    </div>
+                    <button class="btn btn-allin" onclick="playerAllIn()">TAPIS</button>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="js/game.js"></script>
+</html>
+
+

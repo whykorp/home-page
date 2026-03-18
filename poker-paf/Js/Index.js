@@ -3,7 +3,7 @@
 
 async function SqlRequest(action, params = {}) {
     try {
-        const response = await fetch('Php/RequestsHandler.php', {
+        const response = await fetch('RequestsHandler.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -63,7 +63,8 @@ for (const game of games) {
                     <div class='right'>
                         <p>Start Money: ${game.start_money}</p>
                         <p>Blind: ${game.start_blind}</p>
-                        <button class="btn-join-list" onclick="window.location.href='Html/Game.html?game_id=${game.id}'">Rejoindre</button>
+                        <button class="btn-join-list" onclick="window.location.href='game.html?game_id=${game.id}'">Rejoindre</button>
+                        <button class="btn-admin-join-list" onclick="joinGameAsAdmin(${game.id})">Rejoindre en tant qu'Admin</button>
                     </div>
                     <div class='left'>
                         ${playersHtml}
@@ -83,6 +84,31 @@ async function getPlayers(id) {
     return players;
 }
 
+async function joinGameAsAdmin(gameId) {
+    // Redirige vers la page de connexion admin avec le gameId en paramètre
+    window.location.href = `admin-login.html?game_id=${gameId}`;
+}
 
+// Récupérer le formulaire de admin-login
+const adminLoginForm = document.getElementById('admin-login-form');
+
+if (adminLoginForm) {
+    adminLoginForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const password = document.getElementById('admin-password').value;
+        const urlParams = new URLSearchParams(window.location.search);
+        const gameId = urlParams.get('game_id');
+        const response = await SqlRequest('adminLogin', {
+            password: password,
+            game_id: gameId
+        });
+
+        if (response.success) {
+            window.location.href = `admin-game.html?game_id=${gameId}`;
+        } else {
+            alert("Identifiants incorrects. Veuillez réessayer.");
+        }
+    });
+}
 
 

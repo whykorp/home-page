@@ -9,7 +9,7 @@ let playersData = [];
 
 async function SqlRequest(action, params = {}) {
     try {
-        const response = await fetch('RequestsHandler.php', {
+        const response = await fetch('../Php/RequestsHandler.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -34,10 +34,16 @@ async function SqlRequest(action, params = {}) {
 
 // Fonctions pour démarrer la page
 window.onload = async function() {
+    SqlRequest('is_admin').then(result => {
+        if (!result.is_admin) {
+            alert("Vous n'avez pas les droits pour accéder à cette page.");
+            window.location.href = 'index.html';
+        }
+    });
     gameData = await getGame();
     playersData = await getPlayers();
 
-    document.getElementById('title_page').textContent = gameData.name + " - Poker PAF";
+    document.getElementById('title_page').textContent = "Vue Administrateur - " + gameData.name + " - PokerPaf";
     updateClientInterface();
 }
 

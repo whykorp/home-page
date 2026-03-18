@@ -226,6 +226,25 @@ switch ($action) {
         $response = ['success' => true, 'games' => $games];
         break;
 
+    case 'adminLogin':
+        $stmt = $pdo->prepare("SELECT * FROM admins WHERE game_id = ? AND password = ?");
+        $stmt->execute([$params['game_id'], $params['password']]);
+        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($admin) {
+            $response = ['success' => true];
+            session_start();
+            $_SESSION['admin_logged_in'] = true;
+            $_SESSION['game_id'] = $params['game_id'];
+        } else {
+            $response = ['error' => 'Mot de passe incorrect'];
+        }
+        break;
+    
+    case 'is_admin':
+        session_start();
+        $response = ['is_admin' => isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true];
+        break;
+
     default:
         $response = ['error' => 'Action inconnue'];
 }
