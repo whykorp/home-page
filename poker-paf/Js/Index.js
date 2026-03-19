@@ -62,7 +62,7 @@ for (const game of games) {
                     <div class='right'>
                         <p>Start Money: ${game.start_money}</p>
                         <p>Blind: ${game.start_blind}</p>
-                        <button class="btn-join-list" onclick="window.location.href='player-selector.html?game_id=${game.id}'">Rejoindre</button>
+                        <button class="btn-join-list" onclick="window.location.href='player-selector.php?game_id=${game.id}'">Rejoindre</button>
                         <button class="btn-admin-join-list" onclick="joinGameAsAdmin(${game.id})">Rejoindre en tant qu'Admin</button>
                     </div>
                     <div class='left'>
