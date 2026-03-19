@@ -7,13 +7,9 @@ $host = 'localhost';
 $db   = 'poker_paf';
 $user = 'root';
 $pass = '';
-
 $options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    // C'est cette ligne qui fait la différence :
-    PDO::ATTR_EMULATE_PREPARES   => false, 
-    PDO::ATTR_STRINGIFY_FETCHES  => false,
 ];
 
 // charger la BDD
