@@ -227,17 +227,15 @@ switch ($action) {
         break;
 
     case 'adminLogin':
-        $stmt = $pdo->prepare("SELECT * FROM admins WHERE game_id = ? AND password = ?");
-        $stmt->execute([$params['game_id'], $params['password']]);
-        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($admin) {
-            $response = ['success' => true];
-            session_start();
-            $_SESSION['admin_logged_in'] = true;
-            $_SESSION['game_id'] = $params['game_id'];
-        } else {
-            $response = ['error' => 'Mot de passe incorrect'];
+        // On vérifie si l'utilisateur est déjà admin
+        session_start();
+        if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
+            $response = ['success' => true, 'message' => 'Déjà connecté en tant qu\'admin'];
+            break;
         }
+        // On dit que l'utilisateur est admin
+        $_SESSION['admin_logged_in'] = true;
+        $response = ['success' => true, 'message' => 'Connexion admin réussie'];
         break;
     
     case 'is_admin':

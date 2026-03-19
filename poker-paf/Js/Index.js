@@ -1,5 +1,5 @@
 
-
+const hashedAdminPassword = "7215d31f702fe2faf2a7df114c6427007bd254740c6b9cbaa2a5505060088929";
 
 async function SqlRequest(action, params = {}) {
     try {
@@ -92,23 +92,28 @@ async function joinGameAsAdmin(gameId) {
 // Récupérer le formulaire de admin-login
 const adminLoginForm = document.getElementById('admin-login-form');
 
-if (adminLoginForm) {
-    adminLoginForm.addEventListener('submit', async function(event) {
-        event.preventDefault();
-        const password = document.getElementById('admin-password').value;
-        const urlParams = new URLSearchParams(window.location.search);
-        const gameId = urlParams.get('game_id');
-        const response = await SqlRequest('adminLogin', {
-            password: password,
-            game_id: gameId
-        });
+adminLoginForm.addEventListener('submit', async function(event) {
+    event.preventDefault();
+     // Désactiver le bouton pour éviter les soumissions multiples
+    const password = this.querySelector('input[type="password"]').value;
+    const urlParams = new URLSearchParams(window.location.search);
+    const gameId = urlParams.get('game_id');
+    // Vérification du mot de passe
+    const hashedInputPassword = CryptoJS.SHA256(password).toString();
 
-        if (response.success) {
-            window.location.href = `admin-game.html?game_id=${gameId}`;
-        } else {
-            alert("Identifiants incorrects. Veuillez réessayer.");
-        }
-    });
-}
+    if (hashedInputPassword !== hashedAdminPassword) {
+        alert("Mot de passe incorrect. Veuillez réessayer.");
+        return;
+    }
+
+    // Requete SQL pour définir l'utilisateur comme admin du jeu
+    const response = await SqlRequest('adminLogin', {game_id: gameId});
+
+    if (response.success) {
+        window.location.href = `admin-game.html?game_id=${gameId}`; // Redirige vers la page d'administration du jeu
+    } else {
+        alert("Erreur lors de la connexion. Veuillez réessayer."); // Affiche une alerte en cas d'erreur
+    }
+});
 
 
