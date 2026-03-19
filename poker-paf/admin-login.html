@@ -14,6 +14,32 @@
 <script>
 
 const hashedAdminPassword = "7215d31f702fe2faf2a7df114c6427007bd254740c6b9cbaa2a5505060088929";
+
+async function SqlRequest(action, params = {}) {
+    try {
+        const response = await fetch('RequestsHandler.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                action: action,
+                params: params
+            })
+        });
+
+        const resultat = await response.json();
+
+        if (resultat.success) {
+            return resultat;
+        } else {
+            console.error("Erreur :", resultat.error);
+        }
+    } catch (erreur) {
+        console.error("Erreur de communication :", erreur);
+    }
+}
+
 // Récupérer le formulaire de admin-login
 const adminLoginForm = document.getElementById('admin-login-form');
 
