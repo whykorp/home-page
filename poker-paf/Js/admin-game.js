@@ -34,13 +34,13 @@ async function SqlRequest(action, params = {}) {
 
 // Fonctions pour démarrer la page
 window.onload = async function() {
-    SqlRequest('is_admin').then(result => {
+    const result = await SqlRequest('is_admin');
         console.log("Vérification des droits administrateur :", result);
         if (!result.is_admin) {
             alert("Vous n'avez pas les droits pour accéder à cette page.");
             window.location.href = 'index.html';
         }
-    });
+    }
     gameData = await getGame();
     playersData = await getPlayers();
 
