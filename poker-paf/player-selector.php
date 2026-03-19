@@ -52,11 +52,11 @@ $game_name = $stmt->fetchColumn();
     <h2>Choix du joueur</h2>
     <p>Veuillez entrer le nom du joueur pour rejoindre la partie :</p>
     <div class="player-selection">
-        <?php for each ($players as $player): ?>
+        <?php foreach ($players as $player): ?>
             <button class="join-player-btn" onclick="window.location.href='game.html?game_id=<?php echo $game_id; ?>&player_id=<?php echo $player['id']; ?>'">
                 <?php echo htmlspecialchars($player['name']); ?>
             </button>
-        <?php endfor; ?>
+        <?php endforeach; ?>
     </div>
     </div>
 </body>
