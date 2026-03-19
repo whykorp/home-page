@@ -9,7 +9,7 @@ let playersData = [];
 
 async function SqlRequest(action, params = {}) {
     try {
-        const response = await fetch('../Php/RequestsHandler.php', {
+        const response = await fetch('../RequestsHandler.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
