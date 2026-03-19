@@ -40,7 +40,6 @@ window.onload = async function() {
             alert("Vous n'avez pas les droits pour accéder à cette page.");
             window.location.href = 'index.html';
         }
-    }
     gameData = await getGame();
     playersData = await getPlayers();
 
