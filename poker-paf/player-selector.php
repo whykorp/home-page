@@ -21,11 +21,11 @@ try {
 }
 
 $stmt = $pdo->prepare("SELECT * FROM players WHERE game_id = ?");
-$stmt->execute([$params['game_id']]);
+$stmt->execute([$game_id]);
 $players = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $stmt = $pdo->prepare("SELECT name FROM games WHERE id = ?");
-$stmt->execute([$params['game_id']]);
+$stmt->execute([$game_id]);
 $game_name = $stmt->fetchColumn();
 
 // Récupération du game_id depuis les paramètres GET
@@ -43,7 +43,7 @@ $game_name = $stmt->fetchColumn();
 </head>
 <body>
     <div class="container">
-    <h1>Rejoindre la partie #<?php echo htmlspecialchars($game_name); ?></h1>
+    <h1>Rejoindre la partie <?php echo htmlspecialchars($game_name); ?></h1>
     <br>
     <h2>Choix du joueur</h2>
     <p>Veuillez entrer le nom du joueur pour rejoindre la partie :</p>
