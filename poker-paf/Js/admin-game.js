@@ -35,6 +35,7 @@ async function SqlRequest(action, params = {}) {
 // Fonctions pour démarrer la page
 window.onload = async function() {
     SqlRequest('is_admin').then(result => {
+        console.log("Vérification des droits administrateur :", result);
         if (!result.is_admin) {
             alert("Vous n'avez pas les droits pour accéder à cette page.");
             window.location.href = 'index.html';
