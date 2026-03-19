@@ -1,16 +1,44 @@
 <html></html>
-    <head>
-        <title>Connexion Administrateur - PokerPaf</title>
-        <link rel="stylesheet" type="text/css" href="css/admin-login.css">
-    </head>
-    <body>
-        <h1>Admin Login</h1>
-        <form id="admin-login-form">
-            <label for="adminPassword">Mot de passe administrateur :</label>
-            <input type="password" id="adminPassword" name="adminPassword" required>
-            <br><br>
-            <button type="submit">Login</button>
-        </form>
-        <script src="js/index.js"></script>
-    </body>
+<head>
+    <title>Connexion Administrateur - PokerPaf</title>
+    <link rel="stylesheet" type="text/css" href="css/admin-login.css">
+</head>
+<body>
+<h1>Admin Login</h1>
+<form id="admin-login-form">
+    <label for="adminPassword">Mot de passe administrateur :</label>
+    <input type="password" id="adminPassword" name="adminPassword" required>
+    <br><br>
+    <button type="submit">Login</button>
+</form>
+<script>
+
+const hashedAdminPassword = "7215d31f702fe2faf2a7df114c6427007bd254740c6b9cbaa2a5505060088929";
+// Récupérer le formulaire de admin-login
+const adminLoginForm = document.getElementById('admin-login-form');
+
+adminLoginForm.addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const password = this.querySelector('input[type="password"]').value;
+    const urlParams = new URLSearchParams(window.location.search);
+    const gameId = urlParams.get('game_id');
+    // Vérification du mot de passe
+    const hashedInputPassword = CryptoJS.SHA256(password).toString();
+
+    if (hashedInputPassword !== hashedAdminPassword) {
+        alert("Mot de passe incorrect. Veuillez réessayer.");
+        return;
+    }
+
+    // Requete SQL pour définir l'utilisateur comme admin du jeu
+    const response = await SqlRequest('adminLogin', {game_id: gameId});
+
+    if (response.success) {
+        window.location.href = `admin-game.html?game_id=${gameId}`; // Redirige vers la page d'administration du jeu
+    } else {
+        alert("Erreur lors de la connexion. Veuillez réessayer."); // Affiche une alerte en cas d'erreur
+    }
+});
+</script>
+</body>
 </html>
