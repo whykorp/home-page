@@ -240,7 +240,7 @@ switch ($action) {
     
     case 'is_admin':
         session_start();
-        $response = ['is_admin' => isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true];
+        $response = ['success' => true, 'is_admin' => isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true];
         break;
 
     default:
