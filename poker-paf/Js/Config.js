@@ -4,7 +4,7 @@
 
 async function SqlRequest(action, params = {}) {
     try {
-        const response = await fetch('../Php/RequestsHandler.php', {
+        const response = await fetch('RequestsHandler.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -97,7 +97,7 @@ loginForm.addEventListener('submit', async function(event) {
         }
         const result = await SqlRequest('setFirstPlayer', {game_id: gameId})
         if (result.success) {
-            window.location.href = '../Html/Game.html?game_id=' + gameId; 
+            window.location.href = 'admin-login.html?game_id=' + gameId; 
         } else {    
             console.error("Erreur lors de la définition du premier joueur :", result.error);
         }

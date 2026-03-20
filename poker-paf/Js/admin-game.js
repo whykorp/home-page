@@ -30,10 +30,40 @@ async function SqlRequest(action, params = {}) {
     } catch (erreur) {
         console.error("Erreur de communication :", erreur);
     }
+
+}
+
+function startRealTimeSync(gameId) {
+    const evtSource = new EventSource(`stream.php?game_id=${gameId}`);
+
+    evtSource.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        
+        // On met à jour nos variables globales avec les données fraîches du serveur
+        gameData = data.game;
+        playersData = data.players;
+
+        console.log("🔄 Table synchronisée");
+        
+        // On rafraîchit l'affichage sans recharger la page
+        updateClientInterface();
+    };
+
+    evtSource.onerror = function() {
+        console.log("⚠️ Connexion perdue, tentative de reconnexion...");
+    };
+}
+
+// Fonction pour ouvrir le menu administrateur
+function toggleAdminMenu() {
+    const menu = document.getElementById('admin-menu');
+    menu.classList.toggle('active');
 }
 
 // Fonctions pour démarrer la page
 window.onload = async function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const gId = urlParams.get('game_id');
     const result = await SqlRequest('is_admin');
         console.log("Vérification des droits administrateur :", result);
         if (!result.is_admin) {
@@ -45,13 +75,96 @@ window.onload = async function() {
 
     document.getElementById('title_page').textContent = "Vue Administrateur - " + gameData.name + " - PokerPaf";
     updateClientInterface();
+
+    startRealTimeSync(gId);
 }
 
 async function updateClientInterface() {
     setupPlayers();
     getCurrentPlayer();
+    refreshAdminPanel();
 
     activePlayerLabel.textContent = `${currentPlayer.name} (${currentPlayer.money} 🪙)`;
+}
+
+function refreshAdminPanel() {
+    const adminPanel = document.getElementById('admin-lock-control');
+    if (!adminPanel) return;
+
+    let statsItem = document.getElementById('stat-item');
+    if (statsItem) {
+        statsItem.innerHTML = `
+        MISE ACTUELLE: <strong id="current-bet">${gameData.last_bet}</strong><br>
+        POT ACTUEL <strong id="current-pot">${gameData.pot}</strong>
+        `;
+    }
+
+    const isLocked = Number(gameData.is_locked) === 1;
+    let lockSwitch = document.getElementById('lock-switch');
+
+    // On ne crée le HTML que s'il n'existe pas encore
+    if (!lockSwitch) {
+        adminPanel.innerHTML = `
+            <div class="admin-control-group">
+                <span>Autoriser le jeu :</span>
+                <label class="switch">
+                    <input type="checkbox" id="lock-switch" ${!isLocked ? 'checked' : ''} onchange="toggleGameLock(this)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        `;
+    } else {
+        // Si le switch existe, on met à jour son état SEULEMENT si l'admin ne le touche pas
+        if (document.activeElement !== lockSwitch) {
+            lockSwitch.checked = !isLocked;
+        }
+    }
+}
+
+// Fonction pour envoyer l'ordre au serveur
+async function toggleGameLock(checkbox) {
+    const status = checkbox.checked ? 0 : 1;
+    
+    // 1. On change d'abord le statut de verrouillage
+    const response = await SqlRequest('toggle_lock', { 
+        game_id: gameData.id, 
+        status: status 
+    });
+
+    if (response && response.success) {
+        // 2. Si on vient de DÉVERROUILLER (status 0), on reset le joueur actif
+        if (status === 0) {
+            console.log("🔓 Déverrouillage : Réinitialisation au joueur après le Dealer...");
+            await resetToPostDealerPlayer();
+        }
+    } else {
+        alert("Erreur lors du changement de statut");
+        checkbox.checked = !checkbox.checked;
+    }
+}
+
+async function resetToPostDealerPlayer() {
+    // On cherche l'index du dealer dans playersData
+    const dealerIndex = playersData.findIndex(p => Number(p.is_dealer) === 1);
+    
+    // Le premier joueur à parler est (dealer + 1), mais on doit gérer la boucle du tableau
+    // et sauter les joueurs qui se sont couchés (is_folded)
+    let nextIndex = (dealerIndex + 1) % playersData.length;
+    
+    // Sécurité : on cherche le prochain qui n'est pas couché
+    let attempts = 0;
+    while (playersData[nextIndex].is_folded && attempts < playersData.length) {
+        nextIndex = (nextIndex + 1) % playersData.length;
+        attempts++;
+    }
+
+    const firstPlayerId = playersData[nextIndex].id;
+
+    // On envoie l'ordre au serveur de mettre ce joueur en actif
+    await SqlRequest('set_current_player', { 
+        game_id: gameData.id, 
+        player_id: firstPlayerId 
+    });
 }
 
 async function setupPlayers() {
@@ -67,10 +180,14 @@ async function setupPlayers() {
     `;
 
     playersData.forEach((player, index) => {
+        // On s'assure de comparer avec le nombre 1 car la BDD renvoie souvent des strings ou des entiers
+        const isDealer = Number(player.is_dealer) === 1;
+    
         newHtml += `
             <div class="player-slot slot-${index}${player.is_folded ? ' blur-effect' : ''}${player.money <= 0 ? ' All-in-Blur' : ''}" onclick="changePlayer(${player.id})" data-id="${player.id}">
                 <div class="player-info${gameData.current_player_id == player.id ? ' active' : ''}">
-                    ${player.is_dealer ? '<div class="dealer-badge">D</div>' : ''}
+                    
+                    ${isDealer ? '<div class="dealer-badge">D</div>' : ''}
                     
                     <span class="player-name">J${index + 1} : ${player.name}</span>
                     <span class="player-money">${player.money} 🪙</span><br>
@@ -212,33 +329,39 @@ async function playerAllIn() {
 
 // Fonctions pour les actions administratives
 async function endGame() {
-    const container = document.querySelector('.table-container');
-        
-    if (!container) {
-        console.error("Conteneur .table-container introuvable");
-        return;
-    }
+    await SqlRequest('update_game_status', { 
+        game_id: gameData.id, 
+        status: 'deciding' 
+    });
+    // 1. On vérifie si le panel existe déjà pour éviter les doublons
+    if (document.querySelector('.win-overlay')) return;
 
-    if (document.querySelector('.win-panel')) return;
-
+    // 2. Création de l'overlay (on l'appelle win-overlay pour le CSS)
     const winOverlay = document.createElement('div');
     winOverlay.className = 'win-overlay';
+    
+    // 3. Création du panel blanc/bleu
     const winPanel = document.createElement('div');
     winPanel.className = 'win-panel';
     winPanel.innerHTML = `
         <h2>🏆 La partie est terminée ! 🏆<br>Qui a gagné ?</h2>
         <div id="winner-buttons-area"></div>
+        <button class="btn-spaction" onclick="this.parentElement.parentElement.remove()">Annuler</button>
     `;
     
     winOverlay.appendChild(winPanel);
-    container.appendChild(winOverlay);
+    
+    // IMPORTANCE : On l'attache au BODY pour qu'il soit au-dessus de TOUT (même l'admin)
+    document.body.appendChild(winOverlay);
 
     const area = document.getElementById('winner-buttons-area');
     const playerElements = document.querySelectorAll('.player-slot');
 
     playerElements.forEach(slot => {
         const id = slot.getAttribute('data-id');
-        const name = slot.querySelector('.player-name').textContent.split(': ')[1];
+        // On récupère le nom proprement
+        const nameElement = slot.querySelector('.player-name');
+        const name = nameElement ? nameElement.textContent.replace('VOUS', '').replace(':', '').trim() : "Joueur " + id;
         
         const btn = document.createElement('button');
         btn.className = 'btn-win';
@@ -247,33 +370,82 @@ async function endGame() {
         area.appendChild(btn);
     });
 
-    document.getElementById('end-game-screen').style.display = 'flex';
-    container.classList.add('blur-effect');
+    // On supprime la ligne qui cherchait 'end-game-screen' car winOverlay fait déjà le job
 }
-
 async function declareWinner(playerId) {
-    const container = document.querySelector('.table-container');
-    container.classList.remove('blur-effect');
+    console.log("Début de la procédure de victoire...");
 
-    const response = await SqlRequest('declare_winner', { game_id: gameData.id, player_id: playerId });
-    if (response.success) {
-        const winPanel = document.querySelector('.win-panel');
-        if (winPanel) {
-            winPanel.innerHTML = `
-                
+    // 1. Première requête : On définit le gagnant
+    const resWinner = await SqlRequest('set_winner', { 
+        game_id: gameData.id, 
+        player_id: playerId 
+    });
 
-                <h2>${playersData.find(player => player.id == playerId).name} gagne la partie et remporte ${gameData.last_bet} 🪙 !</h2>
-                <button class="btn-back" onclick="window.location.href='index.html'">Retour à l'accueil</button>
-                <button class="btn-replay" onclick="StartNewGame()">Rejouer</button>
-            `;
+    if (resWinner && resWinner.success) {
+        console.log("✅ Winner ID mis à jour en BDD");
+
+        // 2. Deuxième requête : On passe le statut à 'finished'
+        // C'est cette requête qui va déclencher l'écran de victoire chez les joueurs via le SSE
+        const resStatus = await SqlRequest('update_game_status', { 
+            game_id: gameData.id, 
+            status: 'finished' 
+        });
+
+        if (resStatus && resStatus.success) {
+            console.log("✅ Statut passé à 'finished'");
+            
+            // Mise à jour de l'interface Admin
+            showAdminWinPanel(playerId);
         }
     } else {
-        console.error("Erreur lors de la déclaration du gagnant :", response.error);
+        alert("Erreur lors de la mise à jour du gagnant.");
     }
 }
 
+// Fonction isolée pour l'affichage du panel admin (plus propre)
+function showAdminWinPanel(playerId) {
+    const container = document.querySelector('.table-container');
+    if (container) container.classList.remove('blur-effect');
+
+    const winPanel = document.querySelector('.win-panel');
+    if (winPanel) {
+        const winner = playersData.find(p => p.id == playerId);
+        winPanel.innerHTML = `
+            <h2>🏆 Victoire de ${winner ? winner.name : 'Joueur'}</h2>
+            <p>Le pot de ${gameData.pot} 🪙 lui a été attribué.</p>
+            <button class="btn-spaction" onclick="StartNewGame()">Nouvelle Manche</button>
+        `;
+    }
+}
 async function StartNewGame() {
-    window.location.reload();
+    // 1. On force le verrouillage (status: 1) avant de relancer
+    try {
+        const response = await SqlRequest('toggle_lock', { 
+            game_id: gameData.id, 
+            status: 1  // 1 pour verrouillé
+        });
+
+        if (response.success) {
+            console.log("Partie verrouillée, relance en cours...");
+            // 2. On recharge la page pour démarrer la nouvelle main
+            const response = await SqlRequest('update_game_status', { 
+                game_id: gameData.id, 
+                status: 'playing'
+            });
+            if(response.success){
+                window.location.reload();
+            } else {
+                console.error("Erreur de changement de status :", response.error);
+            }
+        } else {
+            console.error("Erreur de verrouillage :", response.error);
+            // Optionnel : on recharge quand même ou on affiche une alerte
+            window.location.reload();
+        }
+    } catch (error) {
+        console.error("Erreur réseau :", error);
+        window.location.reload();
+    }
 }
 
 async function addMoney() {

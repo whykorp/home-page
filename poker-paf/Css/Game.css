@@ -1,126 +1,725 @@
-/* --- CONFIGURATION --- */
+/* --- CONFIGURATION DES COULEURS & VARIABLES --- */
 :root {
     --table-green: radial-gradient(circle, #277d46 0%, #1a5e33 100%);
-    --poker-border: #2c1b18;
+    --poker-border: #2c1b18; /* Marron cuir très sombre */
     --gold: #d4af37;
-    --dark-bg: #0a0a0a;
-    --panel-bg: #151515;
+    --gold-light: #f9e27d;
+    --dark-bg: #0f0f0f;
+    --panel-bg: #1a1a1a;
     --white: #ffffff;
+    --shadow: 0 10px 30px rgba(0,0,0,0.8);
+    --green : #4dbf4d;
 }
 
-/* --- STRUCTURE FIXE --- */
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
+/* --- RESET & BASE --- */
+body {
     background-color: var(--dark-bg);
+    background-image: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);
     color: var(--white);
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
 }
 
 .game-container {
-    display: flex; /* Force l'alignement horizontal : Table à gauche, Panel à droite */
-    width: 100vw;
-    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
 }
 
-/* --- TABLE (ZONE GAUCHE) --- */
+/* --- STATS BAR (TOP) --- */
+.stats-bar {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 12px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+    z-index: 100;
+}
+
+/* --- TABLE DE JEU --- */
 .table-container {
-    flex: 1; /* Prend tout l'espace restant */
-    position: relative;
+    flex-grow: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: radial-gradient(circle, #1a1a1a 0%, #050505 100%);
+    perspective: 1000px; /* Petit effet de profondeur */
+    padding: 40px;
+    filter: blur(0);
+    transition: filter 0.3s ease;
+}
+
+/* On n'applique le flou QUE si la classe est présente */
+.table-container.blur-effect {
+    filter: blur(8px);
+    pointer-events: none; /* Empêche de cliquer sur la table quand le panel est ouvert */
 }
 
 .poker-table {
-    width: 750px;
-    height: 380px;
+    width: 900px;
+    height: 450px;
     background: var(--table-green);
-    border: 15px solid var(--poker-border);
-    border-radius: 200px;
-    position: relative; /* Important pour le placement des joueurs */
-    box-shadow: inset 0 0 50px rgba(0,0,0,0.5), 0 20px 40px rgba(0,0,0,0.8);
+    border: 18px solid var(--poker-border);
+    border-radius: 250px;
+    position: relative;
+    /* Ombre interne pour l'effet rebords et ombre externe pour la profondeur */
+    box-shadow: 
+        inset 0 0 60px rgba(0,0,0,0.7), 
+        0 25px 50px rgba(0,0,0,0.9),
+        0 0 0 4px #3d2b27; 
 }
 
-/* --- PANEL D'ACTION (ZONE DROITE) --- */
+/* Ligne blanche de démarcation sur la table */
+.poker-table::after {
+    content: '';
+    position: absolute;
+    top: 25px; left: 25px; right: 25px; bottom: 25px;
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 230px;
+    pointer-events: none;
+}
+
+/* --- ZONE CENTRALE (POT) --- */
+.pot-area {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 2;
+}
+
+.total-pot {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--white);
+    text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    letter-spacing: -1px;
+}
+
+.total-pot::before {
+    content: 'POT: ';
+    font-size: 0.9rem;
+    display: block;
+    color: var(--gold);
+    letter-spacing: 2px;
+}
+
+.current-bet-display {
+    font-size: 1rem;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-top: -5px;
+}
+
+/* --- JOUEURS --- */
+.player-slot {
+    position: absolute;
+    width: 150px;
+    z-index: 10;
+    transition: transform 0.3s ease;
+}
+
+.player-info {
+    background: linear-gradient(145deg, #1e1e1e, #111);
+    border: 2px solid #333;
+    border-radius: 15px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+/* Joueur actif : Effet brillant or */
+.player-info.active {
+    border-color: var(--gold);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+    transform: scale(1.08);
+    background: linear-gradient(145deg, #2a2a2a, #111);
+}
+
+.player-name {
+    display: block;
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.player-money {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.player-bet {
+    font-size: 0.8rem;
+    color: #888;
+    background: rgba(0,0,0,0.3);
+    border-radius: 20px;
+    padding: 2px 8px;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+/* Dealer Badge */
+.dealer-badge {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    background: #fff;
+    color: #000;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    border: 2px solid var(--poker-border);
+}
+
+/* --- POSITIONNEMENT DES SLOTS (AUTO-ADAPTATIF) --- */
+.slot-0 { top: -75px; left: 50%; transform: translateX(-50%); }
+.slot-1 { top: 10%; right: -130px; }
+.slot-2 { top: 50%; right: -160px; transform: translateY(-50%); }
+.slot-3 { bottom: 10%; right: -130px; }
+.slot-4 { bottom: -75px; left: 50%; transform: translateX(-50%); }
+.slot-5 { bottom: 10%; left: -130px; }
+.slot-6 { top: 50%; left: -160px; transform: translateY(-50%); }
+.slot-7 { top: 10%; left: -130px; }
+
+/* --- PANNEAU D'ACTION --- */
 .action-panel {
-    width: 320px;
     background: var(--panel-bg);
     border-left: 2px solid var(--gold);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
+    padding: 25px;
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+}
+
+.turn-info {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
 }
 
 .action-buttons {
     display: flex;
+    justify-content: center;
+    gap: 15px;
+    align-items: center;
     flex-direction: column;
-    gap: 12px;
 }
 
-/* --- BOUTONS --- */
+/* Boutons de base */
 .btn {
-    width: 100%;
-    padding: 15px;
-    border-radius: 8px;
+    padding: 14px 28px;
+    border-radius: 10px;
     border: none;
     font-weight: 800;
+    cursor: pointer;
     text-transform: uppercase;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    width: 80%;
+}
+
+.btn-fold { background: #333; color: #999; }
+.btn-fold:hover { background: #444; color: #fff; }
+
+.btn-call { 
+    background: transparent; 
+    color: var(--green);
+    border: 2px solid var(--green); 
+}
+.btn-call:hover { background: var(--green); color: #000; }
+
+.btn-allin {
+    background: linear-gradient(45deg, #8b0000, #e60000);
+    color: white;
+    box-shadow: 0 4px 15px rgba(230, 0, 0, 0.3);
+}
+.btn-allin:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(230, 0, 0, 0.5); }
+
+/* Groupe Relance Spécial */
+.raise-group {
+    display: flex;
+    background: #000;
+    border: 2px solid var(--gold);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#raise-amount {
+    width: 90px;
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    outline: none;
+}
+
+.btn-validate {
+    background: var(--gold);
+    border: none;
+    padding: 0 20px;
+    color: #000;
+    font-weight: bold;
     cursor: pointer;
 }
 
-.btn-call { background: #ffffff !important; color: #000 !important; }
-.btn-fold { background: #333; color: #999; }
-.btn-allin { background: #8b0000; color: #fff; }
+/* Boutons utilitaires du haut */
+.btn-spaction, .btn-back, .btn-money {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(212, 175, 55, 0.5);
+    color: var(--gold);
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: 0.3s;
+    margin-left: 5px;
+}
 
-.raise-group {
+.btn-spaction:hover, .btn-back:hover {
+    background: var(--gold);
+    color: #000;
+}
+
+/* Suppression des flèches du type "number" */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* --- MENU ADMIN - THÈME BLUEPRINT --- */
+
+.admin-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 500;
+    
+    /* Look rectangulaire et robuste - Bleu */
+    background: rgba(13, 27, 42, 0.9);
+    border: 1px solid #4da6ff;
+    color: #4da6ff;
+    padding: 10px 20px;
+    border-radius: 4px;
+    
+    font-weight: 800;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    
+    /* Ombre portée bleu sombre */
+    box-shadow: 4px 4px 0px #060c14; 
+    transition: all 0.2s ease;
+    backdrop-filter: blur(5px);
+}
+
+.admin-toggle:hover {
+    background: #4da6ff;
+    color: #0d1b2a;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #060c14;
+}
+
+.admin-toggle:active {
+    transform: translate(0, 0);
+    box-shadow: 2px 2px 0px #060c14;
+}
+
+.admin-overlay {
+    position: fixed;
+    inset: 0;
+    /* Dégradé radial bleu profond pour casser le noir pur */
+    background: radial-gradient(circle, rgba(10, 30, 60, 0.9) 0%, rgba(5, 10, 20, 0.95) 100%);
+    backdrop-filter: blur(8px);
+    display: none; 
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.admin-overlay.active {
     display: flex;
-    border: 2px solid var(--gold);
-    border-radius: 8px;
-    overflow: hidden;
 }
-#raise-amount {
-    flex: 1;
-    background: #000;
-    color: #fff;
-    border: none;
-    padding: 10px;
-    text-align: center;
-}
-.btn-validate { background: var(--gold); border: none; padding: 0 15px; cursor: pointer; font-weight: bold; }
 
-/* --- PLACEMENT DES JOUEURS (ABSOLU PAR RAPPORT A LA TABLE) --- */
-.player-slot {
+.admin-content {
+    background: #0d1b2a; /* Bleu Navy sombre */
+    border: 2px solid #4da6ff;
+    border-radius: 15px;
+    padding: 30px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    text-align: center;
+    /* Lueur bleue subtile au lieu de l'ombre noire */
+    box-shadow: 0 0 50px rgba(77, 166, 255, 0.15);
+}
+
+.admin-content h3 {
+    color: #4da6ff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 25px;
+    font-size: 1.2rem;
+}
+
+.close-admin {
     position: absolute;
-    width: 140px;
-    z-index: 10;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: #4da6ff;
+    opacity: 0.5;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
 }
 
-.player-info {
-    background: #1e1e1e;
-    border: 2px solid #333;
-    border-radius: 10px;
+.close-admin:hover {
+    opacity: 1;
+}
+
+/* --- ÉLÉMENTS INTERNES ADMIN --- */
+.admin-section {
+    margin: 20px 0;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(77, 166, 255, 0.15);
+}
+
+.admin-section label {
+    display: block;
+    font-size: 0.75rem;
+    color: #a3d2ff;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.money-group {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+#money-amount {
+    background: #050a14;
+    border: 1px solid #336699;
+    color: #4da6ff;
     padding: 8px;
+    border-radius: 5px;
+    width: 100px;
     text-align: center;
+    font-weight: bold;
+    outline: none;
 }
 
-.player-info.active { border-color: var(--gold); box-shadow: 0 0 15px var(--gold); }
+#money-amount:focus {
+    border-color: #4da6ff;
+}
 
-/* Positions autour de l'ovale */
-.slot-0 { top: -40px; left: 50%; transform: translateX(-50%); }
-.slot-1 { top: 15%; right: -70px; }
-.slot-2 { top: 50%; right: -90px; transform: translateY(-50%); }
-.slot-3 { bottom: 15%; right: -70px; }
-.slot-4 { bottom: -40px; left: 50%; transform: translateX(-50%); }
-.slot-5 { bottom: 15%; left: -70px; }
-.slot-6 { top: 50%; left: -90px; transform: translateY(-50%); }
-.slot-7 { top: 15%; left: -70px; }
+.admin-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0;
+}
 
-/* --- EFFETS --- */
-.blur-effect, .All-in-Blur { filter: blur(3px) grayscale(1); opacity: 0.5; }
-.pot-area { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
-.total-pot { font-size: 3rem; font-weight: bold; }
+/* --- STYLE DU PANNEAU DE VICTOIRE (ADMIN) --- */
+
+.win-overlay {
+    position: absolute;
+    inset: 0;
+    /* On garde juste un assombrissement propre */
+    background: rgba(0, 0, 0, 0.75); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999 !important;
+    border-radius: 230px;
+}
+
+.win-panel {
+    background: #0d1b2a;
+    border: 2px solid #4da6ff;
+    border-radius: 20px;
+    padding: 30px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    /* L'ombre bleue suffit largement à détacher le panneau */
+    box-shadow: 0 0 50px rgba(77, 166, 255, 0.4);
+    color: #fff;
+}
+
+/* On neutralise la classe blur-effect pour qu'elle ne fasse plus rien */
+.blur-effect {
+    filter: none !important;
+}
+
+/* Si tu veux quand même que les joueurs couchés soient différents 
+   mais PAS flous, utilise juste l'opacité */
+.player-slot.is-folded {
+    opacity: 0.4;
+    filter: grayscale(0.5); /* Optionnel : les mettre un peu en gris */
+}
+
+#winner-buttons-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-win {
+    background: rgba(77, 166, 255, 0.1);
+    border: 1px solid rgba(77, 166, 255, 0.4);
+    color: #fff;
+    padding: 12px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+.btn-win:hover {
+    background: #4da6ff;
+    color: #0d1b2a;
+}
+
+/* Boutons d'action spécifiques bleu */
+.admin-actions .btn-spaction {
+    background: rgba(77, 166, 255, 0.05);
+    border: 1px solid #4da6ff;
+    color: #4da6ff;
+    font-weight: bold;
+}
+
+.admin-actions .btn-spaction:hover {
+    background: #4da6ff;
+    color: #0d1b2a;
+}
+
+.btn-danger {
+    background: #4a0000 !important;
+    border: 1px solid #ff4d4d !important;
+    color: #ff4d4d !important;
+}
+
+.btn-danger:hover {
+    background: #ff4d4d !important;
+    color: #fff !important;
+}
+
+.btn-back-home {
+    display: inline-block;
+    margin-top: 15px;
+    color: #4da6ff;
+    opacity: 0.6;
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: opacity 0.2s;
+}
+
+.btn-back-home:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+.stat-item {
+    color: #a3d2ff;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    margin: 15px 0;
+    border: 1px dashed rgba(77, 166, 255, 0.3);
+}
+
+.stat-item strong {
+    color: #fff;
+    font-size: 1.1rem;
+}
+
+.switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { 
+    position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; 
+    background-color: #e74c3c; transition: .4s; border-radius: 34px; 
+}
+.slider:before { 
+    position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px; 
+    background-color: white; transition: .4s; border-radius: 50%; 
+}
+input:checked + .slider { background-color: #2ecc71; }
+input:checked + .slider:before { transform: translateX(24px); }
+
+/* Container du switch */
+.admin-control-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+.switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+    position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc; transition: .4s; border-radius: 34px;
+}
+.slider:before {
+    position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px;
+    background-color: white; transition: .4s; border-radius: 50%;
+}
+input:checked + .slider { background-color: #2ecc71; }
+input:checked + .slider:before { transform: translateX(24px); }
+
+/* Désactive les couleurs et passe en gris */
+.action-buttons button:disabled, 
+.raise-group button:disabled {
+    background: #444 !important; /* Gris foncé */
+    border-color: #555 !important;
+    color: #888 !important;
+    cursor: not-allowed;
+    box-shadow: none !important;
+    filter: grayscale(100%);
+}
+
+/* Désactive aussi l'aspect du champ de saisie */
+.raise-group input:disabled {
+    background: #222 !important;
+    border-color: #333 !important;
+    color: #555 !important;
+    cursor: not-allowed;
+}
+
+/* Style pour mon propre slot sur la table */
+.player-slot.is-me .player-name {
+    color: #2ecc71; /* Vert flashy */
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(46, 204, 113, 0.5);
+}
+
+.player-slot.is-me .player-info {
+    border: 2px solid rgba(46, 204, 113, 0.4);
+}
+
+.player-slot.is-me .player-info.active {
+    border-color: #2ecc71 !important; /* Vert */
+    box-shadow: 0 0 25px rgba(46, 204, 113, 0.6) !important; /* Ombre verte plus diffuse */
+    background: linear-gradient(145deg, #1a2e1f, #0a0a0a) !important; /* Léger reflet vert sombre */
+}
+
+/* Changement de couleur du panneau d'action si c'est MON tour */
+.action-panel.my-turn-border {
+    border-top: 4px solid #2ecc71 !important;
+    background: linear-gradient(to bottom, rgba(46, 204, 113, 0.1), var(--panel-bg));
+    transition: all 0.3s ease;
+}
+
+/* --- PANNEAUX DE FIN DE PARTIE (JOUEURS) --- */
+
+.player-win-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    text-align: center;
+    backdrop-filter: blur(5px);
+}
+
+.player-win-content {
+    background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+    border: 3px solid var(--gold);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 0 50px rgba(212, 175, 55, 0.3);
+    max-width: 400px;
+    width: 90%;
+}
+
+.player-win-content h2 {
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+}
+
+/* Animation de pulsation pour l'attente */
+.waiting-text {
+    color: #888;
+    font-style: italic;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
+}
+
+/* État Victoire Finale */
+.victory-title {
+    color: #2ecc71 !important;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.win-amount {
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: block;
+    margin: 15px 0;
+}
+
+.btn-ok {
+    background: var(--gold);
+    color: #000;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: 900;
+    cursor: pointer;
+    text-transform: uppercase;
+    margin-top: 20px;
+    transition: transform 0.2s;
+}
+
+.btn-ok:hover {
+    transform: scale(1.1);
+}
+
+@keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+
+/* --- ADAPTATION DES SLOTS --- */
+@media (max-width: 1200px) {
+    .poker-table {
+        width: 700px;
+        height: 350px;
+    }
+    .slot-1, .slot-7 { right: -80px; left: auto; }
+    .slot-3, .slot-5 { right: -80px; left: auto; }
+}

@@ -39,14 +39,15 @@ $game_name = $stmt->fetchColumn();
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Choix du joueur - PokerPaf</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='css/playerSelector.css'>
 </head>
 <body>
     <div class="container">
+    <button class="back-btn" onclick="window.location.href='index.html'">◀️ Retour à l'accueil</button>
     <h1>Rejoindre la partie <?php echo htmlspecialchars($game_name); ?></h1>
     <br>
     <h2>Choix du joueur</h2>
-    <p>Veuillez entrer le nom du joueur pour rejoindre la partie :</p>
+    <p>Veuillez cliquer sur le nom du joueur pour rejoindre la partie :</p>
     <div class="player-selection">
         <?php foreach ($players as $player): ?>
             <button class="join-player-btn" onclick="window.location.href='game.html?game_id=<?php echo $game_id; ?>&player_id=<?php echo $player['id']; ?>'">

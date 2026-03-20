@@ -1,0 +1,152 @@
+/* --- gameMobile.css Refondu --- */
+
+@media screen and (max-width: 900px) {
+    
+    /* 1. Structure Globale : On bloque le défilement et on utilise tout l'écran */
+    body {
+        height: 100dvh; /* Utilise la hauteur réelle dynamique sur mobile */
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+    }
+
+    .game-container {
+        flex-direction: column;
+        height: 100%;
+    }
+
+    /* 2. La Table : Plus ronde (Arène) */
+    .table-container {
+        flex: 1; 
+        padding: 40px 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 0;
+    }
+
+    .poker-table {
+        width: 100%;
+        max-width: 340px; 
+        height: 240px; /* Un peu plus haute pour l'aspect rond */
+        border-width: 10px;
+        border-radius: 140px; /* Plus grand rayon pour arrondir les coins */
+        box-shadow: inset 0 0 30px rgba(0,0,0,0.8), 0 10px 20px rgba(0,0,0,0.5);
+    }
+
+    /* 3. Le Pot : Ajustement taille */
+    .total-pot {
+        font-size: 1.8rem;
+    }
+    .total-pot::before { font-size: 0.7rem; }
+    .current-bet-display { font-size: 0.8rem; }
+
+    /* 4. Les Joueurs : Positionnement Arène Symétrique */
+    .player-slot {
+        width: 78px; 
+    }
+
+    .player-info {
+        padding: 4px;
+        border-radius: 12px;
+        border-width: 1px;
+    }
+
+    .player-name { font-size: 0.65rem; margin-bottom: 2px; }
+    .player-money { font-size: 0.8rem; }
+    .player-bet { font-size: 0.6rem; padding: 1px 5px; }
+    
+    .dealer-badge {
+        width: 20px;
+        height: 20px;
+        font-size: 0.7rem;
+        top: -8px;
+        right: -8px;
+    }
+
+    /* --- POSITIONNEMENT DES SLOTS --- */
+    
+    /* Haut et Bas Milieu */
+    .slot-0 { top: -50px; left: 50%; transform: translateX(-50%); } 
+    .slot-4 { bottom: -50px; left: 50%; transform: translateX(-50%); } 
+
+    /* Les 4 coins (Diagonales à distance égale) */
+    /* En haut à droite */
+    .slot-1 { top: 5%; right: -15px; } 
+    /* En bas à droite */
+    .slot-3 { bottom: 5%; right: -15px; }
+    /* En bas à gauche */
+    .slot-5 { bottom: 5%; left: -15px; }
+    /* En haut à gauche */
+    .slot-7 { top: 5%; left: -15px; }
+
+    /* Milieux latéraux */
+    .slot-2 { top: 50%; right: -10px; transform: translateY(-50%); }
+    .slot-6 { top: 50%; left: -10px; transform: translateY(-50%); }
+
+    /* 5. Panneau d'Action : Le "Deck" du bas */
+    .action-panel {
+        width: 100% !important;
+        height: auto;
+        padding: 15px 10px 25px 10px; 
+        border-left: none;
+        border-top: 2px solid var(--gold);
+        background: #151515;
+    }
+
+    .turn-info {
+        font-size: 0.9rem;
+        margin-bottom: 12px;
+    }
+
+    .action-buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr; 
+        grid-template-areas: 
+            "fold call"
+            "raise raise"
+            "allin allin"
+            "quit quit";
+        gap: 8px;
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 12px 5px;
+        font-size: 0.8rem;
+    }
+
+    .btn-fold { grid-area: fold; }
+    .btn-call { grid-area: call; }
+    .raise-group { 
+        grid-area: raise; 
+        display: flex; 
+        width: 100%; 
+    }
+    .btn-allin { grid-area: allin; }
+    .btn-back { 
+        grid-area: quit; 
+        margin: 0; 
+        background: rgba(255,0,0,0.1); 
+        color: #ff4d4d;
+        opacity: 0.8;
+    }
+
+    #raise-amount { flex: 1; height: 40px; }
+    .btn-validate { width: 80px; }
+}
+
+/* 6. Optimisation Paysage (Landscape) */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .poker-table { height: 160px; max-width: 480px; border-radius: 100px; }
+    .player-slot { width: 70px; }
+    
+    /* Ajustement slots en paysage pour ne pas sortir de l'écran */
+    .slot-1, .slot-7 { top: -10%; }
+    .slot-3, .slot-5 { bottom: -10%; }
+    
+    .action-panel { padding: 5px; }
+    .action-buttons { grid-template-columns: 1fr 1fr 1fr 1fr; grid-template-areas: none; }
+    .btn-allin, .raise-group, .btn-back { grid-column: auto; }
+}
