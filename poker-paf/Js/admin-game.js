@@ -394,8 +394,18 @@ async function declareWinner(playerId) {
         if (resStatus && resStatus.success) {
             console.log("✅ Statut passé à 'finished'");
             
-            // Mise à jour de l'interface Admin
-            showAdminWinPanel(playerId);
+            // On met a jour les valeurs dans BDD
+            const result = await SqlRequest('declare_winner', { 
+                game_id: gameData.id, 
+                player_id: playerId 
+            });
+
+            if (result && result.success){
+                // Mise à jour de l'interface Admin
+                showAdminWinPanel(playerId);
+            } else {
+                console.log("Dommage tu y étais presque")
+            }
         }
     } else {
         alert("Erreur lors de la mise à jour du gagnant.");

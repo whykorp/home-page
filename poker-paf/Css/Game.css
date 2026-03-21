@@ -242,6 +242,13 @@ body {
 }
 .btn-call:hover { background: var(--green); color: #000; }
 
+.btn-stay { 
+    background: transparent; 
+    color: rgba(77, 166, 255, 1);
+    border: 2px solid rgba(77, 166, 255, 1); 
+}
+.btn-stay:hover { background: rgba(77, 166, 255, 0.4); color: #fff; }
+
 .btn-allin {
     background: linear-gradient(45deg, #8b0000, #e60000);
     color: white;

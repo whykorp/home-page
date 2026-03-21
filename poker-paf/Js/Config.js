@@ -1,5 +1,3 @@
-
-
 // Fonction et variables essentiel
 
 async function SqlRequest(action, params = {}) {
@@ -96,6 +94,7 @@ loginForm.addEventListener('submit', async function(event) {
             await SqlRequest('addPlayer', {game_id: gameId, name: player.value, money: start_money});
         }
         const result = await SqlRequest('setFirstPlayer', {game_id: gameId})
+        console.log(result)
         if (result.success) {
             window.location.href = 'admin-login.html?game_id=' + gameId; 
         } else {    

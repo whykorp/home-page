@@ -61,6 +61,61 @@ switch ($action) {
         $stmt->execute([$params['name'], (int)$params['game_id'], (int)$params['money']]);
         echo json_encode(['success' => true]);
         exit;
+    
+    case 'setFirstPlayer':
+        $game_id = (int)$params['game_id'];
+    
+        // 1. Récupérer le premier joueur (id le plus petit)
+        $stmt = $pdo->prepare("SELECT id FROM players WHERE game_id = ? ORDER BY id ASC LIMIT 1");
+        $stmt->execute([$game_id]);
+        $player = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+        if ($player) {
+            $firstPlayerId = $player['id'];
+    
+            // 2. Définir ce joueur comme dealer
+            $stmt = $pdo->prepare("UPDATE players SET is_dealer = 1 WHERE id = ?");
+            $stmt->execute([$firstPlayerId]);
+    
+            // 3. IMPORTANT : Définir aussi ce joueur comme "joueur actuel" dans la table games
+            // pour que le jeu sache qui doit commencer à parler
+            $stmt = $pdo->prepare("UPDATE games SET current_player_id = ? WHERE id = ?");
+            $stmt->execute([$firstPlayerId, $game_id]);
+    
+            echo json_encode([
+                'success' => true, 
+                'player_id' => $firstPlayerId
+            ]);
+        } else {
+            echo json_encode([
+                'success' => false, 
+                'error' => 'Aucun joueur trouvé pour cette partie.'
+            ]);
+        }
+        exit;
+
+    case 'call':
+        $game_id = $params['game_id'];
+        $player_id = $params['player_id'];
+    
+        // 1. Récupérer la mise actuelle de la table
+        $stmt = $pdo->prepare("SELECT last_bet FROM games WHERE id = ?");
+        $stmt->execute([$game_id]);
+        $last_bet = $stmt->fetchColumn();
+    
+        // 2. Mettre à jour la mise du joueur (si c'est un call, il paye, si c'est un check, last_bet est 0)
+        $stmt = $pdo->prepare("UPDATE players SET current_bet = ?, money = money - ? WHERE id = ?");
+        $stmt->execute([$last_bet, $last_bet, $player_id]);
+    
+        // 3. Ajouter la mise au pot global
+        $stmt = $pdo->prepare("UPDATE games SET pot = pot + ? WHERE id = ?");
+        $stmt->execute([$last_bet, $game_id]);
+    
+        // 4. Passer au joueur suivant (ta fonction habituelle)
+        moveToNextPlayer($game_id, $pdo);
+    
+        echo json_encode(['success' => true]);
+        exit;
 
     case 'next_player':
         $game_id = (int)$params['game_id'];

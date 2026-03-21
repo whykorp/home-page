@@ -3,15 +3,18 @@
     <title>Connexion Administrateur - PokerPaf</title>
     <link rel="stylesheet" type="text/css" href="css/admin-login.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <meta charset='utf-8'>
 </head>
 <body>
-<h1>Admin Login</h1>
-<form id="admin-login-form">
-    <label for="adminPassword">Mot de passe administrateur :</label>
-    <input type="password" id="adminPassword" name="adminPassword" required>
-    <br><br>
-    <button type="submit">Login</button>
-</form>
+    <div class="login-container">
+        <a href="index.html" class="btn-back-home">◀️ Retourner à l'accueil</a>
+        <h1>Admin Login</h1>
+        <form id="admin-login-form">
+            <label for="adminPassword">Mot de passe administrateur :</label>
+            <input type="password" id="adminPassword" name="adminPassword" required="" placeholder="••••••••">
+            <button type="submit">Accéder au Panneau</button>
+        </form>
+    </div>
 <script>
 
 const hashedAdminPassword = "7215d31f702fe2faf2a7df114c6427007bd254740c6b9cbaa2a5505060088929";

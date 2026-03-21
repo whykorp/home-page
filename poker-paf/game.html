@@ -26,8 +26,8 @@
                 <p class="turn-info">Au tour de : <strong id="active-player-name"></strong></p>
                 
                 <div class="action-buttons">
-                    <button class="btn btn-fold" onclick="playerFold()">Se coucher</button>
-                    <button class="btn btn-call" onclick="playerFollow()">Suivre</button>
+                    <button class="btn btn-fold" id="btn-fold" onclick="playerFold()">Se coucher</button>
+                    <button class="btn btn-call" id="btn-call" onclick="playerFollow()">Suivre</button>
                     <div class="raise-group">
                         <input type="number" id="raise-amount" placeholder="Mise" min="0">
                         <button class="btn-validate" onclick="playerRaise()">OK</button>

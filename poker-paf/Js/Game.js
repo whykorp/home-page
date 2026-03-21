@@ -81,24 +81,26 @@ async function updateClientInterface() {
     const actionPanel = document.querySelector('.action-panel');
 
     // --- 1. GESTION DES PANNEAUX DE VICTOIRE (SYNCHRO SSE) ---
+
     console.log("DEBUG STATUS SSE:", gameData.status);    
     if (gameData.status === 'deciding') {
         // L'admin est en train de choisir : on affiche "Attente"
         showWaitingForWinner();
-    } 
+    }
+
     else if (gameData.status === 'finished' && gameData.winner_id) {
         // Un gagnant a été validé en BDD
         const winner = playersData.find(p => Number(p.id) === Number(gameData.winner_id));
         const winnerName = winner ? winner.name : "Un joueur";
-        
-        // showVictoryScreen s'occupe maintenant de supprimer l'ancien panneau 
+        // showVictoryScreen s'occupe maintenant de supprimer l'ancien panneau
         // avant d'afficher le nouveau avec les confettis.
         showVictoryScreen(winnerName, gameData.pot);
-    } 
+    }
+
     else if (gameData.status === 'playing') {
         // Si l'admin a relancé la partie (StartNewGame), on nettoie les panneaux
         // pour ceux qui n'auraient pas cliqué sur "OK"
-        closeVictoryScreen(); 
+        closeVictoryScreen();
     }
 
     // --- 2. GESTION DU HASH POUR L'INTERFACE DE TABLE ---
@@ -106,10 +108,10 @@ async function updateClientInterface() {
     const currentHash = `${gameData.pot}-${gameData.current_player_id}-${gameData.last_bet}-${gameData.is_locked}-${gameData.status}`;
     if (currentHash === lastDataHash) return;
     lastDataHash = currentHash;
-    
+
     setupPlayers();
     getCurrentPlayer();
-    
+
     // --- 3. GESTION DES BOUTONS ET DU TOUR ---
 
     const isLocked = Number(gameData.is_locked) === 1;
@@ -118,8 +120,10 @@ async function updateClientInterface() {
     const inputs = document.querySelectorAll('.action-buttons button, .raise-group input, .raise-group button');
 
     // Bordure de tour
+
     if (!isLocked && isMyTurn && gameData.status === 'playing') {
         actionPanel.classList.add('my-turn-border');
+
     } else {
         actionPanel.classList.remove('my-turn-border');
     }
@@ -127,14 +131,44 @@ async function updateClientInterface() {
     if (isLocked) {
         if (turnInfo) turnInfo.innerHTML = `<span style="color: #f1c40f; font-weight: bold;">🔒 Jeu verrouillé. En attente de l'Admin...</span>`;
         inputs.forEach(el => el.disabled = true);
+
     } else if (!isMyTurn) {
         if (turnInfo && currentPlayer) {
             turnInfo.innerHTML = `Attente de <strong style="color: #e74c3c;">${currentPlayer.name}</strong>...`;
         }
+
         inputs.forEach(el => el.disabled = true);
     } else {
         if (turnInfo) turnInfo.innerHTML = `<span style="color: #2ecc71; font-weight: bold;">✅ C'est à vous de jouer !</span>`;
         inputs.forEach(el => el.disabled = false);
+    }
+    // --- 3.bis BOUTON INTELLIGENT (Seulement si c'est mon tour) ---
+    const currentMiseTable = Number(gameData.last_bet);
+    const btnFollow = document.getElementById('btn-call'); 
+    const btnFold = document.getElementById('btn-fold');
+
+    if (currentMiseTable === 0) {
+        // PERSONNE N'A MISÉ : "Rester"
+        if (btnFollow) {
+            btnFollow.textContent = `Rester (Passer son tour)`;
+            btnFollow.onclick = () => playerCall();
+            btnFollow.className = "btn btn-stay";
+        }
+        if (btnFold) {
+            btnFold.disabled = true; // Désactivé car inutile de se coucher
+            btnFold.style.opacity = "0.5";
+        }
+    } else {
+        // UNE MISE EXISTE : "Suivre"
+        if (btnFollow) {
+            btnFollow.textContent = `Suivre (${currentMiseTable} 🪙)`;
+            btnFollow.onclick = () => playerFollow();
+            btnFollow.className = "btn btn-call";
+        }
+        if (btnFold) {
+            btnFold.disabled = false;
+            btnFold.style.opacity = "1";
+        }
     }
 
     // Mise à jour du label du haut
@@ -412,6 +446,10 @@ async function playerFollow() {
             await changePlayer();
         }
     }
+}
+
+async function playerCall() {
+    changePlayer();
 }
 
 async function playerAllIn() {
