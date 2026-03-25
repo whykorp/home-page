@@ -18,17 +18,6 @@
                 <div class="admin-content">
                     <button class="close-admin" onclick="toggleAdminMenu()">✕</button>
                     <h3>Administration de la Table</h3>
-                    
-                    <div class="admin-section">
-                        <div id="admin-lock-control" class="admin-section">
-                        </div>
-                        <label>Ajouter jetons au joueur actif</label>
-                        <div class="money-group">
-                            <input type="number" id="money-amount" placeholder="Montant">
-                            <button class="btn-validate" onclick="addMoney()">OK</button>
-                        </div>
-                    </div>
-            
                     <div class="stat-item"id="stat-item">
                         MISE ACTUELLE: <strong id="current-bet">0</strong><br>
                         POT ACTUEL <strong id="current-pot">0</strong>
@@ -54,16 +43,19 @@
 
             <div class="action-panel">
                 <p class="turn-info">Au tour de : <strong id="active-player-name"></strong></p>
-                
-                <div class="action-buttons">
-                    <button class="btn btn-fold" onclick="playerFold()">Se coucher</button>
-                    <button class="btn btn-call" onclick="playerFollow()">Suivre</button>
-                    <div class="raise-group">
-                        <input type="number" id="raise-amount" placeholder="Mise" min="0">
-                        <button class="btn-validate" onclick="playerRaise()">OK</button>
-                    </div>
-                    <button class="btn btn-allin" onclick="playerAllIn()">TAPIS</button>
+                <p class="turn-info">Le delta avec la blinde est de : <strong id="active-player-delta-blind"></strong></p>
+
+                <div id="admin-lock-control" class="admin-section">
                 </div>
+                <label>Ajouter jetons au joueur actif</label>
+                <div class="money-group">
+                    <input type="number" id="money-amount" placeholder="Montant">
+                    <button class="btn-validate" onclick="addMoney()">OK</button>
+                </div>
+
+                <br>
+                <button class="btn btn-allin">Annuler Action</button>
+                
             </div>
         </div>
     </body>

@@ -3,6 +3,7 @@
 // Fonction et variables essentiel
 
 const activePlayerLabel = document.getElementById('active-player-name');
+const activePlayerDelta = document.getElementById('active-player-delta-blind');
 let gameData = null;
 let currentPlayer = null;
 let playersData = [];
@@ -85,9 +86,10 @@ async function updateClientInterface() {
     refreshAdminPanel();
 
     activePlayerLabel.textContent = `${currentPlayer.name} (${currentPlayer.money} 🪙)`;
+    activePlayerDelta.textContent = `${currentPlayer.current_bet - gameData.last_bet}`;
 }
 
-function refreshAdminPanel() {
+async function refreshAdminPanel() {
     const adminPanel = document.getElementById('admin-lock-control');
     if (!adminPanel) return;
 
@@ -109,6 +111,13 @@ function refreshAdminPanel() {
                 <span>Autoriser le jeu :</span>
                 <label class="switch">
                     <input type="checkbox" id="lock-switch" ${!isLocked ? 'checked' : ''} onchange="toggleGameLock(this)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="admin-control-group">
+                <span>Autoriser le jeu fin :</span>
+                <label class="switch">
+                    <input type="checkbox" id="lock-switch" ${!isLocked ? 'checked' : ''} onchange="">
                     <span class="slider"></span>
                 </label>
             </div>
