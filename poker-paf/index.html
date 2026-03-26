@@ -1,21 +1,40 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset='utf-8'>
-        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-        <title>Accueil -PokerPaf</title>
-        <meta name='viewport' content='width=device-width, initial-scale=1'>
-        <link rel='stylesheet' type='text/css' media='screen' href='css/index.css'>
-    </head>
-    <body>
-        <div class="welcome-container">
-            <h1>Welcome to Poker PAF</h1>
-            <button onclick="window.location.href='config.html'">Créer une partie</button><br><br>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Accueil - PokerPaf</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='css/index.css'>
+    <link rel="icon" type="image/x-icon" href="favicon.png">
+</head>
+<body>
+    <div class="main-wrapper">
+        <header class="poker-table table-header">
+            <div class="table-inner">
+                <h1>Welcome to</h1>
+                <div class="logo-wrapper">
+                    <img src="favicon.png" alt="Poker PAF Logo" class="logo-paf">
+                </div>
+            </div>
+        </header>
 
-            <h2>Parties en cours :</h2>
-            <div id="games_list">
+        <div class="tables-hall">
+            <div class="poker-table table-main">
+                <div class="table-inner">
+                    <div class="button-center-wrapper">
+                        <button class="btn-main-create" onclick="window.location.href='config.html'">
+                            Créer une partie
+                        </button>
+                    </div>
+
+                    <h2>Parties en cours</h2>
+                    <div id="games_list">
+                        </div>
+                </div>
             </div>
         </div>
-    </body>
+    </div>
     <script src="js/index.js"></script>
+</body>
 </html>

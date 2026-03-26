@@ -1,6 +1,7 @@
-/* index.css - Version Poker PAF Harmonisée & Aérée */
+/* --- VARIABLES GLOBALES --- */
 :root {
     --table-green: radial-gradient(circle, #277d46 0%, #1a5e33 100%);
+    --table-dark: radial-gradient(circle, #1a1a1a 0%, #0a0a0a 100%); /* Couleur pour la table sombre */
     --poker-border: #2c1b18; 
     --gold: #d4af37;
     --gold-light: #f9e27d;
@@ -9,70 +10,106 @@
     --wood-dark: #1a0f0d;
 }
 
+/* --- STRUCTURE DE LA PAGE --- */
 body {
     background-color: var(--dark-bg);
     background-image: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%);
     color: var(--white);
     font-family: 'Segoe UI', Roboto, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    width: 100%;
+    max-width: 1000px; /* Réduit pour garder une forme de table sympa */
+}
+
+/* --- STYLE COMMUN DES TABLES --- */
+.poker-table {
+    position: relative;
+    padding: 30px;
+    border-radius: 80px;
+    border: 15px solid var(--poker-border);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.9), inset 0 0 40px rgba(0,0,0,0.6);
+    width: 100%;
+    outline: 2px solid #3d2b27;
+    margin-bottom: 40px;
+    box-sizing: border-box;
+}
+
+.poker-table::before {
+    content: '';
+    position: absolute;
+    top: 12px; left: 12px; right: 12px; bottom: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 65px;
+    pointer-events: none;
+}
+
+.table-inner {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+/* --- SPECIFICITÉS TABLE HEADER (SOMBRE) --- */
+.table-header {
+    background: var(--table-dark);
+    max-width: 800px;
+    border-color: #1a1a1a; /* Bordure plus noire pour le header */
+}
+
+.table-header h1 {
+    color: var(--gold);
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    margin: 0 0 10px 0;
+    letter-spacing: 2px;
+}
+
+/* --- SPECIFICITÉS TABLE MAIN (VERTE) --- */
+.table-main {
+    background: var(--table-green);
+}
+
+.tables-hall {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* --- CENTRAGE DU BOUTON --- */
+.button-center-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    margin: 0;
+    padding: 20px 0 40px 0; /* Espace le bouton du titre de la liste */
 }
 
-/* --- LE CONTENEUR (Exactement comme la table de l'image 2) --- */
-.welcome-container {
-    background: var(--table-green);
-    padding: 40px;
-    border-radius: 40px; /* Moins ovale, plus "carré arrondi" */
-    border: 15px solid var(--poker-border); /* Bordure épaisse cuir/bois */
-    box-shadow: 0 25px 50px rgba(0,0,0,0.9), inset 0 0 40px rgba(0,0,0,0.6);
-    text-align: center;
-    width: 90%;
-    max-width: 600px;
-    position: relative;
-    /* Petit liseré de finition */
-    outline: 2px solid #3d2b27;
+/* --- LOGO --- */
+.logo-paf {
+    width: 220px;
+    height: auto;
+    filter: drop-shadow(0 0 15px rgba(180, 50, 255, 0.6));
+    transition: transform 0.3s ease;
 }
 
-/* --- LE LISERÉ BLANC (AJOUTÉ ICI) --- */
-.welcome-container::before {
-    content: '';
-    position: absolute;
-    /* On le décale de 10px vers l'intérieur par rapport à la bordure marron */
-    top: 10px; 
-    left: 10px; 
-    right: 10px; 
-    bottom: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.15); /* Blanc très subtil et transparent */
-    border-radius: 30px; /* Un peu moins que le parent pour suivre la courbe */
-    pointer-events: none; /* Pour ne pas gêner les clics sur les boutons */
-    z-index: 1;
+.logo-paf:hover {
+    transform: scale(1.05);
 }
 
-h1 {
-    color: var(--gold);
-    text-transform: uppercase;
-    font-size: 2.5rem;
-    margin-bottom: 30px;
-    letter-spacing: 2px;
-    text-shadow: 3px 3px 0px rgba(0,0,0,0.8);
-}
-
-h2 {
-    font-size: 1.1rem;
-    color: rgba(255,255,255,0.6);
-    text-transform: uppercase;
-    margin-top: 25px;
-    letter-spacing: 1px;
-}
-
-/* --- BOUTON PRINCIPAL CRÉER --- */
-.welcome-container > button {
+/* --- BOUTON CRÉER --- */
+.btn-main-create {
     background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 50%, var(--gold) 100%);
     color: var(--wood-dark);
-    padding: 18px 40px;
+    padding: 18px 45px;
     font-weight: 900;
     font-size: 1.2rem;
     border-radius: 50px;
@@ -81,159 +118,114 @@ h2 {
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     box-shadow: 0 8px 0px #927521, 0 15px 20px rgba(0,0,0,0.4);
     text-transform: uppercase;
-    margin-bottom: 10px;
 }
 
-.welcome-container > button:hover {
+.btn-main-create:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 0px #927521, 0 20px 25px rgba(0,0,0,0.5);
 }
 
-/* --- LISTE DES PARTIES --- */
-#games_list ul {
-    list-style: none;
-    padding: 0;
-    margin: 25px 0;
-}
-
-#games_list li {
+/* --- TITRES ET LISTES --- */
+.table-main h2 {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
     margin-bottom: 20px;
 }
 
-/* --- L'ACCORDÉON (Design des slots joueurs) --- */
-.mon-accordeon {
-    background-color: rgba(0,0,0,0.4); /* Fond sombre comme les slots */
-    border-radius: 15px;
-    border: 2px solid #333;
-    overflow: hidden;
-    text-align: left;
-    transition: border-color 0.3s;
+#games_list ul {
+    list-style: none;
+    padding: 0;
+    max-width: 500px;
+    margin: 0 auto;
 }
 
-details[open].mon-accordeon {
-    border-color: var(--gold);
+.mon-accordeon {
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 15px;
+    border: 2px solid #333;
+    margin-bottom: 12px;
+    text-align: left;
 }
 
 summary {
-    padding: 18px 25px;
+    padding: 12px 20px;
     color: var(--gold);
     font-weight: bold;
     cursor: pointer;
-    list-style: none;
     display: flex;
     justify-content: space-between;
     align-items: center;
     outline: none;
 }
 
-summary::-webkit-details-marker { display: none; }
-
-summary::after {
-    content: '♣';
-    font-size: 1.2rem;
-    transition: transform 0.4s ease;
-}
-
-details[open] summary::after {
-    transform: rotate(180deg);
-    color: #4dbf4d;
-}
-
-/* --- CONTENU DÉPLOYÉ (Aération améliorée) --- */
 .container-parent {
     display: flex;
     justify-content: space-between;
-    gap: 30px; /* Plus d'espace entre les boutons et les noms */
-    padding: 0 25px; 
+    background: rgba(0,0,0,0.2);
     max-height: 0;
     opacity: 0;
     overflow: hidden;
-    transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.4s ease;
-    background: rgba(0,0,0,0.2);
+    transition: all 0.4s ease;
 }
 
 details[open] .container-parent {
-    max-height: 600px;
+    max-height: 500px;
     opacity: 1;
-    padding: 25px; /* On redonne du souffle ici */
+    padding: 20px;
 }
 
-/* Zone des noms (Left) */
-.left {
-    flex: 1.2;
-    border-left: 2px solid rgba(212, 175, 55, 0.2);
-    padding-left: 20px;
-}
+/* --- ZONES INTERNES ACCORDÉON --- */
 
-.left p {
-    margin: 5px 0;
-    font-size: 0.95rem;
-    color: #eee;
-    font-weight: 500;
-}
+.left { flex: 1.2; border-left: 2px solid rgba(212, 175, 55, 0.2); padding-left: 15px; }
 
-/* Zone des boutons (Right) */
-.right {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
+.left p { margin: 3px 0; font-size: 0.9rem; color: #eee; }
 
-.right p {
-    font-size: 0.85rem;
-    color: var(--gold);
-    margin-bottom: 15px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
 
-/* Boutons Rejoindre */
+
+.right { flex: 1; display: flex; flex-direction: column; }
+
+.right p { font-size: 0.8rem; color: var(--gold); margin-bottom: 10px; }
+
+
+
 .btn-join-list, .btn-admin-join-list {
+
     width: 100%;
-    margin-bottom: 10px;
-    padding: 12px;
-    border-radius: 8px;
+
+    margin-bottom: 8px;
+
+    padding: 10px;
+
+    border-radius: 6px;
+
     border: 1px solid var(--gold);
+
     background: transparent;
+
     color: var(--gold);
-    cursor: pointer;
+
     font-weight: bold;
+
+    cursor: pointer;
+
     text-transform: uppercase;
-    font-size: 0.75rem;
+
+    font-size: 0.7rem;
+
     transition: 0.2s;
+
 }
 
-.btn-join-list:hover {
-    background: var(--gold);
-    color: black;
-}
 
-.btn-admin-join-list {
-    border-color: rgba(255,255,255,0.3);
-    color: rgba(255,255,255,0.5);
-}
 
-.btn-admin-join-list:hover {
-    border-color: white;
-    color: white;
-    background: rgba(255,255,255,0.1);
-}
+.btn-join-list:hover { background: var(--gold); color: black; }
 
-/* --- RESPONSIVE MOBILE --- */
+.btn-admin-join-list { border-color: rgba(255,255,255,0.3); color: rgba(255,255,255,0.5); }
+
+/* --- RESPONSIVE --- */
 @media (max-width: 600px) {
-    .container-parent {
-        flex-direction: column-reverse; /* Boutons en haut ou en bas selon préférence */
-        gap: 20px;
-    }
-    .welcome-container {
-        padding: 20px;
-        border-width: 10px;
-    }
-    .left {
-        border-left: none;
-        border-top: 1px solid rgba(212, 175, 55, 0.2);
-        padding-left: 0;
-        padding-top: 15px;
-    }
+    .poker-table { border-radius: 40px; padding: 15px; border-width: 10px; }
+    .logo-paf { width: 160px; }
+    .btn-main-create { padding: 12px 25px; font-size: 1rem; }
 }

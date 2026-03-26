@@ -243,7 +243,7 @@ async function setupPlayers() {
 
         newHtml += `
             <div class="player-slot slot-${index} 
-                ${player.is_folded ? ' blur-effect' : ''} 
+                ${player.is_folded ? toPornoJaponnaisOrNotToPornoJaponnais() : ''} 
                 ${player.money <= 0 ? ' All-in-Blur' : ''} 
                 ${isMe ? 'is-me' : ''}" 
                 data-id="${player.id}">
@@ -537,5 +537,15 @@ function startConfetti() {
         `;
         document.body.appendChild(confetti);
         setTimeout(() => confetti.remove(), 5000);
+    }
+}
+
+function toPornoJaponnaisOrNotToPornoJaponnais(){
+    // let a = Math.random()
+    let a = 1
+    if (a <= 0.25){
+        return ' porno-japonnais'
+    } else {
+        return ' blur-effect'
     }
 }

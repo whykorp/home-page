@@ -478,7 +478,37 @@ input::-webkit-inner-spin-button {
 
 /* On neutralise la classe blur-effect pour qu'elle ne fasse plus rien */
 .blur-effect {
-    filter: none !important;
+    filter: blur(5px);
+}
+
+/* La classe pour le slot du joueur couché */
+.player-slot.porno-japonnais {
+    position: relative;
+    opacity: 0.85; 
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+/* L'overlay qui crée l'effet de pixels par-dessus le contenu */
+.player-slot.porno-japonnais::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    border-radius: inherit;
+
+    /* On utilise des gradients qui couvrent 100% de la surface du pixel */
+    /* On enlève le "at 2px 2px" pour supprimer les bordures nettes */
+    background-image: 
+        conic-gradient(rgba(0,0,0,0.03) 90deg, transparent 0),
+        conic-gradient(rgba(255,255,255,0.06) 90deg, transparent 0);
+    
+    /* TAILLE DES PIXELS : Ici 25px pour du gros pâté de couleur */
+    background-size: 25px 25px; 
+    background-position: 0 0, 12.5px 12.5px; /* Décalage pour briser la linéarité */
+    
+    /* On garde ton combo de filtres qui marchait bien */
+    backdrop-filter: contrast(130%) brightness(95%) blur(6px);
 }
 
 /* Si tu veux quand même que les joueurs couchés soient différents 
