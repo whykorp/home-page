@@ -1,14 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Partie - Yahtzee PAF</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='css/game.css'>
-    <script src='main.js'></script>
+    <link rel='stylesheet' type='text/css' media='screen' href='../css/game.css'>
 </head>
 <body>
-    
+
+<div class="main-wrapper">
+    <div class="yahtzee-table table-main">
+        <div class="table-inner">
+            <header class="game-header">
+                <h1 id="display-game-name">Chargement...</h1>
+                <div id="admin-controls"></div>
+            </header>
+
+            <div class="game-status">
+                <h3>Joueurs à table :</h3>
+                <div id="players-list" class="players-grid">
+                    </div>
+            </div>
+
+            <div class="debug-zone">
+                <button class="btn-main-create" onclick="window.location.href='../index.html'">Retour Accueil</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src='../js/game.js'></script>
 </body>
-</html></html>
+</html>
