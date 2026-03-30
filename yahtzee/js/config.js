@@ -32,7 +32,7 @@ function updatePlayerInputs() {
 
 async function SqlRequest(action, params = {}) {
     try {
-        const response = await fetch('RequestsHandler.php', {
+        const response = await fetch('../RequestsHandler.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -92,7 +92,7 @@ loginForm.addEventListener('submit', async function(event) {
 
         // 4. Redirection vers la table de jeu
         console.log("Partie créée avec succès, ID:", gameId);
-        window.location.href = '../game.html?game_id=' + gameId;
+        window.location.href = '../game/index.html?game_id=' + gameId;
 
     } else {
         console.error("Erreur lors de la création de la partie :", response?.error);
