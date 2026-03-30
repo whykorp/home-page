@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Configuration - Yahtzee PAF</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='../css/config.css'>
+</head>
+<body>
+
+<div class="main-wrapper">
+    <div class="yahtzee-table config-table">
+        <div class="table-inner">
+            <header class="config-header">
+                <div class="dice-icon">🎲</div>
+                <h1>Nouvelle Partie</h1>
+            </header>
+
+            <form id="config-form">
+                <div class="input-group">
+                    <label for="game-name">Nom de la table</label>
+                    <input type="text" id="game-name" placeholder="Ex: La Table des Légendes" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="player-count">Nombre de joueurs</label>
+                    <select id="player-count" onchange="updatePlayerInputs()">
+                        <option value="1">1 Joueur (Solo)</option>
+                        <option value="2" selected>2 Joueurs</option>
+                        <option value="3">3 Joueurs</option>
+                        <option value="4">4 Joueurs</option>
+                        <option value="5">5 Joueurs</option>
+                    </select>
+                </div>
+
+                <div id="players-names-container" class="players-list">
+                    <label>Participants & Couleurs</label>
+                    
+                    <div class="player-row">
+                        <input type="color" class="color-picker" value="#ff3131">
+                        <input type="text" placeholder="Joueur 1" class="player-input">
+                    </div>
+                    
+                    <div class="player-row">
+                        <input type="color" class="color-picker" value="#d4af37">
+                        <input type="text" placeholder="Joueur 2" class="player-input">
+                    </div>
+                </div>
+
+                <div class="button-footer">
+                    <button type="button" class="btn-cancel" onclick="window.location.href='../index.html'">Annuler</button>
+                    <button type="submit" class="btn-confirm">Lancer les dés !</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src='../js/config.js'></script>
+</body>
+</html>

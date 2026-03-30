@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Accueil - Yahtzee PAF</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='css/index.css'>
+    <link rel="icon" type="image/x-icon" href="favicon.png">
+</head>
+<body>
+
+<div class="main-wrapper">
+    <header class="yahtzee-table table-header">
+        <div class="table-inner">
+            <h1>Welcome to</h1>
+            <div class="logo-wrapper">
+                <div class="neon-dice">Yahtzee <span>PAF</span></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="tables-hall">
+        <div class="yahtzee-table table-main">
+            <div class="table-inner">
+                <div class="button-center-wrapper">
+                    <button class="btn-main-create" onclick="window.location.href='config/index.html'">
+                        Lancer une partie
+                    </button>
+                </div>
+
+                <h2>Parties en attente de joueurs</h2>
+                <div id="games_list">
+                    <p class="placeholder-text">Aucune table ouverte pour le moment...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src='js/index.js'></script>
+</body>
+</html>
