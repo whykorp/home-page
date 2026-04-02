@@ -117,6 +117,28 @@ switch ($action) {
         echo json_encode(['success' => true]);
         exit;
 
+    case 'get_next_player':
+        $game_id = (int)$params['game_id'];
+        $current_id = (int)$params['current_player_id'];
+
+        // On cherche le prochain joueur (ID plus grand, non couché, pas ruiné)
+        $stmt = $pdo->prepare("SELECT id FROM players WHERE game_id = ? AND is_folded = 0 AND money > 0 AND id > ? ORDER BY id ASC LIMIT 1");
+        $stmt->execute([$game_id, $current_id]);
+        $next = $stmt->fetch();
+
+        if (!$next) {
+            // Boucle : on revient au tout premier de la liste
+            $stmt = $pdo->prepare("SELECT id FROM players WHERE game_id = ? AND is_folded = 0 AND money > 0 ORDER BY id ASC LIMIT 1");
+            $stmt->execute([$game_id]);
+            $next = $stmt->fetch();
+        }
+
+        if ($next) {
+            echo json_encode(['success' => true, 'next_player_id' => $next['id']]);
+        } else {
+            echo json_encode(['success' => false, 'error' => 'Aucun joueur actif trouvé']);
+        }
+
     case 'next_player':
         $game_id = (int)$params['game_id'];
         $current_id = (int)$params['current_player_id'];
@@ -293,13 +315,13 @@ switch ($action) {
                     $pdo->prepare("UPDATE players SET is_dealer = 0 WHERE id = ?")->execute([$current_dealer]);
                     
                     // On cherche le suivant (ID plus grand)
-                    $stmt = $pdo->prepare("SELECT id FROM players WHERE game_id = ? AND id > ? ORDER BY id ASC LIMIT 1");
+                    $stmt = $pdo->prepare("SELECT id FROM players WHERE game_id = ? AND id > ? AND money > 0 ORDER BY id ASC LIMIT 1");
                     $stmt->execute([$game_id, $current_dealer]);
                     $next_dealer = $stmt->fetchColumn();
     
                     // Si pas de suivant, on revient au premier
                     if (!$next_dealer) {
-                        $stmt = $pdo->prepare("SELECT id FROM players WHERE game_id = ? ORDER BY id ASC LIMIT 1");
+                        $stmt = $pdo->prepare("SELECT id FROM players WHERE game_id = ? AND money > 0 ORDER BY id ASC LIMIT 1");
                         $stmt->execute([$game_id]);
                         $next_dealer = $stmt->fetchColumn();
                     }
@@ -339,7 +361,17 @@ switch ($action) {
             $stmt = $pdo->query("SELECT * FROM games ORDER BY id ASC");
             echo json_encode(['success' => true, 'games' => $stmt->fetchAll()]);
             exit;
-    
+
+        case 'set_player_loop':
+            $game_id = (int)$params['game_id'];
+            $player_id = (int)$params['player_id'];
+
+            $pdo->beginTransaction();
+            $stmt = $pdo->prepare("UPDATE games SET last_loop_player_id = ? WHERE id = ?");
+            $stmt->execute([$player_id, $game_id]);
+            $pdo->commit();
+            echo json_encode(['success' => true, 'player_id' => $player_id]);
+            exit;    
 
         // Actions d'administration
         case 'adminLogin':

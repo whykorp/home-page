@@ -147,7 +147,8 @@ async function updateClientInterface() {
     const btnFollow = document.getElementById('btn-call'); 
     const btnFold = document.getElementById('btn-fold');
 
-    if (currentMiseTable === 0) {
+    console.log(currentPlayer.current_bet)
+    if (currentMiseTable <= currentPlayer.current_bet) {
         // PERSONNE N'A MISÉ : "Rester"
         if (btnFollow) {
             btnFollow.textContent = `Rester (Passer son tour)`;
@@ -215,6 +216,8 @@ async function resetToPostDealerPlayer() {
     }
 
     const firstPlayerId = playersData[nextIndex].id;
+
+    playerLoopChange(firstPlayerId); // On met à jour le joueur de boucle pour éviter les blocages
 
     // On envoie l'ordre au serveur de mettre ce joueur en actif
     await SqlRequest('set_current_player', { 
@@ -368,6 +371,7 @@ async function playerRaise() {
 
     if (response && response.success) {
         betInput.value = ''; // Réinitialisation du champ
+        playerLoopChange(gameData.current_player_id); // On met à jour le joueur de boucle pour éviter les blocages
         await changePlayer(); // Passage au joueur suivant
     } else {
         // Affichage de l'erreur retournée par le PHP (ex: "Fonds insuffisants")
@@ -386,16 +390,7 @@ async function playerFollow() {
     }
     // Si le joueur a déjà mis la somme requise
     if (Number(currentPlayer.current_bet) >= Number(gameData.last_bet)) {
-        // AU LIEU DE changePlayer(), on vérifie si le tour est fini
-        const activePlayers = playersData.filter(p => Number(p.is_folded) === 0);
-        const allMatched = activePlayers.every(p => Number(p.current_bet) === Number(gameData.last_bet));
-
-        if (allMatched) {
-            await SqlRequest('toggle_lock', { game_id: gameData.id, status: 1 });
-            return; // On s'arrête là, le SSE fera le reste
-        }
-        
-        await changePlayer();
+        playerLoopCheck();
         return;
     }
     // 1. On force la récupération du joueur actuel s'il est manquant
@@ -409,17 +404,17 @@ async function playerFollow() {
         return;
     }
 
-    // 3. Logique de suivi
-    if (Number(currentPlayer.current_bet) >= Number(gameData.last_bet)) {
-        changePlayer();
-        return;
-    }
-
     // Calcul du montant à ajouter
     let delta_amount = Math.max(0, Number(gameData.last_bet) - Number(currentPlayer.current_bet));
         
     if (Number(currentPlayer.money) < delta_amount) {
         delta_amount = Number(currentPlayer.money);
+
+        // si le joueur a moins d'argent que la mise, on déplace le joueur de boucle pour éviter les boucles infinies
+        const response = await SqlRequest('get_next_player', { game_id: gameData.id, current_player_id: gameData.current_player_id });
+        if (response && response.success) {
+            playerLoopChange(response.next_player_id); // On met à jour le joueur de boucle pour éviter les blocages
+        }
     }
 
     const response = await SqlRequest('follow', { 
@@ -429,26 +424,39 @@ async function playerFollow() {
     });
 
     if (response && response.success) {
-        // --- LOGIQUE DE VÉRIFICATION DU TOUR ---
-        // On récupère les données fraîches pour savoir si c'était le dernier à suivre
-        const refreshedPlayers = await getPlayers();
-        
-        // On vérifie si tout le monde a mis la même somme (et n'est pas couché)
-        const activePlayers = refreshedPlayers.filter(p => Number(p.is_folded) === 0);
-        const allMatched = activePlayers.every(p => Number(p.current_bet) === Number(gameData.last_bet));
+        playerLoopCheck();
+    }
+}
 
-        if (allMatched) {
-            // On demande au serveur de verrouiller la partie (si tu as l'action prévue)
-            await SqlRequest('toggle_lock', { game_id: gameData.id, status: 1 });
-            console.log("Tour terminé, table verrouillée.");
-        } else {
-            // Sinon on passe juste au suivant
-            await changePlayer();
-        }
+async function playerLoopCheck() {
+    // --- LOGIQUE DE VÉRIFICATION DU TOUR ---
+    // On change le joueur actif pour avancer dans la boucle et permettre que le premier qui commence ne bloque pas la partie
+    console.log("Vérification du tour pour le joueur :", gameData.current_player_id);
+    await changePlayer();
+
+    // On récupère les données fraîches pour être sûr d'avoir les dernières mises à jour du joueur qui fini la boucle
+    let game = await getGame(gameData.id);
+
+    if (game.last_loop_player_id === game.current_player_id) {
+        // On demande au serveur de verrouiller la partie (si tu as l'action prévue)
+        await SqlRequest('toggle_lock', { game_id: gameData.id, status: 1 });
+        console.log("Tour terminé, table verrouillée.");
+    }
+}
+
+async function playerLoopChange(playerId) {
+    // Fonction pour changer le joueur de la boucle
+    console.log("Mise à jour du joueur de boucle côté client :", playerId);
+    const response = await SqlRequest('set_player_loop', { game_id: gameData.id, player_id: playerId });
+    if (response.success) {
+        console.log("Joueur de boucle mis à jour côté serveur.", response.player_id);
+    } else {
+        console.error("Erreur lors de la mise à jour du joueur de boucle :", response.error);
     }
 }
 
 async function playerCall() {
+    playerLoopCheck();
     changePlayer();
 }
 
@@ -461,10 +469,20 @@ async function playerAllIn() {
         alert("Ce n'est pas votre tour !");
         return;
     }
+
+    if (!confirm("Êtes-vous sûr de vouloir faire ALL-IN ?")) {
+        return;
+    }
+
     const response = await SqlRequest('all_in', { game_id: gameData.id, player_id: gameData.current_player_id });
     if (response.success) {
         gameData = await getGame(gameData.id);
         playersData = await getPlayers();
+
+        const response = await SqlRequest('get_next_player', { game_id: gameData.id, current_player_id: gameData.current_player_id });
+        if (response && response.success) {
+            playerLoopChange(response.next_player_id); // On met à jour le joueur de boucle pour éviter les blocages
+        }
         changePlayer();
     } else {
         console.error("Erreur lors du all-in :", response.error);

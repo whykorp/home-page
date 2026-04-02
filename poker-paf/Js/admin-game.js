@@ -160,20 +160,35 @@ async function resetToPostDealerPlayer() {
     // et sauter les joueurs qui se sont couchés (is_folded)
     let nextIndex = (dealerIndex + 1) % playersData.length;
     
-    // Sécurité : on cherche le prochain qui n'est pas couché
+    console.log("Index du dealer :", nextIndex, playersData[nextIndex].money <= 0);
+    // Sécurité : on cherche le prochain qui n'est pas couché et qui a de l'argent
     let attempts = 0;
-    while (playersData[nextIndex].is_folded && attempts < playersData.length) {
+    while ((playersData[nextIndex].is_folded || playersData[nextIndex].money <= 0) && attempts < playersData.length) {
+        console.log("Index du next :", nextIndex);
         nextIndex = (nextIndex + 1) % playersData.length;
         attempts++;
     }
 
     const firstPlayerId = playersData[nextIndex].id;
 
+    playerLoopChange(firstPlayerId); // On met à jour le joueur de boucle pour éviter les blocages
+
     // On envoie l'ordre au serveur de mettre ce joueur en actif
     await SqlRequest('set_current_player', { 
         game_id: gameData.id, 
         player_id: firstPlayerId 
     });
+}
+
+async function playerLoopChange(playerId) {
+    // Fonction pour changer le joueur de la boucle
+    console.log("Mise à jour du joueur de boucle côté client :", playerId);
+    const response = await SqlRequest('set_player_loop', { game_id: gameData.id, player_id: playerId });
+    if (response.success) {
+        console.log("Joueur de boucle mis à jour côté serveur.", response.player_id);
+    } else {
+        console.error("Erreur lors de la mise à jour du joueur de boucle :", response.error);
+    }
 }
 
 async function setupPlayers() {
