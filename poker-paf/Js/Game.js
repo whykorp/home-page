@@ -148,7 +148,8 @@ async function updateClientInterface() {
     const btnFold = document.getElementById('btn-fold');
 
     console.log(currentPlayer.current_bet)
-    if (currentMiseTable <= currentPlayer.current_bet) {
+    const viewerData = playersData.find(p => Number(p.id) === viewerId);
+    if (currentMiseTable <= viewerData.current_bet) {
         // PERSONNE N'A MISÉ : "Rester"
         if (btnFollow) {
             btnFollow.textContent = `Rester (Passer son tour)`;
@@ -162,7 +163,7 @@ async function updateClientInterface() {
     } else {
         // UNE MISE EXISTE : "Suivre"
         if (btnFollow) {
-            btnFollow.textContent = `Suivre (${currentMiseTable} 🪙)`;
+            btnFollow.textContent = `Suivre (${currentMiseTable - viewerData.current_bet} 🪙)`;
             btnFollow.onclick = () => playerFollow();
             btnFollow.className = "btn btn-call";
         }
@@ -357,7 +358,12 @@ async function playerRaise() {
     const betValue = parseInt(betInput.value);
 
     // Validation basique du champ de saisie
-    if (isNaN(betValue) || betValue <= 0) {
+    if (
+        isNaN(betValue) ||
+        betValue <= 0 ||
+        betValue % (gameData.start_blind/2) != 0 ||
+        betValue > currentPlayer.money - (gameData.last_bet - currentPlayer.current_bet)
+    ) {
         alert("Veuillez saisir un montant valide.");
         return;
     }
@@ -408,13 +414,13 @@ async function playerFollow() {
     let delta_amount = Math.max(0, Number(gameData.last_bet) - Number(currentPlayer.current_bet));
         
     if (Number(currentPlayer.money) < delta_amount) {
-        delta_amount = Number(currentPlayer.money);
-
+        playerAllIn(); // Si le joueur n'a pas assez pour suivre, on le met all-in
         // si le joueur a moins d'argent que la mise, on déplace le joueur de boucle pour éviter les boucles infinies
         const response = await SqlRequest('get_next_player', { game_id: gameData.id, current_player_id: gameData.current_player_id });
         if (response && response.success) {
             playerLoopChange(response.next_player_id); // On met à jour le joueur de boucle pour éviter les blocages
         }
+        return;
     }
 
     const response = await SqlRequest('follow', { 

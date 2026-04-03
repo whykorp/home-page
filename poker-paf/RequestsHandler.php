@@ -330,13 +330,55 @@ switch ($action) {
                 }
     
                 $pdo->commit();
-                echo json_encode(['success' => true]);
+                echo json_encode(['success' => true, 'next_dealer_id' => $next_dealer, 'pot' => $pot]);
             } catch (Exception $e) {
                 if ($pdo->inTransaction()) $pdo->rollBack();
                 echo json_encode(['success' => false, 'error' => 'Erreur lors de la désignation du vainqueur']);
             }
             exit;
     
+        case 'setup_blinds':
+            $game_id = (int)$params['game_id'];
+            $dealer_id = (int)$params['dealer_id'];
+    
+            try {
+                $pdo->beginTransaction();
+                // récupérer la blinde de la partie et le joueur après le dealer
+                $stmt = $pdo->prepare("SELECT start_blind FROM games WHERE id = ?");
+                $stmt->execute([$game_id]);
+                $blind_amount = (int)$stmt->fetchColumn();
+
+                $stmt = $pdo->prepare("SELECT id FROM players WHERE game_id = ? AND id > ? AND money > 0 ORDER BY id ASC LIMIT 1");
+                $stmt->execute([$game_id, $dealer_id]);
+                $postdealer_id = $stmt->fetchColumn();
+
+                if (!$postdealer_id) {
+                    $stmt = $pdo->prepare("SELECT id FROM players WHERE game_id = ? AND money > 0 ORDER BY id ASC LIMIT 1");
+                    $stmt->execute([$game_id]);
+                    $postdealer_id = $stmt->fetchColumn();
+                }
+
+                // update des blindes
+                $small_blind_bet = $blind_amount / 2;
+
+                $stmt = $pdo->prepare("UPDATE players SET current_bet = ?, money = money - ? WHERE id = ?");
+                $stmt->execute([$small_blind_bet, $small_blind_bet, $postdealer_id]);
+
+                $stmt = $pdo->prepare("UPDATE players SET current_bet = ?, money = money - ? WHERE id = ?");
+                $stmt->execute([$blind_amount, $blind_amount, $dealer_id]);
+
+                // update du pot
+                $stmt = $pdo->prepare("UPDATE games SET pot = ?, last_bet = ? WHERE id = ?");
+                $stmt->execute([$blind_amount + $small_blind_bet, $blind_amount, $game_id]);
+    
+                $pdo->commit();
+                echo json_encode(['success' => true, 'postdealer_id' => $postdealer_id]);
+            } catch (Exception $e) {
+                if ($pdo->inTransaction()) $pdo->rollBack();
+                echo json_encode(['success' => false, 'error' => 'Erreur lors de la réinitialisation des blinds']);
+            }
+            exit;
+
         case 'add_money':
             $stmt = $pdo->prepare("UPDATE players SET money = money + ? WHERE id = ?");
             $stmt->execute([(int)$params['amount'], (int)$params['player_id']]);

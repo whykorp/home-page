@@ -86,7 +86,7 @@ async function updateClientInterface() {
     refreshAdminPanel();
 
     activePlayerLabel.textContent = `${currentPlayer.name} (${currentPlayer.money} 🪙)`;
-    activePlayerDelta.textContent = `${currentPlayer.current_bet - gameData.last_bet}`;
+    activePlayerDelta.textContent = `${gameData.last_bet - currentPlayer.current_bet}`;
 }
 
 async function refreshAdminPanel() {
@@ -426,7 +426,18 @@ async function declareWinner(playerId) {
 
             if (result && result.success){
                 // Mise à jour de l'interface Admin
-                showAdminWinPanel(playerId);
+                showAdminWinPanel(playerId, result.pot);
+
+                const SetupBlinds = await SqlRequest('setup_blinds', { 
+                    game_id: gameData.id,
+                    dealer_id: result.next_dealer_id
+                });
+
+                if (SetupBlinds && SetupBlinds.success) {
+                    console.log("✅ Blinds réinitialisées pour la prochaine partie");
+                } else {
+                    console.error("Erreur lors de la réinitialisation des blinds :", SetupBlinds ? SetupBlinds.error : "Pas de réponse");
+                }
             } else {
                 console.log("Dommage tu y étais presque")
             }
@@ -437,7 +448,7 @@ async function declareWinner(playerId) {
 }
 
 // Fonction isolée pour l'affichage du panel admin (plus propre)
-function showAdminWinPanel(playerId) {
+function showAdminWinPanel(playerId, pot) {
     const container = document.querySelector('.table-container');
     if (container) container.classList.remove('blur-effect');
 
@@ -446,7 +457,7 @@ function showAdminWinPanel(playerId) {
         const winner = playersData.find(p => p.id == playerId);
         winPanel.innerHTML = `
             <h2>🏆 Victoire de ${winner ? winner.name : 'Joueur'}</h2>
-            <p>Le pot de ${gameData.pot} 🪙 lui a été attribué.</p>
+            <p>Le pot de ${pot} 🪙 lui a été attribué.</p>
             <button class="btn-spaction" onclick="StartNewGame()">Nouvelle Manche</button>
         `;
     }
@@ -463,7 +474,7 @@ async function StartNewGame() {
             console.log("Partie verrouillée, relance en cours...");
             // 2. On recharge la page pour démarrer la nouvelle main
             const response = await SqlRequest('update_game_status', { 
-                game_id: gameData.id, 
+                game_id: gameData.id,
                 status: 'playing'
             });
             if(response.success){
