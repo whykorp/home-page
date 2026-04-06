@@ -569,3 +569,40 @@ async function logs(action, player_id, params = []) {
     }
 }
 
+async function revertAction() {
+    const response = await SqlRequest('log_revert', { game_id: gameData.id });
+    if (response && response.success) {
+
+        const params = response.log.params ? response.log.params.split(';').map(Number) : [];
+
+        let result;
+        switch (response.log.action) {
+            case 'fold':
+                result = await SqlRequest('unfold', { player_id: response.log.player_id });
+                if (result && result.success) {
+                    console.log("Fold annulé avec succès.");
+                    playersData = await getPlayers();
+                    updateClientInterface();
+                } else {
+                    console.error("Erreur lors de l'annulation du fold :", result ? result.error : "Pas de réponse");
+                }
+
+                break;
+
+            case 'money_player_modification':
+                result = await SqlRequest('revert_money_modification', { game_id: gameData.id, player_id: response.log.player_id, amount: params[0] });
+                if (result && result.success) {
+                    console.log("Modification d'argent annulée avec succès.");
+                    playersData = await getPlayers();
+                    updateClientInterface();
+                } else {
+                    console.error("Erreur lors de l'annulation de la modification d'argent :", result ? result.error : "Pas de réponse");
+                }
+
+                break;
+        }
+    } else {
+        console.error("Erreur lors de l'annulation de l'action :", response ? response.error : "Pas de réponse");
+    }
+}
+

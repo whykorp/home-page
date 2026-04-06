@@ -490,4 +490,73 @@ switch ($action) {
                 echo json_encode(['success' => false, 'error' => 'Pas résussi à enregistrer le log']);
             }
             exit;
+
+        case 'log_revert':
+            $game_id = (int)$params['game_id'];
+
+            // Récupérer le log
+            $stmt = $pdo->prepare("SELECT * FROM logs WHERE game_id = ? ORDER BY id DESC LIMIT 1");
+            $stmt->execute([$game_id]);
+            $log = $stmt->fetch();
+
+            if ($log) {
+                $stmt = $pdo->prepare("DELETE FROM logs WHERE id = ?");
+                $stmt->execute([$log['id']]);
+                echo json_encode(['success' => true, 'log' => $log]);
+            } else {
+                echo json_encode(['success' => false, 'error' => 'Log non trouvé']);
+            }
+            exit;
+
+        case 'revert_money_modification':
+            $game_id = (int)$params['game_id'];
+            $player_id = (int)$params['player_id'];
+            $amount = (int)$params['amount'];
+
+            try {
+                $pdo->beginTransaction();
+
+                // 1. Rembourser le joueur
+                $stmt = $pdo->prepare("UPDATE players SET money = money + ? WHERE id = ?");
+                $stmt->execute([$amount, $player_id]);
+
+                // 2. Revenir sur la mise du joueur
+                $stmt = $pdo->prepare("UPDATE players SET current_bet = current_bet - ? WHERE id = ?");
+                $stmt->execute([$amount, $player_id]);
+            
+                // 3. Retirer l'argent du pot
+                $stmt = $pdo->prepare("UPDATE games SET pot = pot - ? WHERE id = ?");
+                $stmt->execute([$amount, $game_id]);
+
+                // 4. Recalculer le last_bet de la table (en prenant le max des current_bet des joueurs)
+                $stmt = $pdo->prepare("UPDATE games SET last_bet = (SELECT MAX(current_bet) FROM players WHERE game_id = ?) WHERE id = ?");
+                $stmt->execute([$game_id, $game_id]);
+
+                // 5. Revenir au joueur qui a fait la modification
+                $stmt = $pdo->prepare("UPDATE games SET current_player_id = ? WHERE id = ?");
+                $stmt->execute([$player_id, $game_id]);
+
+                $pdo->commit();
+                echo json_encode(['success' => true]);
+            } catch (Exception $e) {
+                if ($pdo->inTransaction()) $pdo->rollBack();
+                echo json_encode(['success' => false, 'error' => 'Erreur lors de la réversion du log']);
+            }
+            exit;
+
+        case 'unfold':
+            $player_id = (int)$params['player_id'];
+
+            try {
+                $stmt = $pdo->prepare("UPDATE players SET is_folded = 0 WHERE id = ?");
+                $stmt->execute([$player_id]);
+
+                $stmt = $pdo->prepare("UPDATE games SET current_player_id = ? WHERE id = ?");
+                $stmt->execute([$player_id, $game_id]);
+
+                echo json_encode(['success' => true]);
+            } catch (Exception $e) {
+                echo json_encode(['success' => false, 'error' => 'Erreur lors de l\'unfold']);
+            }
+            exit;
     }
