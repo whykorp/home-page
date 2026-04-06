@@ -456,6 +456,9 @@ async function declareWinner(playerId) {
 
                 if (SetupBlinds && SetupBlinds.success) {
                     console.log("✅ Blinds réinitialisées pour la prochaine partie");
+
+                    logs('money_player_modification', SetupBlinds.dealer_id, [SetupBlinds.blind_amount]);
+                    logs('money_player_modification', SetupBlinds.postdealer_id, [SetupBlinds.small_blind]);
                 } else {
                     console.error("Erreur lors de la réinitialisation des blinds :", SetupBlinds ? SetupBlinds.error : "Pas de réponse");
                 }
@@ -540,6 +543,29 @@ async function deleteGame() {
         window.location.replace('index.html');
     } else {
         console.error("Erreur lors de la suppression du jeu :", response.error);
+    }
+}
+
+
+
+
+
+// --- Gestions des logs ---
+
+
+async function logs(action, player_id, params = []) {
+
+    const strParams = params.join(';'); // Convertit le tableau de paramètres en une string lisible
+
+    const response = await SqlRequest('log_submit', {
+        game_id: gameData.id,
+        action: action,
+        player_id: player_id,
+        params: strParams // On convertit le tableau de paramètres en string pour l'enregistrer proprement
+    });
+    console.log("Log envoyé :", { action, player_id, strParams });
+    if (response && !response.success) {
+        console.error("Erreur lors de l'enregistrement du log :", response.error);
     }
 }
 

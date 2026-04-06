@@ -343,6 +343,9 @@ async function playerFold() {
 
     const response = await SqlRequest('fold', { player_id: gameData.current_player_id });
     if (response.success) {
+
+        await logs('fold', gameData.current_player_id); // Log du fold
+
         playersData = await getPlayers();
         changePlayer();
     } else {
@@ -382,6 +385,9 @@ async function playerRaise() {
 
     if (response && response.success) {
         betInput.value = ''; // Réinitialisation du champ
+
+        await logs('money_player_modification', gameData.current_player_id, [response.delta_bet]); // Log de la relance
+
         playerLoopChange(gameData.current_player_id); // On met à jour le joueur de boucle pour éviter les blocages
         await changePlayer(); // Passage au joueur suivant
     } else {
@@ -435,6 +441,8 @@ async function playerFollow() {
     });
 
     if (response && response.success) {
+        await logs('money_player_modification', gameData.current_player_id, [delta_amount]); // Log du follow
+
         playerLoopCheck();
     }
 }
@@ -490,9 +498,11 @@ async function playerAllIn() {
         gameData = await getGame(gameData.id);
         playersData = await getPlayers();
 
-        const response = await SqlRequest('get_next_player', { game_id: gameData.id, current_player_id: gameData.current_player_id });
-        if (response && response.success) {
-            playerLoopChange(response.next_player_id); // On met à jour le joueur de boucle pour éviter les blocages
+        await logs('money_player_modification', gameData.current_player_id, [response.delta_bet]); // Log du all-in
+
+        const responsebis = await SqlRequest('get_next_player', { game_id: gameData.id, current_player_id: gameData.current_player_id });
+        if (responsebis && responsebis.success) {
+            playerLoopChange(responsebis.next_player_id); // On met à jour le joueur de boucle pour éviter les blocages
         }
         changePlayer();
     } else {
@@ -568,3 +578,27 @@ function startConfetti() {
         setTimeout(() => confetti.remove(), 5000);
     }
 }
+
+
+
+
+
+// --- Gestions des logs ---
+
+
+async function logs(action, player_id, params = []) {
+
+    const strParams = params.join(';'); // Convertit le tableau de paramètres en une string lisible
+
+    const response = await SqlRequest('log_submit', {
+        game_id: gameData.id,
+        action: action,
+        player_id: player_id,
+        params: strParams // On convertit le tableau de paramètres en string pour l'enregistrer proprement
+    });
+    console.log("Log envoyé :", { action, player_id, strParams });
+    if (response && !response.success) {
+        console.error("Erreur lors de l'enregistrement du log :", response.error);
+    }
+}
+

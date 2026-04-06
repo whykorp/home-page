@@ -209,7 +209,7 @@ switch ($action) {
             $stmt = $pdo->prepare("UPDATE games SET pot = pot + ?, last_bet = ? WHERE id = ?");
             $stmt->execute([$to_withdraw, $target_bet, $game_id]);
             $pdo->commit();
-            echo json_encode(['success' => true]);
+            echo json_encode(['success' => true, 'delta_bet' => $to_withdraw]);
         } catch (Exception $e) {
             if ($pdo->inTransaction()) $pdo->rollBack();
             echo json_encode(['success' => false, 'error' => 'Erreur transaction']);
@@ -273,7 +273,7 @@ switch ($action) {
                 $stmt->execute([$all_in_amount, $new_player_bet, $game_id]);
     
                 $pdo->commit();
-                echo json_encode(['success' => true]);
+                echo json_encode(['success' => true, 'delta_bet' => $all_in_amount]);
             } catch (Exception $e) {
                 if ($pdo->inTransaction()) $pdo->rollBack();
                 echo json_encode(['success' => false, 'error' => 'Erreur All-in']);
@@ -372,7 +372,7 @@ switch ($action) {
                 $stmt->execute([$blind_amount + $small_blind_bet, $blind_amount, $game_id]);
     
                 $pdo->commit();
-                echo json_encode(['success' => true, 'postdealer_id' => $postdealer_id]);
+                echo json_encode(['success' => true, 'postdealer_id' => $postdealer_id, 'dealer_id' => $dealer_id, 'blind_amount' => $blind_amount, 'small_blind' => $small_blind_bet]);
             } catch (Exception $e) {
                 if ($pdo->inTransaction()) $pdo->rollBack();
                 echo json_encode(['success' => false, 'error' => 'Erreur lors de la réinitialisation des blinds']);
@@ -474,5 +474,20 @@ switch ($action) {
     
         default:
             echo json_encode(['success' => false, 'error' => 'Action inconnue']);
+            exit;
+
+        case 'log_submit':
+            $action = $params['action'] ?? '';
+            $game_id = (int)$params['game_id'];
+            $player_id = (int)$params['player_id'];
+            $parameters = $params['params'] ?? '';
+
+            if ($action) {
+                $stmt = $pdo->prepare("INSERT INTO logs (game_id, player_id, action, params) VALUES (?, ?, ?, ?)");
+                $stmt->execute([$game_id, $player_id, $action, $parameters]);
+                echo json_encode(['success' => true]);
+            } else {
+                echo json_encode(['success' => false, 'error' => 'Pas résussi à enregistrer le log']);
+            }
             exit;
     }
