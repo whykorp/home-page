@@ -478,7 +478,11 @@ input::-webkit-inner-spin-button {
 
 /* On neutralise la classe blur-effect pour qu'elle ne fasse plus rien */
 .blur-effect {
-    filter: none !important;
+    filter: blur(5px);
+}
+
+.All-in-Blur {
+    filter: blur(1px);
 }
 
 /* Si tu veux quand même que les joueurs couchés soient différents 

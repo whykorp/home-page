@@ -336,6 +336,11 @@ async function playerFold() {
         alert("Ce n'est pas votre tour !");
         return;
     }
+
+    if (!confirm("Êtes-vous sûr de vouloir vous coucher ?")) {
+        return;
+    }
+
     const response = await SqlRequest('fold', { player_id: gameData.current_player_id });
     if (response.success) {
         playersData = await getPlayers();
