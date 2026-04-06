@@ -8,6 +8,8 @@ let gameData = null;
 let currentPlayer = null;
 let playersData = [];
 
+let isGameLockToggled = false; // Variable pour éviter les boucles infinies lors du toggle
+
 async function SqlRequest(action, params = {}) {
     try {
         const response = await fetch('RequestsHandler.php', {
@@ -101,7 +103,18 @@ async function refreshAdminPanel() {
         `;
     }
 
-    const isLocked = Number(gameData.is_locked) === 1;
+    const lockStatus = Number(gameData.is_locked);
+
+    let isLocked = false;
+    if (lockStatus === 0) {
+        isLocked = false;
+    } else if (lockStatus === 1) {
+        isLocked = true;
+    } else if (lockStatus === 2) {
+        isLocked = false; // On considère que le statut "jeu fin" est aussi un état verrouillé pour les actions classiques
+        isGameLockToggled = true; // On indique que le toggle a été déclenché pour éviter les boucles infinies
+    }
+
     let lockSwitch = document.getElementById('lock-switch');
 
     // On ne crée le HTML que s'il n'existe pas encore
@@ -117,7 +130,7 @@ async function refreshAdminPanel() {
             <div class="admin-control-group">
                 <span>Autoriser le jeu fin :</span>
                 <label class="switch">
-                    <input type="checkbox" id="lock-switch_toggle" ${!isLocked ? 'checked' : ''} onchange="">
+                    <input type="checkbox" id="lock-switch_toggle" ${isGameLockToggled ? 'checked' : ''} onchange="toggleGameLockToggle(this)">
                     <span class="slider"></span>
                 </label>
             </div>
@@ -147,6 +160,17 @@ async function toggleGameLock(checkbox) {
         alert("Erreur lors du changement de statut");
         checkbox.checked = !checkbox.checked;
     }
+}
+
+async function toggleGameLockToggle(checkbox) {
+    const status = checkbox.checked ? 0 : 1;
+
+    isGameLockToggled = status === 1 ? false : true;
+
+    await SqlRequest('toggle_lock', {
+        game_id: gameData.id,
+        status: isGameLockToggled ? 2 : 1 // 2 pour "jeu fin", sinon on remet le statut de verrouillage
+    });
 }
 
 async function resetToPostDealerPlayer() {

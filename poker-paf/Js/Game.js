@@ -443,7 +443,7 @@ async function playerLoopCheck() {
     // On récupère les données fraîches pour être sûr d'avoir les dernières mises à jour du joueur qui fini la boucle
     let game = await getGame(gameData.id);
 
-    if (game.last_loop_player_id === game.current_player_id) {
+    if (game.last_loop_player_id === game.current_player_id && gameData.is_locked !== 2) {
         // On demande au serveur de verrouiller la partie (si tu as l'action prévue)
         await SqlRequest('toggle_lock', { game_id: gameData.id, status: 1 });
         console.log("Tour terminé, table verrouillée.");
