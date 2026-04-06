@@ -117,16 +117,13 @@ async function refreshAdminPanel() {
             <div class="admin-control-group">
                 <span>Autoriser le jeu fin :</span>
                 <label class="switch">
-                    <input type="checkbox" id="lock-switch" ${!isLocked ? 'checked' : ''} onchange="">
+                    <input type="checkbox" id="lock-switch_toggle" ${!isLocked ? 'checked' : ''} onchange="">
                     <span class="slider"></span>
                 </label>
             </div>
         `;
     } else {
-        // Si le switch existe, on met à jour son état SEULEMENT si l'admin ne le touche pas
-        if (document.activeElement !== lockSwitch) {
-            lockSwitch.checked = !isLocked;
-        }
+        lockSwitch.checked = !isLocked;
     }
 }
 
