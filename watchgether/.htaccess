@@ -1,0 +1,7 @@
+RewriteEngine On
+# Si on demande la racine, on envoie vers public/
+RewriteRule ^$ public/ [L]
+# Si on demande un fichier qui n'existe pas, on cherche dans public/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ public/$1 [L]

@@ -29,7 +29,7 @@
             </h2>
             <p class="text-xl text-gray-300 mb-10 leading-relaxed">
                 Ajoutez vos films, synchronisez vos envies. <br class="hidden md:block">
-                La liste commune trouve vos **doublons** instantanément pour des soirées ciné sans prise de tête.
+                La liste commune trouve vos <strong>doublons</strong> instantanément pour des soirées ciné sans prise de tête.
             </p>
 
             <div class="grid md:grid-cols-3 gap-6 mb-12">
