@@ -50,8 +50,8 @@
             </div>
     </div>
 
-    <?php include 'modal_template.php'; // Conseil : mets le code de la modal dans un fichier à part pour l'inclure partout ?>
+    <?php include '../modal_template.php'; // Conseil : mets le code de la modal dans un fichier à part pour l'inclure partout ?>
 
-    <script src="js/list.js"></script>
+    <script src="../js/list.js"></script>
 </body>
 </html>
