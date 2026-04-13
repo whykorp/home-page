@@ -111,6 +111,16 @@ switch ($action) {
         ]);
         echo json_encode(['success' => $success]);
         exit;
+    
+    case 'getMovieDetails':
+        $id = $params['id'];
+        $type = $params['type']; // 'movie' ou 'tv'
+        // On demande les détails + les crédits (acteurs) en une seule fois
+        $url = "https://api.themoviedb.org/3/$type/$id?api_key=$apiKey&language=fr-FR&append_to_response=credits";
+        
+        $response = file_get_contents($url);
+        echo $response;
+        exit;
 
     default:
         echo json_encode(['success' => false, 'error' => 'Action inconnue']);
