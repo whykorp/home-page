@@ -2,7 +2,9 @@
 async function apiRequest(action, params = {}) {
     const response = await fetch('RequestHandler.php', {
         method: 'POST',
-        headers: { 'Content-Type:': 'application/json' },
+        headers: { 
+            'Content-Type': 'application/json' // J'ai enlevé le ":" après Type
+        },
         body: JSON.stringify({ action, params })
     });
     return await response.json();
