@@ -20,7 +20,7 @@
 
         <div id="resultsGrid" class="grid grid-cols-2 md:grid-cols-4 gap-6"></div>
     </div>
-    <?php include '../modal_template.php';?>
+    <?php include 'modal_template.php';?>
     <script src="js/index.js"></script>
 </body>
 </html>
