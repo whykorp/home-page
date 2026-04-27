@@ -1,4 +1,4 @@
-   <div id="movieModal" class="fixed inset-0 bg-black/95 z-50 hidden overflow-y-auto">
+<div id="movieModal" class="fixed inset-0 bg-black/95 z-50 hidden overflow-y-auto">
     <div class="relative w-full max-w-5xl mx-auto min-h-screen bg-slate-900 shadow-2xl border-x border-white/10">
         
         <button onclick="closeModal()" class="absolute top-6 right-6 z-50 bg-black/50 text-white p-2 rounded-full hover:bg-red-600 transition">
@@ -21,8 +21,7 @@
                 <p id="modalOverview" class="text-gray-300 leading-relaxed text-lg mb-8"></p>
                 
                 <h3 class="text-xl font-bold mb-4 text-white border-b border-white/10 pb-2">Casting principal</h3>
-                <div id="modalCast" class="flex gap-4 overflow-x-auto pb-6 scrollbar-hide">
-                    </div>
+                <div id="modalCast" class="flex gap-4 overflow-x-auto pb-6 scrollbar-hide"></div>
             </div>
 
             <div class="space-y-6">
@@ -34,12 +33,25 @@
                             <span class="text-gray-500 font-bold">/ 10</span>
                         </div>
                     </div>
+
                     <div class="mb-6">
                         <span class="text-gray-400 text-xs uppercase tracking-widest block mb-1">Réalisateur</span>
                         <span id="modalDirector" class="text-xl font-bold text-white"></span>
                     </div>
-                    <button id="modalAddBtn" class="w-full bg-green-600 hover:bg-green-500 text-white py-4 rounded-xl font-black text-lg shadow-lg shadow-green-900/20 transition-all active:scale-95">
-                        + AJOUTER À LA LISTE
+
+                    <div id="ratingZone" class="mb-6 hidden">
+                        <span class="text-gray-400 text-xs uppercase tracking-widest block mb-2">Ta note</span>
+                        <div class="flex gap-2 text-2xl" id="starContainer">
+                            <span onclick="setRating(1)" class="cursor-pointer hover:text-yellow-400 transition text-gray-600">★</span>
+                            <span onclick="setRating(2)" class="cursor-pointer hover:text-yellow-400 transition text-gray-600">★</span>
+                            <span onclick="setRating(3)" class="cursor-pointer hover:text-yellow-400 transition text-gray-600">★</span>
+                            <span onclick="setRating(4)" class="cursor-pointer hover:text-yellow-400 transition text-gray-600">★</span>
+                            <span onclick="setRating(5)" class="cursor-pointer hover:text-yellow-400 transition text-gray-600">★</span>
+                        </div>
+                    </div>
+
+                    <button id="modalMainBtn" class="w-full py-4 rounded-xl font-black text-lg shadow-lg transition-all active:scale-95 text-white bg-blue-600 hover:bg-blue-500">
+                        ACTION
                     </button>
                 </div>
             </div>
