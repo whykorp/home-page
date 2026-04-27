@@ -55,16 +55,24 @@ switch ($action) {
 
     // --- GESTION DES FILMS ---
     case 'addMovie':
-        $stmt = $pdo->prepare("INSERT INTO movies (tmdb_id, titre, affiche_path, type, user_id, vu) VALUES (?, ?, ?, ?, ?, 0)");
-        $success = $stmt->execute([
-            $params['tmdb_id'],
-            $params['titre'],
-            $params['affiche_path'],
-            $params['type'], // 'film' ou 'serie'
-            $current_user_id
-        ]);
-        echo json_encode(['success' => $success]);
-        exit;
+        // On cherche si le film existe déjà pour cet utilisateur
+        $stmt = $pdo->prepare("SELECT id FROM movies WHERE tmdb_id = ? AND user_id = ?");
+        $stmt->execute([$params['tmdb_id'], $current_user_id]);
+        if ($stmt->fetch()) {
+            echo json_encode(['success' => false, 'error' => 'Film déjà dans la liste']);
+            exit;
+        } else {
+            $stmt = $pdo->prepare("INSERT INTO movies (tmdb_id, titre, affiche_path, type, user_id, vu) VALUES (?, ?, ?, ?, ?, 0)");
+            $success = $stmt->execute([
+                $params['tmdb_id'],
+                $params['titre'],
+                $params['affiche_path'],
+                $params['type'], // 'film' ou 'serie'
+                $current_user_id
+            ]);
+            echo json_encode(['success' => $success]);
+            exit;
+        }
 
     case 'getMyList':
         // Récupère les films ajoutés par l'utilisateur
@@ -86,12 +94,19 @@ switch ($action) {
         $stmt->execute([$current_user_id, $partner_id]);
         echo json_encode(['success' => true, 'common_movies' => $stmt->fetchAll()]);
         exit;
+    
+    case 'getPartnerList':
+        $partner_id = ($current_user_id == 1) ? 2 : 1;
+        $stmt = $pdo->prepare("SELECT * FROM movies WHERE user_id = ? ORDER BY date_ajout DESC");
+        $stmt->execute([$partner_id]);
+        echo json_encode(['success' => true, 'movies' => $stmt->fetchAll()]);
+        exit;
 
     // --- ACTIONS SUR LE FILM ---
     case 'toggleViewed':
         // Alterne entre vu (1) et non vu (0)
-        $stmt = $pdo->prepare("UPDATE movies SET vu = !vu WHERE id = ? AND user_id = ?");
-        $success = $stmt->execute([(int)$params['movie_id'], $current_user_id]);
+        $stmt = $pdo->prepare("UPDATE movies SET vu = !vu WHERE id = ?");
+        $success = $stmt->execute([(int)$params['movie_id']]);
         echo json_encode(['success' => $success]);
         exit;
 
@@ -112,6 +127,16 @@ switch ($action) {
         echo json_encode(['success' => $success]);
         exit;
     
+    case 'getComments':
+        $stmt = $pdo->prepare("
+            SELECT c.*, u.pseudo FROM commentaires c
+            JOIN users u ON c.user_id = u.id
+            WHERE c.movie_id = ? ORDER BY c.date_ajout DESC
+        ");
+        $stmt->execute([(int)$params['movie_id']]);
+        echo json_encode(['success' => true, 'comments' => $stmt->fetchAll()]);
+        exit;
+    
     case 'getMovieDetails':
         $id = $params['id'];
         $type = $params['type']; // 'movie' ou 'tv'
@@ -120,6 +145,54 @@ switch ($action) {
         
         $response = file_get_contents($url);
         echo $response;
+        exit;
+    
+    case 'setStarsRating':
+        $stmt = $pdo->prepare("INSERT INTO movies (rating) VALUES (?) WHERE id = ?");
+        $success = $stmt->execute([
+            (int)$params['movie_id'],
+            (int)$params['rating']
+        ]);
+        echo json_encode(['success' => $success]);
+        exit;
+    
+    case 'getStarsRating':
+        $stmt = $pdo->prepare("SELECT rating FROM movies WHERE id = ?");
+        $stmt->execute([(int)$params['movie_id']]);
+        $rating = $stmt->fetchColumn();
+        echo json_encode(['success' => true, 'rating' => $rating]);
+        exit;
+
+    case 'register':
+        $pseudo = $params['pseudo'];
+        $pass = password_hash($params['password'], PASSWORD_DEFAULT);
+        
+        $stmt = $pdo->prepare("INSERT INTO users (pseudo, password) VALUES (?, ?)");
+        try {
+            $stmt->execute([$pseudo, $pass]);
+            echo json_encode(['success' => true]);
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'error' => 'Pseudo déjà pris']);
+        }
+        exit;
+
+    case 'login':
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE pseudo = ?");
+        $stmt->execute([$params['pseudo']]);
+        $user = $stmt->fetch();
+
+        if ($user && password_verify($params['password'], $user['password'])) {
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['pseudo'] = $user['pseudo'];
+            echo json_encode(['success' => true]);
+        } else {
+            echo json_encode(['success' => false, 'error' => 'Identifiants incorrects']);
+        }
+        exit;
+
+    case 'logout':
+        session_destroy();
+        echo json_encode(['success' => true]);
         exit;
 
     default:

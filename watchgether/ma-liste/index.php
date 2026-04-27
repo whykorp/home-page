@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../index.php'); // Redirige vers le login si pas de session
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -10,7 +18,24 @@
     <div class="max-w-6xl mx-auto">
         <div class="flex justify-between items-center mb-10">
             <h1 class="text-3xl font-bold text-blue-400">Ma Liste 🍿</h1>
-            <a href="index.php" class="bg-slate-800 px-4 py-2 rounded-lg hover:bg-slate-700 transition">← Retour à la recherche</a>
+            <a href="../search/index.php" class="bg-slate-800 px-4 py-2 rounded-lg hover:bg-slate-700 transition">← Retour à la recherche</a>
+        </div>
+
+        <div class="flex items-end mb-0 border-b border-slate-700">
+            <button onclick="switchTab('my')" id="tab-my" 
+                    class="px-8 py-4 bg-slate-800 text-white font-bold text-sm uppercase tracking-widest border-b-4 border-blue-500 transition-all">
+                Ma Liste
+            </button>
+            
+            <button onclick="switchTab('common')" id="tab-common" 
+                    class="px-8 py-4 bg-slate-700/50 text-gray-400 font-bold text-sm uppercase tracking-widest border-b-4 border-transparent hover:bg-slate-800 hover:text-white transition-all">
+                Notre Liste
+            </button>
+            
+            <button onclick="switchTab('partner')" id="tab-partner" 
+                    class="px-8 py-4 bg-slate-700/50 text-gray-400 font-bold text-sm uppercase tracking-widest border-b-4 border-transparent hover:bg-slate-800 hover:text-white transition-all">
+                Sa Liste
+            </button>
         </div>
 
         <div class="bg-slate-800 p-4 rounded-xl mb-8 flex flex-wrap gap-4 items-center">
@@ -50,7 +75,7 @@
             </div>
     </div>
 
-    <?php include '../modal_template.php'; // Conseil : mets le code de la modal dans un fichier à part pour l'inclure partout ?>
+    <?php include '../modal-template.php';?>
 
     <script src="../js/list.js"></script>
 </body>

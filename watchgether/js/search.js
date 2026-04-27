@@ -7,7 +7,7 @@
  */
 async function apiRequest(action, params = {}) {
     try {
-        const response = await fetch('RequestHandler.php', {
+        const response = await fetch('../RequestHandler.php', {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json' 
@@ -20,6 +20,8 @@ async function apiRequest(action, params = {}) {
         return { success: false, error: "Erreur de connexion au serveur" };
     }
 }
+
+document.getElementById('ratingZone').classList.add('hidden');
 
 // --- RECHERCHE ---
 
@@ -116,7 +118,13 @@ async function showDetails(id, type) {
 
     // 5. Bouton Ajouter (on passe les infos pour la BDD)
     const simplifiedType = (mediaType === 'tv') ? 'serie' : 'film';
-    document.getElementById('modalAddBtn').onclick = () => addMovie(movie.id, movie.title || movie.name, movie.poster_path, simplifiedType);
+    const btn = document.getElementById('modalMainBtn');
+    btn.innerText = "+ AJOUTER À LA LISTE";
+    btn.className = "w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-xl font-black shadow-lg transition-all active:scale-95";
+    btn.onclick = () => addMovie(movie.id, movie.title || movie.name, movie.poster_path, simplifiedType);
+
+    // Cache les étoiles en mode recherche
+    document.getElementById('ratingZone').classList.add('hidden');
 
     // Affichage
     modal.classList.remove('hidden');
@@ -158,3 +166,15 @@ document.getElementById('searchInput').addEventListener('keypress', function (e)
         performSearch();
     }
 });
+
+async function LogOut() {
+    const res = await fetch('../RequestHandler.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'logout' })
+    });
+    const data = await res.json();
+    if (data.success) {
+        window.location.href = '../index.php';
+    }
+}
